@@ -2,6 +2,21 @@
 
 In Windows, launch a different browser depending on the url.
 
+## Why?
+
+`BrowseRouter` becomes your default "browser". When you click a link, it decides which real browser to launch. If you have multiple browsers installed, this is very useful. Example use cases:
+
+- *Workplace*. You access an intranet site through a specific browser while you prefer to use another browser for the rest of the internet. 
+- *Proxies*. One browser is configured to use a proxy while another isn't. For example, my employer is in another country. It's too slow to proxy all of my web traffic through their network. Some sites ignore locale settings and load based on IP address. Even worse, some sites or pages are blocked.
+- *Compatibility*. Some sites you visit work better in specific browsers. You don't care which browser opens, just that the loaded page works.
+- *Browser wars*. You're tired of browsers jostling to be the dfaeult. You're tired of changing the default browser to accomodate different workflows.
+
+## Security
+
+`BrowseRouter` does no tracking and makes no network connections of its own whatsoever. 
+
+Your system administrator could know which pages you are visiting by auditing process start logs e.g. `BrowseRouter.exe http://some-naughty-site.com`. They would have the same information for any browser, except with `BrowseRouter` they don't know which browser you used unless they look at your `BrowseRouter` configuration.
+
 ## Credit
 
 This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained, so I ported to .net6.0. 
