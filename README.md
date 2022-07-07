@@ -9,11 +9,11 @@ This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). 
 ## Setting Up
 
 1. Clone and extract to a folder somewhere on your PC.
-2. Open `BrowserSelector.ini` and customize paths to your browsers and domain patterns (see below).
-3. Run `BrowserSelector.exe --register` from this folder to register the tool in Windows as a web browser.
+2. Open `config.ini` and customize paths to your browsers and domain patterns (see below).
+3. Run `BrowseRouter.exe --register` from this folder to register the tool in Windows as a web browser.
 4. Open the "Choose a default browser" screen in Windows (you can simply search for "default browser" from the start screen).
   - ![Open With Dialog](OpenWith.png)
-5. Select `BrowserSelector` as the default browser.
+5. Select `BrowseRouter` as the default browser.
 
 Tested on:
 
@@ -22,14 +22,14 @@ Tested on:
 ## Usage
 
 ```
-    BrowserSelector.exe --register
+    BrowseRouter.exe --register
         Register as a web browser.
 
-    BrowserSelector.exe --unregister
+    BrowseRouter.exe --unregister
         Unregister as a web browser.
         Once you have registered the app as a browser, you should use visit "Set Default Browser" in Windows to set this app as the default browser.
 
-    BrowserSelector.exe http://example.org/
+    BrowseRouter.exe http://example.org/
         Launch a URL
 ```
 
