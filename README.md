@@ -1,4 +1,4 @@
-# Browser Selector 
+# BrowseRouter 
 
 In Windows, launch a different browser depending on the url.
 
