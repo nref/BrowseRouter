@@ -9,7 +9,7 @@ In Windows, launch a different browser depending on the url.
 - *Workplace*. You access an intranet site through a specific browser while you prefer to use another browser for the rest of the internet. 
 - *Proxies*. One browser is configured to use a proxy while another isn't. For example, my employer is in another country. It's too slow to proxy all of my web traffic through their network. Some sites load in the wrong language and currency because they ignore system locale settings and localize based on IP address. Even worse, some sites or pages are blocked.
 - *Compatibility*. Some sites you visit work better in specific browsers. You don't care which browser opens, just that the loaded page works.
-- *Browser wars*. You're tired of browsers jostling to be the dfaeult. You're tired of changing the default browser to accomodate different workflows.
+- *Browser wars*. You're tired of browsers jostling to be the default. You're tired of changing the default browser to accomodate different workflows.
 
 ## Security
 
