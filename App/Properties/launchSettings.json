@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "register": {
+      "commandName": "Project",
+      "commandLineArgs": "--register"
+    },
+    "unregister": {
+      "commandName": "Project",
+      "commandLineArgs": "--unregister"
+    },
+    "open URL": {
+      "commandName": "Project",
+      "commandLineArgs": "https://www.ebay.com/itm/204030267306"
+    },
+    "no arg": {
+      "commandName": "Project"
+    }
+  }
+}
