@@ -23,5 +23,4 @@ public static class Executable
     // The single executable without any other arguments.
     return (s, "");
   }
-
 }

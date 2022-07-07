@@ -2,10 +2,8 @@
 
 public class Program
 {
-  static void Main(string[] args)
+  private static void Main(string[] args)
   {
-    bool isOption;
-
     if (args == null || args.Length == 0)
     {
       ShowHelp();
@@ -14,37 +12,42 @@ public class Program
 
     foreach (string arg in args)
     {
-      string a = arg.Trim();
-
-      isOption = a.StartsWith("-") || a.StartsWith("/");
-      while (a.StartsWith("-") || a.StartsWith("/"))
-      {
-        a = a[1..];
-      }
-
-      if (!isOption)
-      {
-        new BrowserService().Launch(a);
-        return;
-      }
-
-      new ElevationService().RequireAdmin();
-
-      if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
-      {
-        new RegistryService().Register();
-        return;
-      }
-
-      if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
-      {
-        new RegistryService().Unregister();
-        return;
-      }
+      Run(arg);
     }
   }
 
-  static void ShowHelp()
+  private static void Run(string arg)
+  {
+    string a = arg.Trim();
+
+    bool isOption = a.StartsWith("-") || a.StartsWith("/");
+    while (a.StartsWith("-") || a.StartsWith("/"))
+    {
+      a = a[1..];
+    }
+
+    if (!isOption)
+    {
+      new BrowserService(new ConfigService()).Launch(a);
+      return;
+    }
+
+    new ElevationService().RequireAdmin();
+
+    if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
+    {
+      new RegistryService().Register();
+      return;
+    }
+
+    if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
+    {
+      new RegistryService().Unregister();
+      return;
+    }
+  }
+
+  private static void ShowHelp()
   {
     Log.Write
     (

@@ -4,11 +4,18 @@ namespace BrowseRouter;
 
 public class BrowserService
 {
+  private readonly IConfigService _config;
+
+  public BrowserService(IConfigService config)
+  {
+    _config = config;
+  }
+
   public void Launch(string url)
   {
     try
     {
-      var prefs = new ConfigService().GetUrlPreferences();
+      var prefs = _config.GetUrlPreferences();
       Uri uri = UriFactory.Get(url);
 
       if (!prefs.TryGetPreference(uri, out UrlPreference pref))

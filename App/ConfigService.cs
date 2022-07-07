@@ -1,6 +1,11 @@
 ﻿namespace BrowseRouter;
 
-public class ConfigService
+public interface IConfigService
+{
+  IEnumerable<UrlPreference> GetUrlPreferences();
+}
+
+public class ConfigService : IConfigService
 {
   /// <summary>
   /// Config lives in the same folder as the EXE, name "BrowserSelector.ini".
@@ -30,11 +35,11 @@ public class ConfigService
       return new List<UrlPreference>();
     }
 
-    // Read the url preferences, and add a catchall ("*") for the first browser.
+    // Read the url preferences
     var urls = GetConfig(configLines, "urls")
       .Select(SplitConfig)
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
-      .Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }) // Add in a catchall that uses the first browser
+      .Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }) // Add a catch-all that uses the first browser
       .Where(up => up.Browser != null);
 
     return urls;
