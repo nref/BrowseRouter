@@ -12,6 +12,7 @@ This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). 
 2. Open `BrowserSelector.ini` and customize paths to your browsers and domain patterns (see below).
 3. Run `BrowserSelector.exe --register` from this folder to register the tool in Windows as a web browser.
 4. Open the "Choose a default browser" screen in Windows (you can simply search for "default browser" from the start screen).
+  - ![Open With Dialog](OpenWith.png)
 5. Select `BrowserSelector` as the default browser.
 
 Tested on:
