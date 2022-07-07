@@ -50,40 +50,35 @@ Tested on:
 
 ## Config
 
-Config is a poor mans INI file:
+Config is a poor man's INI file:
 
 ```ini
 ; Default browser is first in list
 ; Use `{url}` to specify UWP app browser details
 [browsers]
+ff = C:\Program Files\Mozilla Firefox\firefox.exe
+# Open in a new window
+#chrome = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --new-window
 chrome = C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-ff = C:\Program Files (x86)\Mozilla Firefox\firefox.exe
-edge = microsoft-edge:{url}
-ie = iexplore.exe
+edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 
 ; Url preferences.
 ; Only * is treated as a special character (wildcard).
 ; Matches are domain-only. Protocols and paths are ignored.
 ; Use "*.blah.com" for subdomains, not "*blah.com" as that would also match "abcblah.com".
 [urls]
-microsoft.com = ie
-*.microsoft.com = ie
-
 google.com = chrome
 visualstudio.com = edge
+mozilla.org = ff
+; Default case. Added automatically
+; * = whatever
 ```
 
 ### Browsers
 
-- Browser exes must be exact paths to the browser executable.
-- Arguments are optional. However, if you provide arguments the exe _must_ be enclosed in quotes.
-- If there are no arguments, then the exe paths do not need to be quoted.
-
-**Special cases:**
-
-- For special browsers, you can include the `{url}` flag. This allows better control over the browser command-line arguments.
-- This is required when specifying UWP app's such as Microsoft Edge.
-- By default, the url is used as an argument when launching the exe. If the `{url}` flag is specified, it will not be added to the arguments. (In other words, it _won't_ be added twice..)
+- Browsers must either be in your path or be fully-qualified paths to the executable e.g. `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`.
+- Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
+- If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
 ### Urls
 
