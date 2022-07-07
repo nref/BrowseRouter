@@ -10,7 +10,7 @@
     },
     "open URL": {
       "commandName": "Project",
-      "commandLineArgs": "https://www.ebay.com/itm/204030267306"
+      "commandLineArgs": "google.com"
     },
     "no arg": {
       "commandName": "Project"
