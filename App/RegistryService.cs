@@ -1,11 +1,11 @@
 ﻿using Microsoft.Win32;
 
-namespace BrowserSelector;
+namespace BrowseRouter;
 
 public class RegistryService
 {
-  private const string AppID = "BrowserSelector";
-  private const string AppName = "Browser Selector";
+  private const string AppID = "BrowseRouter";
+  private const string AppName = "BrowseRouter";
   private const string AppDescription = "Opens a different brower based on the URL";
   private string AppIcon => App.ExePath + ",0";
   private string AppOpenUrlCommand => App.ExePath + " %1";

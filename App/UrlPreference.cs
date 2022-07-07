@@ -1,4 +1,4 @@
-﻿namespace BrowserSelector;
+﻿namespace BrowseRouter;
 
 public class UrlPreference
 {

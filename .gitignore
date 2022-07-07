@@ -1,3 +1,4 @@
 *.suo
+*.vs
 bin
 obj

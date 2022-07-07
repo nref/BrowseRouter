@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BrowserSelector;
+namespace BrowseRouter;
 
 public static class Log
 {

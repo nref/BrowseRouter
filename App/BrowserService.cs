@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace BrowserSelector;
+namespace BrowseRouter;
 
 public class BrowserService
 {

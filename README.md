@@ -2,6 +2,10 @@
 
 In Windows, launch a different browser depending on the url.
 
+## Credit
+
+This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained, so I ported to .net6.0. 
+
 ## Setting Up
 
 1. Clone and extract to a folder somewhere on your PC.
@@ -18,10 +22,10 @@ Tested on:
 
 ```
     BrowserSelector.exe --register
-        Register as web browser.
+        Register as a web browser.
 
     BrowserSelector.exe --unregister
-        Unregister as web browser.
+        Unregister as a web browser.
         Once you have registered the app as a browser, you should use visit "Set Default Browser" in Windows to set this app as the default browser.
 
     BrowserSelector.exe http://example.org/

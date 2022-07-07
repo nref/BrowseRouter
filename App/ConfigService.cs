@@ -1,11 +1,11 @@
-﻿namespace BrowserSelector;
+﻿namespace BrowseRouter;
 
 public class ConfigService
 {
   /// <summary>
   /// Config lives in the same folder as the EXE, name "BrowserSelector.ini".
   /// </summary>
-  public string ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "BrowserSelector.ini");
+  public string ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
 
   public IEnumerable<UrlPreference> GetUrlPreferences()
   {

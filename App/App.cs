@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace BrowserSelector;
+namespace BrowseRouter;
 
 public static class App
 {

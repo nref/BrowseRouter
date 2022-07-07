@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\BrowserSelector.csproj", "{39E2D988-557D-40D2-9D0B-AAC097FE98C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\BrowseRouter.csproj", "{39E2D988-557D-40D2-9D0B-AAC097FE98C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42958659-9C5D-4FD0-97A3-D65DEE66523C}"
 	ProjectSection(SolutionItems) = preProject

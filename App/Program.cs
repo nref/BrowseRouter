@@ -1,4 +1,4 @@
-﻿namespace BrowserSelector;
+﻿namespace BrowseRouter;
 
 public class Program
 {
@@ -28,7 +28,7 @@ public class Program
         return;
       }
 
-      new ElevationService().EnsureAdmin($"--{a}");
+      new ElevationService().RequireAdmin();
 
       if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
       {
@@ -50,14 +50,14 @@ public class Program
     (
 @"Usage:
 
-    BrowserSelector.exe --register
-        Register as web browser.
+    BrowseRouter.exe --register
+        Register as a web browser.
 
-    BrowserSelector.exe --unregister
-        Unregister as web browser. 
+    BrowseRouter.exe --unregister
+        Unregister as a web browser. 
         Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
 
-    BrowserSelector.exe http://example.org/
+    BrowseRouter.exe http://example.org/
         Launch a URL"
     );
   }

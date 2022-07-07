@@ -1,25 +1,16 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 
-namespace BrowserSelector;
+namespace BrowseRouter;
 
 public class ElevationService
 {
-  public void EnsureAdmin(string arg)
+  public void RequireAdmin()
   {
     WindowsPrincipal principal = new(WindowsIdentity.GetCurrent());
-    if (principal.IsInRole(WindowsBuiltInRole.Administrator))
+    if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
     {
-      return;
+      Log.Write($"{nameof(BrowseRouter)} needs elevated privileges. Try to run it as admin.");
+      Environment.Exit(-1);
     }
-
-    Process.Start(new ProcessStartInfo
-    {
-      FileName = App.ExePath,
-      Verb = "runas",
-      Arguments = arg
-    });
-    Environment.Exit(0);
   }
 }
