@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <WarningLevel>4</WarningLevel>
     <ApplicationIcon>Browser.ico</ApplicationIcon>
+    <Version>0.4.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
