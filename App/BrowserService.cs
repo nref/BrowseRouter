@@ -15,7 +15,7 @@ public class BrowserService
   {
     try
     {
-      var prefs = _config.GetUrlPreferences();
+      IEnumerable<UrlPreference> prefs = _config.GetUrlPreferences();
       Uri uri = UriFactory.Get(url);
 
       if (!prefs.TryGetPreference(uri, out UrlPreference pref))

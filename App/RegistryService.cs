@@ -10,48 +10,63 @@ public class RegistryService
   private string AppIcon => App.ExePath + ",0";
   private string AppOpenUrlCommand => App.ExePath + " %1";
 
-  private RegistryKey? Key => Registry.LocalMachine.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
+  private string AppKey => $"SOFTWARE\\{AppID}";
+  private string UrlKey => $"SOFTWARE\\Classes\\{AppID}URL";
+  private string CapabilityKey => $"SOFTWARE\\{AppID}\\Capabilities";
+
+  private RegistryKey? _registerKey => Registry.LocalMachine.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
 
   public void Register()
   {
     // Register application.
-    var appReg = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\{AppID}");
+    RegistryKey? appReg = Registry.LocalMachine.CreateSubKey(AppKey);
 
+    RegisterCapabilities(appReg);
+
+    // Register as application.
+    if (_registerKey != null)
+    {
+      _registerKey.SetValue(AppID, CapabilityKey);
+    }
+
+    HandleUrls();
+  }
+
+  private void RegisterCapabilities(RegistryKey appReg)
+  {
     // Register capabilities.
-    var capabilityReg = appReg.CreateSubKey("Capabilities");
+    RegistryKey? capabilityReg = appReg.CreateSubKey("Capabilities");
     capabilityReg.SetValue("ApplicationName", AppName);
     capabilityReg.SetValue("ApplicationIcon", AppIcon);
     capabilityReg.SetValue("ApplicationDescription", AppDescription);
 
     // Set up protocols we want to handle.
-    var urlAssocReg = capabilityReg.CreateSubKey("URLAssociations");
+    RegistryKey? urlAssocReg = capabilityReg.CreateSubKey("URLAssociations");
     urlAssocReg.SetValue("http", AppID + "URL");
     urlAssocReg.SetValue("https", AppID + "URL");
     urlAssocReg.SetValue("ftp", AppID + "URL");
+  }
 
-    // Register as application.
-    if (Key != null)
-    {
-      Key.SetValue(AppID, $"SOFTWARE\\{AppID}\\Capabilities");
-    }
-
-    // Set URL Handler.
-    var handlerReg = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Classes\\{AppID}URL");
+  /// <summary>
+  /// Set URL Handler
+  /// </summary>
+  private void HandleUrls()
+  {
+    RegistryKey? handlerReg = Registry.LocalMachine.CreateSubKey(UrlKey);
     handlerReg.SetValue("", AppName);
     handlerReg.SetValue("FriendlyTypeName", AppName);
-
-    handlerReg.CreateSubKey(string.Format("shell\\open\\command", AppID)).SetValue("", AppOpenUrlCommand);
+    handlerReg.CreateSubKey("shell\\open\\command").SetValue("", AppOpenUrlCommand);
   }
 
   public void Unregister()
   {
-    Registry.LocalMachine.DeleteSubKeyTree($"SOFTWARE\\{AppID}", false);
+    Registry.LocalMachine.DeleteSubKeyTree(AppKey, false);
 
-    if (Key != null)
+    if (_registerKey != null)
     {
-      Key.DeleteValue(AppID);
+      _registerKey.DeleteValue(AppID);
     }
 
-    Registry.LocalMachine.DeleteSubKeyTree($"SOFTWARE\\Classes\\{AppID}URL");
+    Registry.LocalMachine.DeleteSubKeyTree(UrlKey);
   }
 }
