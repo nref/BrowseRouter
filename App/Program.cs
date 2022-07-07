@@ -48,7 +48,9 @@ public class Program
   {
     Log.Write
     (
-@"Usage:
+$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the url.
+
+   Usage:
 
     BrowseRouter.exe --register
         Register as a web browser.
