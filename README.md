@@ -15,7 +15,7 @@ In Windows, launch a different browser depending on the url.
 
 `BrowseRouter` does no tracking and makes no network connections of its own whatsoever. 
 
-Your system administrator could know which pages you are visiting by auditing process start logs e.g. `BrowseRouter.exe http://some-naughty-site.com`. They would have the same information for any browser, except with `BrowseRouter` they don't know which browser you used unless they look at your `BrowseRouter` configuration.
+Your system administrator could know which pages you are visiting by auditing process start logs e.g. `BrowseRouter.exe http://some-naughty-site.com`. They would have the same information for any browser.
 
 ## Credit
 
