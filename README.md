@@ -26,7 +26,10 @@ This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). 
 1. Clone and extract to a folder somewhere on your PC.
 2. Open `config.ini` and customize paths to your browsers and domain patterns (see below).
 3. *As administrator*, Run `BrowseRouter.exe --register` from this folder to register the tool in Windows as a web browser.
-4. Open the "Choose a default browser" screen in Windows (you can simply search for "default browser" from the start screen).
+4. Open default browser chooser: from the Start Menu, search for "default browser" or "default apps".
+    ![image](https://user-images.githubusercontent.com/2089725/180062311-1393df79-7ba1-4fa8-b280-5643c0dcdd50.png)
+
+   Or you can skip that. The first time you click on a link after registring BrowseRouter as a browser, you will be presented with the Open With dialog.
   - ![Open With Dialog](OpenWith.png)
 5. Select `BrowseRouter` as the default browser.
 
