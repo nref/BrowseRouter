@@ -71,6 +71,14 @@ edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 google.com = chrome
 visualstudio.com = edge
 mozilla.org = ff
+
+; Source preferences.
+; Only * is treated as a special character (wildcard).
+; Matches on window title of application used to open link.
+; Applied only if no url preference match is found.
+[sources]
+* - Notepad = ff
+Slack | Test = crome
 ; Default case. Added automatically
 ; * = whatever
 ```
@@ -102,3 +110,7 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 - Full regular expressions are specified by wrapping it in /'s.
 - The domain _and_ path are used in the Url comparison.
 - The regular expression syntax is based on the Microsoft .NET implementation.
+
+### Sources
+
+Wildcares and full regular expressions may also be used to match source window titles.
