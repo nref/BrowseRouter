@@ -41,4 +41,39 @@ public static class UrlPreferenceExtensions
       return (domain, pattern);
     }
   }
+
+  public static bool TryGetPreference(this IEnumerable<UrlPreference> prefs, string windowTitle, out UrlPreference pref)
+  {
+    pref = prefs.FirstOrDefault(pref =>
+    {
+      (string domain, string pattern) = pref.GetDomainAndPattern(windowTitle);
+      return Regex.IsMatch(domain, pattern);
+    })!;
+
+    return pref != null;
+  }
+    
+  public static (string, string) GetDomainAndPattern(this UrlPreference pref, string windowTitle)
+  {
+    string urlPattern = pref.UrlPattern;
+  
+    if (urlPattern.StartsWith("/") && urlPattern.EndsWith("/"))
+    {
+      // The window title from the INI file is a regex
+      string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+
+      return (windowTitle, pattern);
+    }
+
+    {
+      // We're only checking the window title.
+      // Escape the input for regex; the only special character we support is a *
+      var regex = Regex.Escape(urlPattern);
+
+      // Unescape * as a wildcard.
+      string pattern = $"^{regex.Replace("\\*", ".*")}$";
+
+      return (windowTitle, pattern);
+    }
+  }
 }

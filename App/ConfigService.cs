@@ -2,7 +2,7 @@
 
 public interface IConfigService
 {
-  IEnumerable<UrlPreference> GetUrlPreferences();
+  IEnumerable<UrlPreference> GetUrlPreferences(string configType);
 }
 
 public class ConfigService : IConfigService
@@ -12,7 +12,7 @@ public class ConfigService : IConfigService
   /// </summary>
   public string ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
 
-  public IEnumerable<UrlPreference> GetUrlPreferences()
+  public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
   {
     if (!File.Exists(ConfigPath))
       throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
@@ -36,11 +36,13 @@ public class ConfigService : IConfigService
     }
 
     // Read the url preferences
-    var urls = GetConfig(configLines, "urls")
+    var urls = GetConfig(configLines, configType)
       .Select(SplitConfig)
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
-      .Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }) // Add a catch-all that uses the first browser
       .Where(up => up.Browser != null);
+
+    if (configType == "sources")
+        urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
 
     return urls;
   }

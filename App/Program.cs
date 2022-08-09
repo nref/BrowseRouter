@@ -1,22 +1,33 @@
 ﻿namespace BrowseRouter;
+using System.Runtime.InteropServices;
+using System.Text;
 
 public class Program
 {
   private static void Main(string[] args)
   {
-    if (args == null || args.Length == 0)
+    if (args.Length == 0)
     {
       ShowHelp();
       return;
     }
 
+    // Get the window title for whichever application is opening the URL.
+        var windowTitle = GetActiveWindowTitle();
+
+    // Attach a debugger if this is a debug build
+    #if DEBUG
+      //System.Diagnostics.Debugger.Launch();
+    #endif
+
+    // Process each URL in the arguments list.
     foreach (string arg in args)
     {
-      Run(arg);
+      Run(arg, windowTitle);
     }
   }
 
-  private static void Run(string arg)
+  private static void Run(string arg, string windowTitle)
   {
     string a = arg.Trim();
 
@@ -28,7 +39,7 @@ public class Program
 
     if (!isOption)
     {
-      new BrowserService(new ConfigService()).Launch(a);
+      new BrowserService(new ConfigService()).Launch(a, windowTitle);
       return;
     }
 
@@ -43,7 +54,6 @@ public class Program
     if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
     {
       new RegistryService().Unregister();
-      return;
     }
   }
 
@@ -65,5 +75,25 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
     BrowseRouter.exe http://example.org/
         Launch a URL"
     );
+  }
+
+  // DllImports used to get window title for source program.
+  [DllImport("user32.dll")]
+  static extern IntPtr GetForegroundWindow();
+  [DllImport("user32.dll")]
+  static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+  private static string GetActiveWindowTitle()
+  {
+    string result = "";
+    const int nChars = 256;
+    StringBuilder Buff = new StringBuilder(nChars);
+    IntPtr handle = GetForegroundWindow();
+
+    if (GetWindowText(handle, Buff, nChars) > 0)
+    {
+      result = Buff.ToString();
+    }
+    return result;
   }
 }
