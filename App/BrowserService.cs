@@ -38,7 +38,7 @@ public class BrowserService
 
       (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
 
-      Process.Start(path, $"{args} {uri}");
+      Process.Start(path, $"{args} {uri.OriginalString}");
     }
     catch (Exception e)
     {
