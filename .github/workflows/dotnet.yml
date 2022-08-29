@@ -1,0 +1,26 @@
+name: .NET
+
+on: workflow_dispatch
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: publish
+      run: dotnet publish App/BrowseRouter.csproj /p:PublishProfile=App/Properties/PublishProfiles/FolderProfile.pubxml
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: published-binary
+        path: |
+          App/publish
+          !App/publish/**/*.pdb
+    - name: Test
+      run: dotnet test --no-build --verbosity normal

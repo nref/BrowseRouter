@@ -14,6 +14,11 @@
     },
     "no arg": {
       "commandName": "Project"
+    },
+    "long arg": {
+      "commandName": "Project",
+      "commandLineArgs": "www.youtube.com/redirect?event=video_description&redir_token=QUFFLU&q=https%3A%2F%2Fwww.reddit.com%2Fdata%20mine",
+      "remoteDebugEnabled": false
     }
   }
 }
