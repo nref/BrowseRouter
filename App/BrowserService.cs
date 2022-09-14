@@ -26,7 +26,8 @@ public class BrowserService
 
       (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
 
-      Process.Start(path, $"{args} {uri}");
+      // We need to use an absolute URI value, to prevent uri.ToString() - in this case some symbols in HTML encoding are replaced (for example %20)
+      Process.Start(path, $"{args} {uri.AbsoluteUri}");
     }
     catch (Exception e)
     {

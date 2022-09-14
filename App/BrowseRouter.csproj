@@ -8,6 +8,7 @@
     <WarningLevel>4</WarningLevel>
     <ApplicationIcon>Browser.ico</ApplicationIcon>
     <Version>0.4.0</Version>
+	  <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
