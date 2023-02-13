@@ -64,7 +64,7 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
         Register as a web browser.
 
     BrowseRouter.exe --unregister
-        Unregister as a web browser. 
+        Unregister as a web browser.
         Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
 
     BrowseRouter.exe http://example.org/
