@@ -38,7 +38,7 @@ public class Program
       return;
     }
 
-    new ElevationService().RequireAdmin();
+    ElevationServiceFactory.Create().RequireAdmin();
 
     if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
     {
