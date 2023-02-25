@@ -20,6 +20,10 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
