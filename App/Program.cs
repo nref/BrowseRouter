@@ -56,7 +56,7 @@ public class Program
   {
     Log.Write
     (
-$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the url.
+$@"{App.FriendlyName}: In Windows, launch a different browser depending on the url.
 
    Usage:
 

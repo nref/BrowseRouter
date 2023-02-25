@@ -16,8 +16,10 @@ public static class App
     }
 
     var dir = AppDomain.CurrentDomain.BaseDirectory;
-    return Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
+    return Path.Combine(dir, FriendlyName + ".exe");
   }
+
+  public static string FriendlyName { get; } = AppDomain.CurrentDomain.FriendlyName;
 
   public static string ExePath { get; } = ComputeExePath();
 }

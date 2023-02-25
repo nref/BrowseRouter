@@ -9,7 +9,7 @@ public class ElevationService
     WindowsPrincipal principal = new(WindowsIdentity.GetCurrent());
     if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
     {
-      Log.Write($"{nameof(BrowseRouter)} needs elevated privileges. Try to run it as admin.");
+      Log.Write($"{App.FriendlyName} needs elevated privileges. Try to run it as admin.");
       Environment.Exit(-1);
     }
   }
