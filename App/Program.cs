@@ -40,15 +40,19 @@ public class Program
 
     ElevationServiceFactory.Create().RequireAdmin();
 
-    if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
     {
-      new RegistryService().Register();
-      return;
-    }
+      var registration = RegistrationServiceFactory.Create();
 
-    if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
-    {
-      new RegistryService().Unregister();
+      if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
+      {
+        registration.Register();
+        return;
+      }
+
+      if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
+      {
+        registration.Unregister();
+      }
     }
   }
 
