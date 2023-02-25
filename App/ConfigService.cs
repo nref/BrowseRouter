@@ -16,6 +16,7 @@ public class ConfigService : IConfigService
   {
     // Fix for self-contained publishing
     this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+    Log.Write($"Using config file: {ConfigPath}");
   }
 
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)

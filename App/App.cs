@@ -47,4 +47,6 @@ public static class App
   public static string FriendlyName { get; } = AppDomain.CurrentDomain.FriendlyName;
 
   public static string ExePath { get; } = ComputeExePath();
+
+  public static string BaseDir { get; } = AppDomain.CurrentDomain.BaseDirectory;
 }
