@@ -58,20 +58,24 @@ public class Program
 
   private static void ShowHelp()
   {
+    var self = Path.GetFileName(App.ExePath);
     Log.Write
     (
-$@"{App.FriendlyName}: In Windows, launch a different browser depending on the url.
+$@"{App.FriendlyName}: Launch a different browser depending on the URL.
 
-   Usage:
+  Usage:
 
-    BrowseRouter.exe --register
+    {self} --register
         Register as a web browser.
 
-    BrowseRouter.exe --unregister
+    {self} --unregister
         Unregister as a web browser.
-        Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
+        Once you have registered the app as a browser, you may need to set it as the default browser.
+        On Windows open ""Settings -> Apps -> Default apps"".
+        On KDE/Plasma open ""System Settings -> Applications -> Default Applications"".
+        On GNOME open ""Settings -> Default Applications"".
 
-    BrowseRouter.exe http://example.org/
+    {self} http://example.org/
         Launch a URL"
     );
   }
