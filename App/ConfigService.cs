@@ -15,8 +15,34 @@ public class ConfigService : IConfigService
   public ConfigService()
   {
     // Fix for self-contained publishing
-    this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+    this.ConfigPath = ComputeConfigPath();
     Log.Write($"Using config file: {ConfigPath}");
+  }
+
+  /// <summary>
+  /// Returns the best choice from a list of candidate configuration file paths.
+  /// The candidates are, in descending order of priority:
+  /// <list type="number">
+  ///   <item><c>config.ini</c> in the current working directory</item>
+  ///   <item><c>%UserProfile%\.config\BrowseRouter\config.ini</c> or <c>$HOME/.config/BrowseRouter/config.ini</c></item>
+  ///   <item><c>config.ini</c> in the applicaton's directory</item>
+  /// </list>
+  /// The last item in the above list is the default if none of the other files exist.
+  /// </summary>
+  public string ComputeConfigPath()
+  {
+    const string ConfigFilename = "config.ini";
+    string[] BasePaths = {
+      Directory.GetCurrentDirectory(),
+      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", App.FriendlyName),
+      App.BaseDir,
+    };
+    Log.Write($"Candidate config base paths: {string.Join(", ", BasePaths)}");
+    var configPath = from basePath in BasePaths
+                     let candidateConfigPath = Path.Combine(basePath, ConfigFilename)
+                     where File.Exists(candidateConfigPath)
+                     select candidateConfigPath;
+    return configPath.FirstOrDefault(BasePaths.Last());
   }
 
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
