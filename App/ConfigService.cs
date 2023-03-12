@@ -8,15 +8,14 @@ public interface IConfigService
 public class ConfigService : IConfigService
 {
   /// <summary>
-  /// Config lives in the same folder as the EXE, name "BrowserSelector.ini".
+  /// Full path to the configuration file.
   /// </summary>
-  public readonly string ConfigPath;
+  readonly string _configPath;
 
   public ConfigService()
   {
-    // Fix for self-contained publishing
-    this.ConfigPath = ComputeConfigPath();
-    Log.Write($"Using config file: {ConfigPath}");
+    _configPath = ComputeConfigPath();
+    Log.Write($"Using config file: {_configPath}");
   }
 
   /// <summary>
@@ -47,12 +46,12 @@ public class ConfigService : IConfigService
 
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
   {
-    if (!File.Exists(ConfigPath))
-      throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
+    if (!File.Exists(_configPath))
+      throw new InvalidOperationException($"The config file was not found: {_configPath}");
 
     // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
     var configLines =
-      File.ReadAllLines(ConfigPath)
+      File.ReadAllLines(_configPath)
       .Select(l => l.Trim())
       .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(";") && !l.StartsWith("#"));
 
