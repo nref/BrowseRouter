@@ -89,6 +89,20 @@ Slack | Test = crome
 - Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
 - If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
+## Sources
+
+- You can optionally specify a "source preference" which matches the window title of the application used to open the link.
+  - For example, with this in the previous example `config.ini`:
+
+    ```ini
+    [sources]
+    *Microsoft Teams* = ff
+    ```
+
+    Then clicking a link in Microsoft Teams will open the link in Firefox, regardless of the URL.
+
+- In the case of a conflict between a source preference and a URL preference, the source preference wins.
+
 ### Urls
 
 There are two ways to specify an Url. You can use simple wildcards or full regular expressions.

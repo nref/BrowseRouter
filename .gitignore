@@ -3,4 +3,4 @@
 bin
 obj
 publish
-*.user
+**/*.user
