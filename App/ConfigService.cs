@@ -47,7 +47,7 @@ public class ConfigService : IConfigService
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
       .Where(up => up.Browser != null);
 
-    if (configType == "sources")
+    if (configType == "browsers")
       urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
 
     return urls;
