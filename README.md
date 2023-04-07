@@ -4,7 +4,7 @@ In Windows, launch a different browser depending on the url.
 
 ## Support
 
-If you like BrowseRouter, let me know with [a discussion]([url](https://github.com/slater1/BrowseRouter/discussions/new?category=general)). I work a full time job and BroweRouter is just a hobby. You can help support continued development by "buying me a coffee."
+If you like BrowseRouter, let me know in [a discussion](https://github.com/slater1/BrowseRouter/discussions/new?category=general). I work a full time job and BroweRouter is just a hobby. You can help support continued development by "buying me a coffee."
 
 <a href="https://www.buymeacoffee.com/slater1" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
