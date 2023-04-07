@@ -28,6 +28,21 @@ public static class UrlPreferenceExtensions
       return (domain, pattern);
     }
 
+    if (urlPattern.StartsWith("?") && urlPattern.EndsWith("?"))
+    {
+      // The domain from the INI file is a query filter
+      string domain = uri.Authority + uri.PathAndQuery;
+      string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+
+      // Escape the input for regex; the only special character we support is a *
+      var regex = Regex.Escape(pattern);
+
+      // Unescape * as a wildcard.
+      pattern = $"^{regex.Replace("\\*", ".*")}$";
+
+      return (domain, pattern);
+    }
+
     {
       // We're only checking the domain.
       string domain = uri.Authority;
@@ -52,11 +67,11 @@ public static class UrlPreferenceExtensions
 
     return pref != null;
   }
-    
+
   public static (string, string) GetDomainAndPattern(this UrlPreference pref, string windowTitle)
   {
     string urlPattern = pref.UrlPattern;
-  
+
     if (urlPattern.StartsWith("/") && urlPattern.EndsWith("/"))
     {
       // The window title from the INI file is a regex

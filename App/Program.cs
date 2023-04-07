@@ -13,12 +13,7 @@ public class Program
     }
 
     // Get the window title for whichever application is opening the URL.
-        var windowTitle = GetActiveWindowTitle();
-
-    // Attach a debugger if this is a debug build
-    #if DEBUG
-      //System.Diagnostics.Debugger.Launch();
-    #endif
+    var windowTitle = GetActiveWindowTitle();
 
     // Process each URL in the arguments list.
     foreach (string arg in args)
@@ -87,7 +82,7 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
   {
     string result = "";
     const int nChars = 256;
-    StringBuilder Buff = new StringBuilder(nChars);
+    StringBuilder Buff = new(nChars);
     IntPtr handle = GetForegroundWindow();
 
     if (GetWindowText(handle, Buff, nChars) > 0)

@@ -10,7 +10,13 @@ public class ConfigService : IConfigService
   /// <summary>
   /// Config lives in the same folder as the EXE, name "BrowserSelector.ini".
   /// </summary>
-  public string ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+  public readonly string ConfigPath;
+
+  public ConfigService()
+  {
+    // Fix for self-contained publishing
+    this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+  }
 
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
   {
@@ -42,7 +48,7 @@ public class ConfigService : IConfigService
       .Where(up => up.Browser != null);
 
     if (configType == "sources")
-        urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
+      urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
 
     return urls;
   }

@@ -2,3 +2,5 @@
 *.vs
 bin
 obj
+publish
+*.user

@@ -15,25 +15,25 @@ public class BrowserService
   {
     try
     {
-        IEnumerable<UrlPreference> urlPreferences = _config.GetUrlPreferences("urls");
-        IEnumerable<UrlPreference> sourcePreferences = _config.GetUrlPreferences("sources");
+      IEnumerable<UrlPreference> urlPreferences = _config.GetUrlPreferences("urls");
+      IEnumerable<UrlPreference> sourcePreferences = _config.GetUrlPreferences("sources");
       Uri uri = UriFactory.Get(url);
 
-      UrlPreference pref = null;
+      UrlPreference? pref = null;
       if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
       {
-          pref = urlPref;
+        pref = urlPref;
       }
 
       if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))
       {
-          pref = sourcePref;
+        pref = sourcePref;
       }
 
       if (pref == null)
       {
-          Log.Write($"Unable to find a browser matching {url}.");
-          return;
+        Log.Write($"Unable to find a browser matching {url}.");
+        return;
       }
 
       (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
