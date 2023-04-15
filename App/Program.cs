@@ -86,16 +86,23 @@ $@"{App.FriendlyName}: Launch a different browser depending on the URL.
   [DllImport("user32.dll")]
   static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
+/// <summary>
+/// Returns the currently active window title.
+/// Only implemented on Windows. Returns an empty string on other platforms.
+/// </summary>
   private static string GetActiveWindowTitle()
   {
     string result = "";
-    const int nChars = 256;
-    StringBuilder Buff = new(nChars);
-    IntPtr handle = GetForegroundWindow();
-
-    if (GetWindowText(handle, Buff, nChars) > 0)
+    if (System.OperatingSystem.IsWindows())
     {
-      result = Buff.ToString();
+      const int nChars = 256;
+      StringBuilder Buff = new(nChars);
+      IntPtr handle = GetForegroundWindow();
+
+      if (GetWindowText(handle, Buff, nChars) > 0)
+      {
+        result = Buff.ToString();
+      }
     }
     return result;
   }
