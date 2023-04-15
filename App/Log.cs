@@ -4,14 +4,19 @@ namespace BrowseRouter;
 
 public static class Log
 {
+  [System.Runtime.Versioning.SupportedOSPlatform("windows")]
   private static readonly EventLog eventLog_ = new("Application") { Source = "Application" };
+
   private static string logFile_ => "BrowseRouter.log";
 
   public static void Write(string message)
   {
     string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
     Console.WriteLine(msg);
-    eventLog_.WriteEntry(msg);
+    if (System.OperatingSystem.IsWindows())
+    {
+      eventLog_.WriteEntry(msg);
+    }
     TryWrite(msg);
   }
 
@@ -27,7 +32,10 @@ public static class Log
       }
       catch (Exception e)
       {
-        eventLog_.WriteEntry(e.ToString());
+        if (System.OperatingSystem.IsWindows())
+        {
+          eventLog_.WriteEntry(e.ToString());
+        }
       }
     }
   }
