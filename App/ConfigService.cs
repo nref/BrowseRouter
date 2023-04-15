@@ -32,7 +32,7 @@ public class ConfigService : IConfigService
     // Read the browsers section into a dictionary.
     var browsers = GetConfig(configLines, "browsers")
       .Select(SplitConfig)
-      .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
+      .Select(kvp => new Browser(name: kvp.Key, location: kvp.Value))
       .ToDictionary(b => b.Name);
 
     if (!browsers.Any())
@@ -44,11 +44,11 @@ public class ConfigService : IConfigService
     // Read the url preferences
     var urls = GetConfig(configLines, configType)
       .Select(SplitConfig)
-      .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
+      .Select(kvp => new UrlPreference(urlPattern: kvp.Key, browser: browsers[kvp.Value]))
       .Where(up => up.Browser != null);
 
     if (configType == "urls")
-      urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
+      urls = urls.Union(new[] { new UrlPreference(urlPattern: "*", browser: browsers.FirstOrDefault().Value) }); // Add a catch-all that uses the first browser
 
     return urls;
   }
