@@ -84,7 +84,7 @@ mozilla.org = ff
 ; Applied only if no url preference match is found.
 [sources]
 * - Notepad = ff
-Slack | Test = crome
+Slack | Test = chrome
 ; Default case. Added automatically
 ; * = whatever
 ```
