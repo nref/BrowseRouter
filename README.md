@@ -70,13 +70,16 @@ chrome = C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 
 ; Url preferences.
-; Only * is treated as a special character (wildcard).
-; Matches are domain-only. Protocols and paths are ignored.
-; Use "*.blah.com" for subdomains, not "*blah.com" as that would also match "abcblah.com".
+; - Only * is treated as a special character (wildcard).
+; - Only domains are matched. Don't include protocols e.g. "https://" or paths e.g. "/some/path?query=value"
+; - Beware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
+;   For that reason, you'll often want a leading "*." e.g. "*.youtube.com". 
+;   Note: Don't use "*youtube.com" as that would also match e.g. "notyoutube.com".
 [urls]
-google.com = chrome
-visualstudio.com = edge
-mozilla.org = ff
+*.google.com = chrome
+*.youtube.com = chrome
+*.visualstudio.com = edge
+*.mozilla.org = ff
 
 ; Source preferences.
 ; Only * is treated as a special character (wildcard).
