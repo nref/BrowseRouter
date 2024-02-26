@@ -84,7 +84,7 @@ edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 ; Source preferences.
 ; Only * is treated as a special character (wildcard).
 ; Matches on window title of application used to open link.
-; Applied only if no url preference match is found.
+; Applied regardless of any url preference match.
 [sources]
 * - Notepad = ff
 Slack | Test = chrome
