@@ -38,36 +38,44 @@ public class Program
       return;
     }
 
-    new ElevationService().RequireAdmin();
+    ElevationServiceFactory.Create().RequireAdmin();
 
-    if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
     {
-      new RegistryService().Register();
-      return;
-    }
+      var registration = RegistrationServiceFactory.Create();
 
-    if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
-    {
-      new RegistryService().Unregister();
+      if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
+      {
+        registration.Register();
+        return;
+      }
+
+      if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
+      {
+        registration.Unregister();
+      }
     }
   }
 
   private static void ShowHelp()
   {
+    var self = Path.GetFileName(App.ExePath);
     Log.Write
     (
-$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the url.
+$@"{App.FriendlyName}: Launch a different browser depending on the URL.
 
-   Usage:
+  Usage:
 
-    BrowseRouter.exe --register
+    {self} --register
         Register as a web browser.
 
-    BrowseRouter.exe --unregister
-        Unregister as a web browser. 
-        Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
+    {self} --unregister
+        Unregister as a web browser.
+        Once you have registered the app as a browser, you may need to set it as the default browser.
+        On Windows open ""Settings -> Apps -> Default apps"".
+        On KDE/Plasma open ""System Settings -> Applications -> Default Applications"".
+        On GNOME open ""Settings -> Default Applications"".
 
-    BrowseRouter.exe http://example.org/
+    {self} http://example.org/
         Launch a URL"
     );
   }
@@ -78,16 +86,23 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
   [DllImport("user32.dll")]
   static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
+/// <summary>
+/// Returns the currently active window title.
+/// Only implemented on Windows. Returns an empty string on other platforms.
+/// </summary>
   private static string GetActiveWindowTitle()
   {
     string result = "";
-    const int nChars = 256;
-    StringBuilder Buff = new(nChars);
-    IntPtr handle = GetForegroundWindow();
-
-    if (GetWindowText(handle, Buff, nChars) > 0)
+    if (System.OperatingSystem.IsWindows())
     {
-      result = Buff.ToString();
+      const int nChars = 256;
+      StringBuilder Buff = new(nChars);
+      IntPtr handle = GetForegroundWindow();
+
+      if (GetWindowText(handle, Buff, nChars) > 0)
+      {
+        result = Buff.ToString();
+      }
     }
     return result;
   }

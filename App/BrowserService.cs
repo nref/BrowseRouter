@@ -27,7 +27,7 @@ public class BrowserService
         Log.Write($"Found source preference {sourcePref}");
         pref = sourcePref;
       }
-      
+
       else if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
       {
         Log.Write($"Found URL preference {urlPref}");

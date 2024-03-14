@@ -1,5 +1,9 @@
 {
   "profiles": {
+    "open URL": {
+      "commandName": "Project",
+      "commandLineArgs": "example.com"
+    },
     "register": {
       "commandName": "Project",
       "commandLineArgs": "--register"
@@ -7,10 +11,6 @@
     "unregister": {
       "commandName": "Project",
       "commandLineArgs": "--unregister"
-    },
-    "open URL": {
-      "commandName": "Project",
-      "commandLineArgs": "google.com"
     },
     "no arg": {
       "commandName": "Project"

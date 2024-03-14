@@ -7,11 +7,10 @@ namespace BrowserRouter.Tests
     [SetUp]
     public void Setup()
     {
-      edge = new Browser
-      {
-        Name = "edge",
-        Location = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-      };
+      edge = new Browser(
+        name: "edge",
+        location: @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+      );
     }
 
     [Test]
@@ -20,11 +19,10 @@ namespace BrowserRouter.Tests
       var preferences = new List<UrlPreference>();
 
       {
-        var domainPref = new UrlPreference
-        {
-          UrlPattern = "*.microsoft.com",
-          Browser = edge
-        };
+        var domainPref = new UrlPreference(
+          urlPattern: "*.microsoft.com",
+          browser: edge
+        );
 
         var (domain, pattern) =
             domainPref.GetDomainAndPattern(new Uri("https://docs.microsoft.com/en-us/"));
@@ -35,11 +33,10 @@ namespace BrowserRouter.Tests
       }
 
       {
-        var domainPref = new UrlPreference
-        {
-          UrlPattern = "microsoft.com",
-          Browser = edge
-        };
+        var domainPref = new UrlPreference(
+          urlPattern: "microsoft.com",
+          browser: edge
+        );
 
         var (domain, pattern) =
             domainPref.GetDomainAndPattern(new Uri("https://www.microsoft.com/de-de/search/explore?q=qwerty"));
@@ -50,11 +47,10 @@ namespace BrowserRouter.Tests
       }
 
       {
-        var domainPref = new UrlPreference
-        {
-          UrlPattern = "*visualstudio.com",
-          Browser = edge
-        };
+        var domainPref = new UrlPreference(
+          urlPattern: "*visualstudio.com",
+          browser: edge
+        );
 
         var (domain, pattern) =
             domainPref.GetDomainAndPattern(new Uri("https://my.visualstudio.com/?auth_redirect=true"));
@@ -75,11 +71,10 @@ namespace BrowserRouter.Tests
       var preferences = new List<UrlPreference>();
 
       {
-        var domainPref = new UrlPreference
-        {
-          UrlPattern = "/(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/",
-          Browser = edge
-        };
+        var domainPref = new UrlPreference(
+          urlPattern: "/(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/",
+          browser: edge
+        );
 
         var (domain, pattern) =
             domainPref.GetDomainAndPattern(new Uri("https://192.168.69.420/proxy"));
@@ -98,11 +93,10 @@ namespace BrowserRouter.Tests
       var preferences = new List<UrlPreference>();
 
       {
-        var domainPref = new UrlPreference
-        {
-          UrlPattern = "?www.youtube.com/redirect?*reddit.com*?",
-          Browser = edge
-        };
+        var domainPref = new UrlPreference(
+          urlPattern: "?www.youtube.com/redirect?*reddit.com*?",
+          browser: edge
+        );
 
         var (domain, pattern) =
             domainPref.GetDomainAndPattern(new Uri("https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLU&q=https%3A%2F%2Fwww.reddit.com%2Fdata%20mine"));

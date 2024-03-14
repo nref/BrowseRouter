@@ -8,31 +8,57 @@ public interface IConfigService
 public class ConfigService : IConfigService
 {
   /// <summary>
-  /// Config lives in the same folder as the EXE, name "BrowserSelector.ini".
+  /// Full path to the configuration file.
   /// </summary>
-  public readonly string ConfigPath;
+  readonly string _configPath;
 
   public ConfigService()
   {
-    // Fix for self-contained publishing
-    this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+    _configPath = ComputeConfigPath();
+    Log.Write($"Using config file: {_configPath}");
+  }
+
+  /// <summary>
+  /// Returns the best choice from a list of candidate configuration file paths.
+  /// The candidates are, in descending order of priority:
+  /// <list type="number">
+  ///   <item><c>config.ini</c> in the current working directory</item>
+  ///   <item><c>%UserProfile%\.config\BrowseRouter\config.ini</c> or <c>$HOME/.config/BrowseRouter/config.ini</c></item>
+  ///   <item><c>config.ini</c> in the applicaton's directory</item>
+  /// </list>
+  /// The last item in the above list is the default if none of the other files exist.
+  /// </summary>
+  public string ComputeConfigPath()
+  {
+    const string ConfigFilename = "config.ini";
+    string[] BasePaths = {
+      Directory.GetCurrentDirectory(),
+      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", App.FriendlyName),
+      App.BaseDir,
+    };
+    Log.Write($"Candidate config base paths: {string.Join(", ", BasePaths)}");
+    var configPath = from basePath in BasePaths
+                     let candidateConfigPath = Path.Combine(basePath, ConfigFilename)
+                     where File.Exists(candidateConfigPath)
+                     select candidateConfigPath;
+    return configPath.FirstOrDefault(BasePaths.Last());
   }
 
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
   {
-    if (!File.Exists(ConfigPath))
-      throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
+    if (!File.Exists(_configPath))
+      throw new InvalidOperationException($"The config file was not found: {_configPath}");
 
     // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
     var configLines =
-      File.ReadAllLines(ConfigPath)
+      File.ReadAllLines(_configPath)
       .Select(l => l.Trim())
       .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(";") && !l.StartsWith("#"));
 
     // Read the browsers section into a dictionary.
     var browsers = GetConfig(configLines, "browsers")
       .Select(SplitConfig)
-      .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
+      .Select(kvp => new Browser(name: kvp.Key, location: kvp.Value))
       .ToDictionary(b => b.Name);
 
     if (!browsers.Any())
@@ -44,11 +70,11 @@ public class ConfigService : IConfigService
     // Read the url preferences
     var urls = GetConfig(configLines, configType)
       .Select(SplitConfig)
-      .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
+      .Select(kvp => new UrlPreference(urlPattern: kvp.Key, browser: browsers[kvp.Value]))
       .Where(up => up.Browser != null);
 
     if (configType == "urls")
-      urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
+      urls = urls.Union(new[] { new UrlPreference(urlPattern: "*", browser: browsers.FirstOrDefault().Value) }); // Add a catch-all that uses the first browser
 
     return urls;
   }
