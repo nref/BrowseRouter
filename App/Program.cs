@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class Program
+public static class Program
 {
   private static void Main(string[] args)
   {
@@ -67,27 +67,27 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
         Unregister as a web browser. 
         Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
 
-    BrowseRouter.exe http://example.org/
+    BrowseRouter.exe https://example.org/
         Launch a URL"
     );
   }
 
   // DllImports used to get window title for source program.
   [DllImport("user32.dll")]
-  static extern IntPtr GetForegroundWindow();
+  private static extern IntPtr GetForegroundWindow();
   [DllImport("user32.dll")]
-  static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+  private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
   private static string GetActiveWindowTitle()
   {
     string result = "";
     const int nChars = 256;
-    StringBuilder Buff = new(nChars);
+    StringBuilder buff = new(nChars);
     IntPtr handle = GetForegroundWindow();
 
-    if (GetWindowText(handle, Buff, nChars) > 0)
+    if (GetWindowText(handle, buff, nChars) > 0)
     {
-      result = Buff.ToString();
+      result = buff.ToString();
     }
     return result;
   }
