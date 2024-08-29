@@ -2,9 +2,13 @@
 
 In Windows, launch a different browser depending on the url.
 
+## Survey
+
+Browse Router has gotten more attention than expected. You can help determine what happens next by filling out [this survey](https://forms.gle/Bh5z472CZUN6qdon9).
+
 ## Support
 
-If you like BrowseRouter, let me know in [a discussion](https://github.com/slater1/BrowseRouter/discussions/new?category=general). I work a full time job. BrowseRouter is just a hobby. You can help support continued development by "buying me a coffee."
+If you like BrowseRouter, let me know in [a discussion](https://github.com/nref/BrowseRouter/discussions/new?category=general). I work a full time job. BrowseRouter is just a hobby. You can help support continued development by "buying me a coffee."
 
 <a href="https://www.buymeacoffee.com/slater1" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
