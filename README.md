@@ -29,7 +29,7 @@ Your system administrator could know which pages you are visiting by auditing pr
 
 ## Credit
 
-This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained, so I ported to .net6.0. 
+This is a fork of [BrowseSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained. This version carries on the vision, fixing bugs and adding new features.
 
 ## Setting Up
 
