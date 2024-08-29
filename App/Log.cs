@@ -5,10 +5,13 @@ namespace BrowseRouter;
 public static class Log
 {
   private static readonly EventLog eventLog_ = new("Application") { Source = "Application" };
-  private static string logFile_ => "BrowseRouter.log";
+
+  public static LogPreference Preference { get; set; } = new LogPreference();
 
   public static void Write(string message)
   {
+    if (!Preference.IsEnabled) { return; }
+
     string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
     Console.WriteLine(msg);
     eventLog_.WriteEntry(msg);
@@ -21,7 +24,7 @@ public static class Log
     {
       try
       {
-        using var writer = new StreamWriter(logFile_, append: true);
+        using var writer = new StreamWriter(Preference.File, append: true);
         writer.WriteLine(message);
         return;
       }
