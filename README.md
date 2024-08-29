@@ -60,6 +60,12 @@ Tested on:
 Config is a poor man's INI file:
 
 ```ini
+[log]
+# Defaults to false
+enabled = true
+# Defaults to C:\Users\<user>\AppData\Local\BrowseRouter
+#file = "C:\Users\<user>\Desktop\BrowseRouter.log"
+
 ; Default browser is first in list
 ; Use `{url}` to specify UWP app browser details
 [browsers]
@@ -98,7 +104,7 @@ Slack | Test = chrome
 - Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
 - If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
-## Sources
+### Sources
 
 - You can optionally specify a "source preference" which matches the window title of the application used to open the link.
   - For example, with this in the previous example `config.ini`:
@@ -136,4 +142,17 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 
 ### Sources
 
-Wildcares and full regular expressions may also be used to match source window titles.
+Wildcards and full regular expressions may also be used to match source window titles.
+
+## Logs
+
+Logs are stored by default in `%localappdata%/BrowseRouter/`. For example, if you user name is `joe`, then the logs will be in `C:\Users\joe\AppData\Local\BrowseRouter\`.
+
+You can change the directory in the `[log]` section of `config.ini`.
+
+You can enable disable or log files by setting `enabled = true` or `false` in the `[log]` section of `config.ini`.
+If `enabled` is missing or doesn't equal `true`, logs will not be written.
+
+Log entries are also written to the console and can be seen if e.g. if launched from Command Prompt, PowerShell, or Windows Terminal.
+
+Log entries are also written to Application logs in Windows Event Viewer.

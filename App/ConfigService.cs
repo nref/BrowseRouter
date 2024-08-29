@@ -18,16 +18,37 @@ public class ConfigService : IConfigService
     this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
   }
 
+  public bool GetIsLogEnabled() => File.Exists(ConfigPath) 
+    && GetConfig(ReadFile(), "log")
+        .Select(SplitConfig)
+        .Any(kvp => kvp.Key == "enabled" && kvp.Value == "true");
+
+  public LogPreference GetLogPreference() => File.Exists(ConfigPath) switch
+  {
+    false => new LogPreference(),
+    true => GetLogPreferenceCore(),
+  };
+
+  private LogPreference GetLogPreferenceCore()
+  {
+    var logConfig = GetConfig(ReadFile(), "log")
+      .Select(SplitConfig)
+      .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+    return new LogPreference
+    {
+      IsEnabled = logConfig.TryGetValue("enabled", out string? enabled) && bool.TryParse(enabled, out bool isEnabled) && isEnabled,
+      File = logConfig.TryGetValue("file", out string? path) ? path.Replace("\"", "") : LogPreference.DefaultLogFile,
+    };
+  }
+
   public IEnumerable<UrlPreference> GetUrlPreferences(string configType)
   {
     if (!File.Exists(ConfigPath))
       throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
 
     // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
-    var configLines =
-      File.ReadAllLines(ConfigPath)
-      .Select(l => l.Trim())
-      .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(";") && !l.StartsWith("#"));
+    IEnumerable<string> configLines = ReadFile();
 
     // Read the browsers section into a dictionary.
     var browsers = GetConfig(configLines, "browsers")
@@ -51,6 +72,13 @@ public class ConfigService : IConfigService
       urls = urls.Union(new[] { new UrlPreference { UrlPattern = "*", Browser = browsers.FirstOrDefault().Value } }); // Add a catch-all that uses the first browser
 
     return urls;
+  }
+
+  private IEnumerable<string> ReadFile()
+  {
+    return File.ReadAllLines(ConfigPath)
+      .Select(l => l.Trim())
+      .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(";") && !l.StartsWith("#"));
   }
 
   private IEnumerable<string> GetConfig(IEnumerable<string> configLines, string configName)

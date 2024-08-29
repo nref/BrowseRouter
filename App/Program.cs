@@ -32,9 +32,12 @@ public static class Program
       a = a[1..];
     }
 
+    var configService = new ConfigService();
+    Log.Preference = configService.GetLogPreference();
+
     if (!isOption)
     {
-      new BrowserService(new ConfigService()).Launch(a, windowTitle);
+      new BrowserService(configService).Launch(a, windowTitle);
       return;
     }
 
