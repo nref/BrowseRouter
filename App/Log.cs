@@ -15,7 +15,18 @@ public static class Log
     string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
     Console.WriteLine(msg);
     eventLog_.WriteEntry(msg);
+
+    EnsureLogDirExists();
     TryWrite(msg);
+  }
+
+  private static void EnsureLogDirExists()
+  {
+    var parent = Path.GetDirectoryName(Preference.File);
+    if (parent is not null)
+    {
+      Directory.CreateDirectory(parent);
+    }
   }
 
   private static void TryWrite(string message)

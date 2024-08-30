@@ -67,7 +67,7 @@ Config is a poor man's INI file:
 [log]
 # Defaults to false
 enabled = true
-# Defaults to C:\Users\<user>\AppData\Local\BrowseRouter
+# Defaults to C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log
 #file = "C:\Users\<user>\Desktop\BrowseRouter.log"
 
 ; Default browser is first in list
