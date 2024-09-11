@@ -4,8 +4,6 @@ namespace BrowseRouter;
 
 public static class Log
 {
-  private static readonly EventLog eventLog_ = new("Application") { Source = "Application" };
-
   public static LogPreference Preference { get; set; } = new LogPreference();
 
   public static void Write(string message)
@@ -14,7 +12,6 @@ public static class Log
 
     string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
     Console.WriteLine(msg);
-    eventLog_.WriteEntry(msg);
 
     EnsureLogDirExists();
     TryWrite(msg);
@@ -41,7 +38,6 @@ public static class Log
       }
       catch (Exception e)
       {
-        eventLog_.WriteEntry(e.ToString());
       }
     }
   }
