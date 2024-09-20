@@ -1,10 +1,10 @@
-﻿namespace BrowseRouter;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using BrowseRouter.Interop.Win32;
+
+namespace BrowseRouter;
 
 public static class Program
 {
-  private static void Main(string[] args)
+  private static async Task Main(string[] args)
   {
     if (args.Length == 0)
     {
@@ -13,16 +13,16 @@ public static class Program
     }
 
     // Get the window title for whichever application is opening the URL.
-    var windowTitle = GetActiveWindowTitle();
+    var windowTitle = User32.GetActiveWindowTitle();
 
     // Process each URL in the arguments list.
     foreach (string arg in args)
     {
-      Run(arg, windowTitle);
+      await RunAsync(arg, windowTitle);
     }
   }
 
-  private static void Run(string arg, string windowTitle)
+  private static async Task RunAsync(string arg, string windowTitle)
   {
     string a = arg.Trim();
 
@@ -35,9 +35,16 @@ public static class Program
     var configService = new ConfigService();
     Log.Preference = configService.GetLogPreference();
 
+    var notifyPref = configService.GetNotifyPreference();
+    INotifyService notifier = notifyPref.IsEnabled switch
+    {
+      true => new NotifyService(),
+      false => new EmptyNotifyService()
+    };
+
     if (!isOption)
     {
-      new BrowserService(configService).Launch(a, windowTitle);
+      await new BrowserService(configService, notifier).LaunchAsync(a, windowTitle);
       return;
     }
 
@@ -73,25 +80,5 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
     BrowseRouter.exe https://example.org/
         Launch a URL"
     );
-  }
-
-  // DllImports used to get window title for source program.
-  [DllImport("user32.dll")]
-  private static extern IntPtr GetForegroundWindow();
-  [DllImport("user32.dll")]
-  private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-  private static string GetActiveWindowTitle()
-  {
-    string result = "";
-    const int nChars = 256;
-    StringBuilder buff = new(nChars);
-    IntPtr handle = GetForegroundWindow();
-
-    if (GetWindowText(handle, buff, nChars) > 0)
-    {
-      result = buff.ToString();
-    }
-    return result;
   }
 }

@@ -23,6 +23,28 @@ public class ConfigService : IConfigService
         .Select(SplitConfig)
         .Any(kvp => kvp.Key == "enabled" && kvp.Value == "true");
 
+  public NotifyPreference GetNotifyPreference() => File.Exists(ConfigPath) switch
+  {
+    false => new NotifyPreference(),
+    true => GetNotifyPreferenceCore(),
+  };
+
+  private NotifyPreference GetNotifyPreferenceCore()
+  {
+    var notifyConfig = GetConfig(ReadFile(), "notify")
+      .Select(SplitConfig)
+      .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+    return new NotifyPreference
+    {
+      IsEnabled = notifyConfig.TryGetValue("enabled", out string? enabled) switch
+      {
+        false => true,
+        true => bool.TryParse(enabled, out bool isEnabled) && isEnabled,
+      }
+    };
+  }
+
   public LogPreference GetLogPreference() => File.Exists(ConfigPath) switch
   {
     false => new LogPreference(),

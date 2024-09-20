@@ -7,12 +7,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <WarningLevel>4</WarningLevel>
     <ApplicationIcon>Browser.ico</ApplicationIcon>
-    <Version>0.7.2</Version>
+    <Version>0.8.0</Version>
 	  <PublishTrimmed>true</PublishTrimmed>
+    <!-- Reduces flagging as malware -->
 	  <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <!-- Reduces flagging as malware -->
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 

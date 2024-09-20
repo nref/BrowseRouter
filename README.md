@@ -59,19 +59,29 @@ Tested on:
         Launch a URL
 ```
 
+## Notifications
+
+By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.ini`.
+
+![Notification](Notification.png)
+
 ## Config
 
 Config is a poor man's INI file:
 
 ```ini
+[notify]
+# Show a desktop notification when opening a link. Defaults to true
+enabled = true
+
 [log]
-# Defaults to false
+# Write log entries to a file. Defaults to false
 enabled = true
 # Defaults to C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log
 #file = "C:\Users\<user>\Desktop\BrowseRouter.log"
 
-; Default browser is first in list
-; Use `{url}` to specify UWP app browser details
+# Default browser is first in list
+# Use `{url}` to specify UWP app browser details
 [browsers]
 ff = C:\Program Files\Mozilla Firefox\firefox.exe
 # Open in a new window
@@ -79,27 +89,27 @@ ff = C:\Program Files\Mozilla Firefox\firefox.exe
 chrome = C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 
-; Url preferences.
-; - Only * is treated as a special character (wildcard).
-; - Only domains are matched. Don't include protocols e.g. "https://" or paths e.g. "/some/path?query=value"
-; - Beware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
-;   For that reason, you'll often want a leading "*." e.g. "*.youtube.com". 
-;   Note: Don't use "*youtube.com" as that would also match e.g. "notyoutube.com".
+# Url preferences.
+# - Only * is treated as a special character (wildcard).
+# - Only domains are matched. Don't include protocols e.g. "https://" or paths e.g. "/some/path?query=value"
+# - Beware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
+#   For that reason, you'll often want a leading "*." e.g. "*.youtube.com". 
+#   Note: Don't use "*youtube.com" as that would also match e.g. "notyoutube.com".
 [urls]
 *.google.com = chrome
 *.youtube.com = chrome
 *.visualstudio.com = edge
 *.mozilla.org = ff
 
-; Source preferences.
-; Only * is treated as a special character (wildcard).
-; Matches on window title of application used to open link.
-; Applied regardless of any url preference match.
+# Source preferences.
+# Only * is treated as a special character (wildcard).
+# Matches on window title of application used to open link.
+# Applied regardless of any url preference match.
 [sources]
 * - Notepad = ff
 Slack | Test = chrome
-; Default case. Added automatically
-; * = whatever
+# Default case. Added automatically
+# * = whatever
 ```
 
 ### Browsers
