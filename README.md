@@ -184,5 +184,3 @@ You can enable disable or log files by setting `enabled = true` or `false` in th
 If `enabled` is missing or doesn't equal `true`, logs will not be written.
 
 Log entries are also written to the console and can be seen if e.g. if launched from Command Prompt, PowerShell, or Windows Terminal.
-
-Log entries are also written to Application logs in Windows Event Viewer.
