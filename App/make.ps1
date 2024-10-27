@@ -15,6 +15,7 @@ echo "Created $certTmpPath..."
 
 rm $certTmpPath
 
+# Create release folders
 md ./publish/signed/win-arm64 -ea 0
 cp ./publish/win-arm64/BrowseRouter.exe  ./publish/signed/win-arm64/BrowseRouter.exe
 cp ./publish/win-arm64/config.ini  ./publish/signed/win-arm64
@@ -22,3 +23,10 @@ cp ./publish/win-arm64/config.ini  ./publish/signed/win-arm64
 md ./publish/signed/win-x64 -ea 0
 cp ./publish/win-x64/BrowseRouter.exe  ./publish/signed/win-x64/BrowseRouter.exe
 cp ./publish/win-x64/config.ini  ./publish/signed/win-x64
+
+# Zip up Files
+$zipPath = "./publish/signed/BrowseRouter-win-arm64.zip"
+Compress-Archive -Path "./publish/signed/win-arm64/*" -DestinationPath $zipPath -Force
+
+$zipPath = "./publish/signed/BrowseRouter-win-x64.zip"
+Compress-Archive -Path "./publish/signed/win-x64/*" -DestinationPath $zipPath -Force
