@@ -8,29 +8,57 @@ public static class Program
   {
     if (args.Length == 0)
     {
-      ShowHelp();
+      await new RegistryService(new NotifyService()).RegisterAsync();
       return;
     }
-
-    // Get the window title for whichever application is opening the URL.
-    var windowTitle = User32.GetActiveWindowTitle();
 
     // Process each URL in the arguments list.
     foreach (string arg in args)
     {
-      await RunAsync(arg, windowTitle);
+      await RunAsync(arg.Trim().ToLower());
     }
   }
 
-  private static async Task RunAsync(string arg, string windowTitle)
+  private static async Task RunAsync(string arg)
   {
-    string a = arg.Trim();
+    Func<bool> getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
 
-    bool isOption = a.StartsWith("-") || a.StartsWith("/");
-    while (a.StartsWith("-") || a.StartsWith("/"))
+    bool isOption = getIsOption();
+    while (getIsOption())
     {
-      a = a[1..];
+      arg = arg[1..];
     }
+
+    if (isOption)
+    {
+      RunOption(arg);
+      return;
+    }
+
+    await LaunchUrlAsyc(arg);
+  }
+
+  private static bool RunOption(string arg)
+  {
+    if (string.Equals(arg, "h") || string.Equals(arg, "help"))
+    {
+      ShowHelp();
+      return true;
+    }
+
+    if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
+    {
+      new RegistryService(new NotifyService()).Unregister();
+      return true;
+    }
+
+    return false;
+  }
+
+  private static async Task LaunchUrlAsyc(string url)
+  {
+    // Get the window title for whichever application is opening the URL.
+    var windowTitle = User32.GetActiveWindowTitle();
 
     var configService = new ConfigService();
     Log.Preference = configService.GetLogPreference();
@@ -42,43 +70,32 @@ public static class Program
       false => new EmptyNotifyService()
     };
 
-    if (!isOption)
-    {
-      await new BrowserService(configService, notifier).LaunchAsync(a, windowTitle);
-      return;
-    }
-
-    new ElevationService().RequireAdmin();
-
-    if (string.Equals(a, "register", StringComparison.OrdinalIgnoreCase))
-    {
-      new RegistryService().Register();
-      return;
-    }
-
-    if (string.Equals(a, "unregister", StringComparison.OrdinalIgnoreCase))
-    {
-      new RegistryService().Unregister();
-    }
+    await new BrowserService(configService, notifier).LaunchAsync(url, windowTitle);
   }
 
   private static void ShowHelp()
   {
     Log.Write
     (
-$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the url.
+$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the URL.
+
+   https://github.com/nref/BrowseRouter
 
    Usage:
 
-    BrowseRouter.exe --register
-        Register as a web browser.
+    BrowseRouter.exe [-h | --help]
+        Show help.
 
-    BrowseRouter.exe --unregister
+    BrowseRouter.exe
+        Register as a web browser, then open Settings. 
+        The user must choose BrowseRouter as the default browser.
+        No need to run as admin.
+
+    BrowseRouter.exe [-u | --unregister]
         Unregister as a web browser. 
-        Once you have registered the app as a browser, you should use visit ""Set Default Browser"" in Windows to set this app as the default browser.
 
-    BrowseRouter.exe https://example.org/
-        Launch a URL"
+    BrowseRouter.exe https://example.org/ [...more URLs]
+        Launch one or more URLs"
     );
   }
 }

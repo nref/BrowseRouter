@@ -8,6 +8,7 @@
     <WarningLevel>4</WarningLevel>
     <ApplicationIcon>Browser.ico</ApplicationIcon>
     <Version>0.8.0</Version>
+    <Version>0.9.0</Version>
 	  <PublishTrimmed>true</PublishTrimmed>
     <!-- Reduces flagging as malware -->
 	  <NoWin32Manifest>true</NoWin32Manifest>
