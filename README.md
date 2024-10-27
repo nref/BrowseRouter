@@ -31,9 +31,7 @@ In Windows, launch a different browser depending on the url.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
 4. In the settings app, set `BrowseRouter` as the default browser.
-  - ![image](https://user-images.githubusercontent.com/2089725/180062311-1393df79-7ba1-4fa8-b280-5643c0dcdd50.png)
-5. The first time you click on a link after registring BrowseRouter as a browser, you may be presented with the Open With dialog.
-  - ![Open With Dialog](OpenWith.png)
+  - ![image](https://github.com/user-attachments/assets/07187a57-fabb-4c9b-8b69-8388eeef7f89)
 
 ## Supported Platforms
 
@@ -74,7 +72,7 @@ Your system administrator could know which pages you are visiting by auditing pr
 
 By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.ini`.
 
-![Notification](Notification.png)
+![image](https://github.com/user-attachments/assets/44d2be84-de17-44e8-9e07-c817adad9776)
 
 ## Config
 
