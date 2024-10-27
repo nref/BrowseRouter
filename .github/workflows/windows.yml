@@ -19,7 +19,7 @@ jobs:
     defaults:
       run:
         # ./ is the repo root
-        working-directory: ./Windows
+        working-directory: ./
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
