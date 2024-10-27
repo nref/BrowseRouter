@@ -13,15 +13,21 @@ public static class Shell32
   public const uint NIF_STATE = 0x00000008;
   public const uint NIF_INFO = 0x00000010;
   public const uint NIIF_INFO = 0x00000001;
+  public const int NIIF_USER = 0x00000004;
+  public const int NIIF_LARGE_ICON = 0x00000020;
   public const int NIS_HIDDEN = 0x00000001;
   public const uint NOTIFYICON_VERSION_4 = 4;
 
   [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-  public static extern nint ExtractIcon(nint hInst, string lpszExeFileName, int nIconIndex);
-
-  [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
   public static extern bool Shell_NotifyIcon(uint dwMessage, [In] ref NotifyIconData pnid);
+}
 
-  [DllImport("shell32.dll", SetLastError = true)]
-  public static extern int SetCurrentProcessExplicitAppUserModelID([MarshalAs(UnmanagedType.LPWStr)] string AppID);
+
+internal static class Comctl32
+{
+  /// <summary>
+  /// Requires an app manifest file on .NET Core
+  /// </summary>
+  [DllImport("Comctl32.dll", CharSet = CharSet.Unicode)]
+  public static extern IntPtr LoadIconWithScaleDown(IntPtr hinst, string pszName, int cx, int cy, out IntPtr phico);
 }

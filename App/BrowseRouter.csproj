@@ -6,18 +6,22 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <WarningLevel>4</WarningLevel>
-    <ApplicationIcon>Browser.ico</ApplicationIcon>
-    <Version>0.8.0</Version>
-    <Version>0.9.0</Version>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Version>0.10.0</Version>
 	  <PublishTrimmed>true</PublishTrimmed>
     <!-- Reduces flagging as malware -->
 	  <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <!-- Reduces flagging as malware -->
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+
+  <Target Name="CopyAssets" BeforeTargets="PrepareForBuild">
+    <Copy SourceFiles="$(ProjectDir)logo.ico" DestinationFiles="$(TargetDir)logo.ico" />
+  </Target>
 
   <ItemGroup>
     <None Update="config.ini">
