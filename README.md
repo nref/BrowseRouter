@@ -5,15 +5,19 @@ In Windows, launch a different browser depending on the url.
 ## Usage
 
 ```
-    BrowseRouter.exe --register
-        Register as a web browser.
+    BrowseRouter.exe [-h | --help]
+        Show help.
 
-    BrowseRouter.exe --unregister
-        Unregister as a web browser.
-        Once you have registered the app as a browser, you should use visit "Set Default Browser" in Windows to set this app as the default browser.
+    BrowseRouter.exe
+        Register as a web browser, then open Settings. 
+        The user must choose BrowseRouter as the default browser.
+        No need to run as admin.
 
-    BrowseRouter.exe http://example.org/
-        Launch a URL
+    BrowseRouter.exe [-u | --unregister]
+        Unregister as a web browser. 
+
+    BrowseRouter.exe https://example.org/ [...more URLs]
+        Launch one or more URLs"
 ```
 
 
@@ -61,10 +65,11 @@ This is a fork of [BrowserSelector](https://github.com/DanTup/BrowserSelector/).
 
 ## Setting Up
 
-1. Clone and extract to a folder somewhere on your PC.
-2. Open `config.ini` and customize paths to your browsers and domain patterns (see below).
-3. *As administrator*, Run `BrowseRouter.exe --register` from this folder to register the tool in Windows as a web browser.
-4. Open default browser chooser: from the Start Menu, search for "default browser" or "default apps". Select `BrowseRouter` as the default browser.
+1. Download the latest release.
+2. Open `config.ini` and customize as desired.
+3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
+   It will register with Windows as a web browser and open the Settings app.
+4. In the settings app, set `BrowseRouter` as the default browser.
   - ![image](https://user-images.githubusercontent.com/2089725/180062311-1393df79-7ba1-4fa8-b280-5643c0dcdd50.png)
 5. The first time you click on a link after registring BrowseRouter as a browser, you may be presented with the Open With dialog.
   - ![Open With Dialog](OpenWith.png)

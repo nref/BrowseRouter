@@ -1,11 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace BrowseRouter;
 
-public class RegistryService
+public class RegistryService(INotifyService notifier)
 {
-  private const string AppID = "BrowseRouter";
   private const string AppName = "BrowseRouter";
+  private const string AppID = "BrowseRouter";
   private const string AppDescription = "Opens a different brower based on the URL";
   private string AppIcon => App.ExePath + ",0";
   private string AppOpenUrlCommand => App.ExePath + " %1";
@@ -14,23 +15,29 @@ public class RegistryService
   private string UrlKey => $"SOFTWARE\\Classes\\{AppID}URL";
   private string CapabilityKey => $"SOFTWARE\\{AppID}\\Capabilities";
 
-  private RegistryKey? _registerKey => Registry.LocalMachine.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
+  private RegistryKey? _registerKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
 
-  public void Register()
+  public async Task RegisterAsync()
   {
-    // Register application.
-    RegistryKey? appReg = Registry.LocalMachine.CreateSubKey(AppKey);
+    Log.Write("Registering...");
+    RegistryKey? appReg = Registry.CurrentUser.CreateSubKey(AppKey);
 
     RegisterCapabilities(appReg);
 
-    // Register as application.
-    if (_registerKey != null)
-    {
-      _registerKey.SetValue(AppID, CapabilityKey);
-    }
+    _registerKey?.SetValue(AppID, CapabilityKey);
 
     HandleUrls();
+
+    OpenSettings();
+    Log.Write($"Done. Please set {AppName} as the default browser in Settings.");
+    await notifier.NotifyAsync("Registered as a browser.", "Please set BrowseRouter as the default browser in Settings.");
   }
+
+  private static void OpenSettings() => Process.Start(new ProcessStartInfo
+  {
+    FileName = $"ms-settings:defaultapps?registeredAppUser={AppName}",
+    UseShellExecute = true
+  });
 
   private void RegisterCapabilities(RegistryKey appReg)
   {
@@ -52,7 +59,7 @@ public class RegistryService
   /// </summary>
   private void HandleUrls()
   {
-    RegistryKey? handlerReg = Registry.LocalMachine.CreateSubKey(UrlKey);
+    RegistryKey? handlerReg = Registry.CurrentUser.CreateSubKey(UrlKey);
     handlerReg.SetValue("", AppName);
     handlerReg.SetValue("FriendlyTypeName", AppName);
     handlerReg.CreateSubKey("shell\\open\\command").SetValue("", AppOpenUrlCommand);
@@ -60,13 +67,21 @@ public class RegistryService
 
   public void Unregister()
   {
-    Registry.LocalMachine.DeleteSubKeyTree(AppKey, false);
+    Log.Write("Unregistering...");
+    Try(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
+    Try(() => _registerKey?.DeleteValue(AppID));
+    Try(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
+    Log.Write("Done");
+  }
 
-    if (_registerKey != null)
+  private static void Try(Action a)
+  {
+    try
     {
-      _registerKey.DeleteValue(AppID);
+      a();
     }
-
-    Registry.LocalMachine.DeleteSubKeyTree(UrlKey);
+    catch
+    {
+    }
   }
 }

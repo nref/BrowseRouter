@@ -1,8 +1,7 @@
 {
   "profiles": {
     "register": {
-      "commandName": "Project",
-      "commandLineArgs": "--register"
+      "commandName": "Project"
     },
     "unregister": {
       "commandName": "Project",
@@ -10,15 +9,24 @@
     },
     "open URL": {
       "commandName": "Project",
-      "commandLineArgs": "google.com"
-    },
-    "no arg": {
-      "commandName": "Project"
+      "commandLineArgs": "example.org example.com"
     },
     "long arg": {
       "commandName": "Project",
       "commandLineArgs": "www.youtube.com/redirect?event=video_description&redir_token=QUFFLU&q=https%3A%2F%2Fwww.reddit.com%2Fdata%20mine",
       "remoteDebugEnabled": false
+    },
+    "help": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    },
+    "help short": {
+      "commandName": "Project",
+      "commandLineArgs": "-h"
+    },
+    "unregister short": {
+      "commandName": "Project",
+      "commandLineArgs": "-u"
     }
   }
 }
