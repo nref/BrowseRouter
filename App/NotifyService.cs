@@ -16,12 +16,16 @@ public class EmptyNotifyService : INotifyService
 public class NotifyService : INotifyService
 {
   private const uint _flags = Shell32.NIF_ICON 
-    | Shell32.NIF_TIP 
     | Shell32.NIF_INFO 
     | Shell32.NIF_MESSAGE 
     | Shell32.NIF_STATE; // Enables hiding system tray icon
 
-  private static nint hIcon = Shell32.ExtractIcon(IntPtr.Zero, App.ExePath, 0);
+  private static nint _hIcon;
+
+  public NotifyService() => LoadIcon();
+
+  private static bool LoadIcon(string file = "logo.ico", int size = 512) =>
+    Comctl32.LoadIconWithScaleDown(nint.Zero, file, size, size, out _hIcon) != 0;
 
   public async Task NotifyAsync(string title, string message)
   {
@@ -40,7 +44,7 @@ public class NotifyService : INotifyService
     // If we exit too early, the title has a GUID rather than the app name, and no icon.
     await Task.Delay(500);
 
-    // Delete dismisses the pop-up message and the icon from the system tray
+    // Remove the icon from the system tray
     //Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref nid);
 
     // Hide the icon to keep the pop-up message visible
@@ -49,6 +53,14 @@ public class NotifyService : INotifyService
 
     // Destroy the dummy window
     User32.DestroyWindow(hWnd);
+
+    Remove(nid);
+  }
+
+  public void Remove(NotifyIconData nid)
+  {
+    // Remove the icon from the system tray
+    Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref nid);
   }
 
   private static NotifyIconData GetNid(nint hWnd, string title, string message) => new NotifyIconData
@@ -58,11 +70,12 @@ public class NotifyService : INotifyService
     uID = 1,
     uFlags = _flags,
     uCallbackMessage = 0x500, // WM_USER + 1
-    hIcon = hIcon,
+    hIcon = nint.Zero,
+    hBalloonIcon = _hIcon,
     szTip = "BrowseRouter",
     szInfo = message,
     szInfoTitle = title,
-    dwInfoFlags = Shell32.NIIF_INFO,
+    dwInfoFlags = Shell32.NIIF_USER | Shell32.NIIF_LARGE_ICON,
     dwState  = 0, // For the popup to be shown, the system tray icon must not be hidden, but we can hide it immediately after
     dwStateMask = Shell32.NIS_HIDDEN,
     uVersion = Shell32.NOTIFYICON_VERSION_4
