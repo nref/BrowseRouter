@@ -1,5 +1,9 @@
 # BrowseRouter 
 
+<p align="center">
+    <img src="https://github.com/nref/BrowseRouter/blob/master/App/logo.png" width="256">
+</p>
+
 In Windows, launch a different browser depending on the url.
 
 ## Usage
@@ -17,17 +21,24 @@ In Windows, launch a different browser depending on the url.
         Unregister as a web browser. 
 
     BrowseRouter.exe https://example.org/ [...more URLs]
-        Launch one or more URLs"
+        Launch one or more URLs
 ```
 
+## Setting Up
 
-## Support
+1. Download the latest release.
+2. Open `config.ini` and customize as desired.
+3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
+   It will register with Windows as a web browser and open the Settings app.
+4. In the settings app, set `BrowseRouter` as the default browser.
+  - ![image](https://user-images.githubusercontent.com/2089725/180062311-1393df79-7ba1-4fa8-b280-5643c0dcdd50.png)
+5. The first time you click on a link after registring BrowseRouter as a browser, you may be presented with the Open With dialog.
+  - ![Open With Dialog](OpenWith.png)
 
-If you like BrowseRouter, let me know in [a discussion](https://github.com/nref/BrowseRouter/discussions/new?category=general). I work a full time job. BrowseRouter is just a hobby. You can help support continued development by "buying me a coffee."
+## Supported Platforms
 
-<a href="https://www.buymeacoffee.com/slater1" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-You can help determine what happens next with BrowseRouter by filling out [this survey](https://forms.gle/Bh5z472CZUN6qdon9).
+- Windows 10, x64 and arm64
+- Windows 11, x64 and arm64
 
 ## Why?
 
@@ -58,27 +69,6 @@ You can help determine what happens next with BrowseRouter by filling out [this 
 BrowseRouter contains no tracking, and it makes no network connections of its own whatsoever. 
 
 Your system administrator could know which pages you are visiting by auditing process start logs e.g. `BrowseRouter.exe http://some-naughty-site.example`. They would have the same information for any browser.
-
-## Credit
-
-This is a fork of [BrowserSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained. This version carries on the vision, fixing bugs and adding new features.
-
-## Setting Up
-
-1. Download the latest release.
-2. Open `config.ini` and customize as desired.
-3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
-   It will register with Windows as a web browser and open the Settings app.
-4. In the settings app, set `BrowseRouter` as the default browser.
-  - ![image](https://user-images.githubusercontent.com/2089725/180062311-1393df79-7ba1-4fa8-b280-5643c0dcdd50.png)
-5. The first time you click on a link after registring BrowseRouter as a browser, you may be presented with the Open With dialog.
-  - ![Open With Dialog](OpenWith.png)
-
-## Supported Platforms
-
-- Windows 10 Pro
-- Windows 11 Pro, x64
-- Windows 11 Pro, arm64
 
 ## Notifications
 
@@ -189,3 +179,15 @@ You can enable disable or log files by setting `enabled = true` or `false` in th
 If `enabled` is missing or doesn't equal `true`, logs will not be written.
 
 Log entries are also written to the console and can be seen if e.g. if launched from Command Prompt, PowerShell, or Windows Terminal.
+
+## Credit
+
+This is a fork of [BrowserSelector](https://github.com/DanTup/BrowserSelector/). That version is no longer mantained. This version carries on the vision, fixing bugs and adding new features.
+
+## Support
+
+If you like BrowseRouter, let me know in [a discussion](https://github.com/nref/BrowseRouter/discussions/new?category=general). BrowseRouter is just a hobby. You can help support continued development by "buying me a coffee."
+
+<a href="https://www.buymeacoffee.com/slater1" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+You can help determine what happens next with BrowseRouter by filling out [this survey](https://forms.gle/Bh5z472CZUN6qdon9).
