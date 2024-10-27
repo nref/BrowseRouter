@@ -15,7 +15,10 @@ echo "Created $certTmpPath..."
 
 rm $certTmpPath
 
-md ./publish/signed -ea 0
-cp ./publish/win-arm64/BrowseRouter.exe  ./publish/signed/BrowseRouter.arm64.exe
-cp ./publish/win-x64/BrowseRouter.exe  ./publish/signed/BrowseRouter.x64.exe
-cp ./publish/win-x64/config.ini  ./publish/signed
+md ./publish/signed/win-arm64 -ea 0
+cp ./publish/win-arm64/BrowseRouter.exe  ./publish/signed/win-arm64/BrowseRouter.exe
+cp ./publish/win-arm64/config.ini  ./publish/signed/win-arm64
+
+md ./publish/signed/win-x64 -ea 0
+cp ./publish/win-x64/BrowseRouter.exe  ./publish/signed/win-x64/BrowseRouter.exe
+cp ./publish/win-x64/config.ini  ./publish/signed/win-x64
