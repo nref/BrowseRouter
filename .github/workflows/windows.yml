@@ -32,4 +32,5 @@ jobs:
           artifacts: "./Releases/**/*.zip"
           draft: true
           allowUpdates: true
-          tag: echo "$VERSION"
+          tag: |
+            echo "$VERSION"
