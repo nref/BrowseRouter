@@ -1,22 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <WarningLevel>4</WarningLevel>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-    <Version>0.10.0</Version>
 	  <PublishTrimmed>true</PublishTrimmed>
-    <!-- Reduces flagging as malware -->
-	  <NoWin32Manifest>true</NoWin32Manifest>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <!-- Reduces flagging as malware -->
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <Target Name="CopyAssets" BeforeTargets="PrepareForBuild">
