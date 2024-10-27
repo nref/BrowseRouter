@@ -3,5 +3,6 @@
 bin
 obj
 publish
+Releases
 **/*.user
 **/*.crt
