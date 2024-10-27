@@ -26,7 +26,10 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - run: pwsh ./make.ps1
-      - run: echo "VERSION=$(pwsh ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter)" >> $GITHUB_ENV
+      - run: |
+          echo "VERSION=$(pwsh ./Get-ProjectVersion.ps2 -ProjectPath BrowseRouter)" >> $GITHUB_ENV
+          echo $VERSION
+          echo $env.VERSION
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "./Releases/**/*.zip"
