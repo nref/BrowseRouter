@@ -28,7 +28,7 @@ jobs:
       - run: pwsh ./make.ps1
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "publish/signed/*.zip"
+          artifacts: "./publish/signed/*.zip"
           draft: true
           allowUpdates: true
           tag: ci-stage

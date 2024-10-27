@@ -24,10 +24,13 @@ md ./publish/signed/win-x64 -ea 0
 cp ./publish/win-x64/BrowseRouter.exe  ./publish/signed/win-x64/BrowseRouter.exe
 cp ./publish/win-x64/config.ini  ./publish/signed/win-x64
 
-# Zip up Files
+# Zip up files
+echo "Zipping files"
 $zipPath = "./publish/signed/BrowseRouter-win-arm64.zip"
 Compress-Archive -Path "./publish/signed/win-arm64/*" -DestinationPath $zipPath -Force
 
 $zipPath = "./publish/signed/BrowseRouter-win-x64.zip"
 Compress-Archive -Path "./publish/signed/win-x64/*" -DestinationPath $zipPath -Force
 
+echo "Listing files"
+ls ./publish/signed/*.zip
