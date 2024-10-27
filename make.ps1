@@ -55,5 +55,5 @@ foreach ($rid in $rids) {
   Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force
 
   echo "Listing release files ($rid):"
-  ls "$dir/*.zip"
+  ls "$outDir/*.zip"
 }
