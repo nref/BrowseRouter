@@ -30,3 +30,4 @@ Compress-Archive -Path "./publish/signed/win-arm64/*" -DestinationPath $zipPath 
 
 $zipPath = "./publish/signed/BrowseRouter-win-x64.zip"
 Compress-Archive -Path "./publish/signed/win-x64/*" -DestinationPath $zipPath -Force
+
