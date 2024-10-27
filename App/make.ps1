@@ -2,8 +2,7 @@ $certTmpPath = "cert.tmp.crt"
 $certKey = $env:ENDURABYTE_WINDOWS_CODE_SIGN_KEY
 $signTool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
 
-echo $certKey
-echo $env:ENDURABYTE_WINDOWS_CODE_SIGN_KEY
+echo $env:ENDURABYTE_WINDOWS_CODE_SIGN_CERTIFICATE
 
 dotnet publish /p:PublishProfile=arm64 --configuration Release
 dotnet publish /p:PublishProfile=x64 --configuration Release
