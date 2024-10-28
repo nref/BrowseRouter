@@ -30,11 +30,12 @@ jobs:
       - name: Get version
         run: |
           echo "VERSION=$(pwsh ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter)" >> $GITHUB_ENV
-      - uses: ncipollo/release-action@v1
+      - name: Show version
         run: |
           echo "Version is: $VERSION"
           echo $GITHUB_ENV
           cat $GITHUB_ENV
+      - uses: ncipollo/release-action@v1
         with:
           artifacts: "./Releases/**/*.zip"
           draft: true
