@@ -31,7 +31,7 @@ In Windows, launch a different browser depending on the url.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
 4. In the settings app, set `BrowseRouter` as the default browser.
-  - ![image](https://github.com/user-attachments/assets/07187a57-fabb-4c9b-8b69-8388eeef7f89)
+  - ![Windows 11 Settings](https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d)
 
 ## Supported Platforms
 
