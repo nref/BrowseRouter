@@ -31,7 +31,8 @@ In Windows, launch a different browser depending on the url.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
 4. In the settings app, set `BrowseRouter` as the default browser.
-  - ![Windows 11 Settings](https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d)
+
+<img width="600" alt="Notification" src="https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d">
 
 ## Supported Platforms
 
@@ -72,7 +73,7 @@ Your system administrator could know which pages you are visiting by auditing pr
 
 By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.ini`.
 
-![image](https://github.com/user-attachments/assets/44d2be84-de17-44e8-9e07-c817adad9776)
+<img width="400" alt="Notification" src="https://github.com/user-attachments/assets/a16f01bd-09b3-4f99-952e-c05209fb68f8">
 
 ## Config
 
