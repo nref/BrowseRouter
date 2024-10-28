@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\App\BrowseRouter.csproj" />
+    <ProjectReference Include="..\..\BrowseRouter\BrowseRouter.csproj" />
   </ItemGroup>
 
 </Project>
