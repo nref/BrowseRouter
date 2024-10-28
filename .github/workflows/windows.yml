@@ -37,17 +37,12 @@ jobs:
           $url = "https://github.com/nref/BrowseRouter/pull/$pr"
           echo "PR_URL=$url" >> $env:GITHUB_ENV
 
-      - name: Get PR Title
+      - name: Get PR Title and Description
         run: |
           $title=$(gh pr view $env:PR_URL --json title -q .title)
-          echo "PR_TITLE=$title" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get PR Description
-        run: |
           $description=$(gh pr view $env:PR_URL --json body -q .body)
-          echo "PR_DESCRIPTION=$description" >> $GITHUB_ENV
+          echo "PR_TITLE=$title" >> $env:GITHUB_ENV
+          echo "PR_DESCRIPTION=$description" >> $env:GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
