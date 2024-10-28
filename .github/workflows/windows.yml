@@ -30,7 +30,7 @@ jobs:
           echo "VERSION=$(pwsh ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter)" >> $GITHUB_ENV
       - name: Show version
         run: |
-          echo "Version is: $VERSION"
+          echo "Version is: ${{ env.VERSION }}"
       - name: Build and sign
         run: pwsh ./make.ps1
       - uses: ncipollo/release-action@v1
@@ -38,4 +38,4 @@ jobs:
           artifacts: "./Releases/**/*.zip"
           draft: true
           allowUpdates: true
-          tag: $VERSION
+          tag: ${{ env.VERSION }}
