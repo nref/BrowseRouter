@@ -38,18 +38,18 @@ jobs:
           echo "PR_URL=$url" >> $env:GITHUB_ENV
 
       - name: Get PR Title
-          run: |
-            $title=$(gh pr view $env:PR_URL --json title -q .title)
-            echo "PR_TITLE=$title" >> $GITHUB_ENV
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $title=$(gh pr view $env:PR_URL --json title -q .title)
+          echo "PR_TITLE=$title" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get PR Description
-          run: |
-            $description=$(gh pr view $env:PR_URL --json body -q .body)
-            echo "PR_DESCRIPTION=$description" >> $GITHUB_ENV
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $description=$(gh pr view $env:PR_URL --json body -q .body)
+          echo "PR_DESCRIPTION=$description" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and sign
         run: pwsh ./make.ps1
