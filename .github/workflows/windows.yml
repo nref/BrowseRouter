@@ -27,9 +27,9 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Get version
         run: |
-          $version=$(pwsh ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter)
+          $version = ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter
           echo "Version is: $version"
-          echo "VERSION=$version" >> $GITHUB_ENV
+          echo "VERSION=$version" >> $env:GITHUB_ENV
       - name: Show version
         run: |
           echo "Version is: ${{ env.VERSION }}"
