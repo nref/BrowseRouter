@@ -25,14 +25,32 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
       - name: Get version
         run: |
           $version = ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter
-          echo "Version is: $version"
           echo "VERSION=$version" >> $env:GITHUB_ENV
-      - name: Show version
+
+      - name: Get PR URL
         run: |
-          echo "Version is: ${{ env.VERSION }}"
+          $pr = ${{ github.event.pull_request.number }}
+          $url = "https://github.com/nref/BrowseRouter/pull/$pr"
+          echo "PR_URL=$url" >> $env:GITHUB_ENV
+
+      - name: Get PR Title
+          run: |
+            PR_DESCRIPTION=$(gh pr view $env:PR_URL --json title -q .title)
+            echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get PR Description
+          run: |
+            PR_DESCRIPTION=$(gh pr view $env:PR_URL --json body -q .body)
+            echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and sign
         run: pwsh ./make.ps1
       - uses: ncipollo/release-action@v1
@@ -40,4 +58,6 @@ jobs:
           artifacts: "./Releases/**/*.zip"
           draft: true
           allowUpdates: true
-          tag: ${{ env.VERSION }}
+          tag: $env:VERSION
+          name: "$env:VERSION - $env:PR_TITLE"
+          body: $env:PR_DESCRIPTION
