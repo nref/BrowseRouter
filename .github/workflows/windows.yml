@@ -41,8 +41,8 @@ jobs:
         run: |
           $title=$(gh pr view $env:PR_URL --json title -q .title)
           $description=$(gh pr view $env:PR_URL --json body -q .body)
+          echo $description > pr_description.md
           echo "PR_TITLE=$title" >> $env:GITHUB_ENV
-          echo "$PR_DESCRIPTION" > pr_description.md
           echo "PR_DESCRIPTION_FILE=pr_description.md" >> $env:GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
