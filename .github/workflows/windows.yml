@@ -59,6 +59,6 @@ jobs:
           artifacts: "./Releases/**/*.zip"
           draft: true
           allowUpdates: true
-          tag: $env:VERSION
-          name: "$env:VERSION - $env:PR_TITLE"
-          body: $env:PR_DESCRIPTION
+          tag: ${{ env:VERSION }}
+          name: ${{ $env:VERSION }} - ${{ env:PR_TITLE }}
+          body: ${{ $env:PR_DESCRIPTION }}
