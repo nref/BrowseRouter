@@ -15,7 +15,6 @@ foreach ($app in $apps) {
         # Create thread-local copies of these variables
         $certTmpPath = $using:certTmpPath
         $app = $using:app
-        $PSScriptRoot = $using:PSScriptRoot
 
         & {
             pushd $app
@@ -53,7 +52,4 @@ foreach ($rid in $rids) {
 
   $zipPath = "$outDir/BrowseRouter-$rid.zip"
   Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force
-
-  echo "Listing release files ($rid):"
-  ls "$outDir/*.zip"
 }
