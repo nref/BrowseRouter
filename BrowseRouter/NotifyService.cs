@@ -45,16 +45,18 @@ public class NotifyService : INotifyService
     // If we exit too early, the title has a GUID rather than the app name, and no icon.
     await Task.Delay(500);
 
-    // Remove the icon from the system tray
-    //Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref nid);
+    bool isWindows11 = Environment.OSVersion.Version.Build > 2200;
 
-    // Hide the icon to keep the pop-up message visible
-    nid.dwState = Shell32.NIS_HIDDEN;
-    Shell32.Shell_NotifyIcon(Shell32.NIM_MODIFY, ref nid);
+    if (isWindows11)
+      return;
 
-    // Destroy the dummy window
-    User32.DestroyWindow(hWnd);
-
+    // Windows 11 removes the tray icon when the app exits.
+    // On Windows 10, we have to remove it manually.
+    // But also on Windows 10, removing the icon immediately hides the pop-up message, so we have to delay.
+    // On Windows 11, the pop-up remains for the full duration,
+    // regardless if the app has exited or we delete the tray icon.
+    var delay = TimeSpan.FromSeconds(10);
+    await Task.Delay(delay);
     Remove(nid);
   }
 
