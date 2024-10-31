@@ -44,7 +44,6 @@ rm $certTmpPath
 foreach ($rid in $rids) {
   $outDir = "./Releases/$version/$rid"
   md $outDir -ea 0
-  cp ./BrowseRouter/logo.ico $outDir
   cp ./BrowseRouter/publish/$rid/BrowseRouter.exe  $outDir
   cp ./BrowseRouter/publish/$rid/config.ini  $outDir
   cp ./Unregister/publish/$rid/Unregister.exe  $outDir

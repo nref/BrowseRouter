@@ -21,16 +21,17 @@ public class NotifyService : INotifyService
     | Shell32.NIF_STATE; // Enables hiding system tray icon
 
   private static nint _hIcon;
+  private static nint _hInstance = Kernel32.GetModuleHandle(App.ExePath);
 
   public NotifyService() => LoadIcon();
 
-  private static bool LoadIcon(string file = "logo.ico", int size = 512) =>
-    Comctl32.LoadIconWithScaleDown(nint.Zero, file, size, size, out _hIcon) != 0;
+  private static bool LoadIcon(int size = 512) =>
+    Comctl32.LoadIconWithScaleDown(_hInstance, Icon.Application, size, size, out _hIcon) != 0;
 
   public async Task NotifyAsync(string title, string message)
   {
     // Create a dummy window handle
-    IntPtr hWnd = CreateDummyWindow();
+    nint hWnd = CreateDummyWindow();
 
     NotifyIconData nid = GetNid(hWnd, title, message);
 
@@ -81,6 +82,6 @@ public class NotifyService : INotifyService
     uVersion = Shell32.NOTIFYICON_VERSION_4
   };
 
-  private static IntPtr CreateDummyWindow() => User32.CreateWindowEx(
+  private static nint CreateDummyWindow() => User32.CreateWindowEx(
     0, "STATIC", "DummyWindow", 0, 0, 0, 0, 0, nint.Zero, nint.Zero, nint.Zero, nint.Zero);
 }
