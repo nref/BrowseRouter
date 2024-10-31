@@ -45,7 +45,7 @@ public class NotifyService : INotifyService
     // If we exit too early, the title has a GUID rather than the app name, and no icon.
     await Task.Delay(500);
 
-    bool isWindows11 = Environment.OSVersion.Version.Build > 2200;
+    bool isWindows11 = Environment.OSVersion.Version.Build > 22000;
 
     if (isWindows11)
       return;
