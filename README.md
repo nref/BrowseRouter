@@ -39,7 +39,7 @@ In Windows, launch a different browser depending on the url.
    If you later move BrowseRouter to a new folder, or rename the exe, run it again to update the registration.
 4. In the settings app, set `BrowseRouter` as the default browser.
 
-<img width="600" alt="Notification" src="https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d">
+<img width="600" alt="Settings" src="https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d">
 
 ## Supported Platforms
 
@@ -80,7 +80,7 @@ Your system administrator could know which pages you are visiting by auditing pr
 
 By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.ini`.
 
-<img width="400" alt="Notification" src="https://github.com/user-attachments/assets/a16f01bd-09b3-4f99-952e-c05209fb68f8">
+<img width="400" alt="Notification" src="https://github.com/user-attachments/assets/da647dc6-407e-4eda-81b9-bf258e82214b">
 
 ## Config
 
