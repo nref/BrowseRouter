@@ -13,6 +13,11 @@ In Windows, launch a different browser depending on the url.
         Show help.
 
     BrowseRouter.exe
+        Automatic registration. 
+        Same as --register if not already registered, otherwise --unregister.
+        If the app has moved or been renamed, updates the existing registration.
+
+    BrowseRouter.exe [-r | --register]
         Register as a web browser, then open Settings. 
         The user must choose BrowseRouter as the default browser.
         No need to run as admin.
@@ -21,7 +26,7 @@ In Windows, launch a different browser depending on the url.
         Unregister as a web browser. 
 
     BrowseRouter.exe https://example.org/ [...more URLs]
-        Launch one or more URLs
+        Launch one or more URLs"
 ```
 
 ## Setting Up
@@ -30,6 +35,8 @@ In Windows, launch a different browser depending on the url.
 2. Open `config.ini` and customize as desired.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
+   To unregister, run it again.
+   If you later move BrowseRouter to a new folder, or rename the exe, run it again to update the registration.
 4. In the settings app, set `BrowseRouter` as the default browser.
 
 <img width="600" alt="Notification" src="https://github.com/user-attachments/assets/a96a1715-498f-4830-b39d-8a3b98467d2d">
