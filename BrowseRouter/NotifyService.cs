@@ -70,7 +70,7 @@ public class NotifyService : INotifyService
     uID = 1,
     uFlags = _flags,
     uCallbackMessage = 0x500, // WM_USER + 1
-    hIcon = nint.Zero,
+    hIcon = _hIcon,
     hBalloonIcon = _hIcon,
     szTip = "BrowseRouter",
     szInfo = message,
