@@ -21,16 +21,17 @@ public class NotifyService : INotifyService
     | Shell32.NIF_STATE; // Enables hiding system tray icon
 
   private static nint _hIcon;
+  private static nint _hInstance = Kernel32.GetModuleHandle(App.ExePath);
 
   public NotifyService() => LoadIcon();
 
-  private static bool LoadIcon(string file = "logo.ico", int size = 512) =>
-    Comctl32.LoadIconWithScaleDown(nint.Zero, file, size, size, out _hIcon) != 0;
+  private static bool LoadIcon(int size = 512) =>
+    Comctl32.LoadIconWithScaleDown(_hInstance, Icon.Application, size, size, out _hIcon) != 0;
 
   public async Task NotifyAsync(string title, string message)
   {
     // Create a dummy window handle
-    IntPtr hWnd = CreateDummyWindow();
+    nint hWnd = CreateDummyWindow();
 
     NotifyIconData nid = GetNid(hWnd, title, message);
 
@@ -44,16 +45,18 @@ public class NotifyService : INotifyService
     // If we exit too early, the title has a GUID rather than the app name, and no icon.
     await Task.Delay(500);
 
-    // Remove the icon from the system tray
-    //Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref nid);
+    bool isWindows11 = Environment.OSVersion.Version.Build > 2200;
 
-    // Hide the icon to keep the pop-up message visible
-    nid.dwState = Shell32.NIS_HIDDEN;
-    Shell32.Shell_NotifyIcon(Shell32.NIM_MODIFY, ref nid);
+    if (isWindows11)
+      return;
 
-    // Destroy the dummy window
-    User32.DestroyWindow(hWnd);
-
+    // Windows 11 removes the tray icon when the app exits.
+    // On Windows 10, we have to remove it manually.
+    // But also on Windows 10, removing the icon immediately hides the pop-up message, so we have to delay.
+    // On Windows 11, the pop-up remains for the full duration,
+    // regardless if the app has exited or we delete the tray icon.
+    var delay = TimeSpan.FromSeconds(10);
+    await Task.Delay(delay);
     Remove(nid);
   }
 
@@ -70,7 +73,7 @@ public class NotifyService : INotifyService
     uID = 1,
     uFlags = _flags,
     uCallbackMessage = 0x500, // WM_USER + 1
-    hIcon = nint.Zero,
+    hIcon = _hIcon,
     hBalloonIcon = _hIcon,
     szTip = "BrowseRouter",
     szInfo = message,
@@ -81,6 +84,6 @@ public class NotifyService : INotifyService
     uVersion = Shell32.NOTIFYICON_VERSION_4
   };
 
-  private static IntPtr CreateDummyWindow() => User32.CreateWindowEx(
+  private static nint CreateDummyWindow() => User32.CreateWindowEx(
     0, "STATIC", "DummyWindow", 0, 0, 0, 0, 0, nint.Zero, nint.Zero, nint.Zero, nint.Zero);
 }

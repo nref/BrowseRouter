@@ -1,5 +1,5 @@
 $jobs = @()
-$apps = @("BrowseRouter", "Unregister", "Register")
+$apps = @("BrowseRouter")
 $rids = @("win-x64", "win-arm64")
 
 $version = & ./Get-ProjectVersion.ps1 BrowseRouter
@@ -44,11 +44,8 @@ rm $certTmpPath
 foreach ($rid in $rids) {
   $outDir = "./Releases/$version/$rid"
   md $outDir -ea 0
-  cp ./BrowseRouter/logo.ico $outDir
   cp ./BrowseRouter/publish/$rid/BrowseRouter.exe  $outDir
   cp ./BrowseRouter/publish/$rid/config.ini  $outDir
-  cp ./Unregister/publish/$rid/Unregister.exe  $outDir
-  cp ./Register/publish/$rid/Register.exe  $outDir
 
   $zipPath = "$outDir/BrowseRouter-$rid.zip"
   Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force

@@ -8,7 +8,7 @@ public static class Program
   {
     if (args.Length == 0)
     {
-      await new RegistryService(new NotifyService()).RegisterAsync();
+      await new DefaultBrowserService(new NotifyService()).RegisterOrUnregisterAsync();
       return;
     }
 
@@ -31,14 +31,14 @@ public static class Program
 
     if (isOption)
     {
-      RunOption(arg);
+      await RunOption(arg);
       return;
     }
 
     await LaunchUrlAsyc(arg);
   }
 
-  private static bool RunOption(string arg)
+  private static async Task<bool> RunOption(string arg)
   {
     if (string.Equals(arg, "h") || string.Equals(arg, "help"))
     {
@@ -46,9 +46,15 @@ public static class Program
       return true;
     }
 
+    if (string.Equals(arg, "r") || string.Equals(arg, "register"))
+    {
+      await new DefaultBrowserService(new NotifyService()).RegisterAsync();
+      return true;
+    }
+
     if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
     {
-      new RegistryService(new NotifyService()).Unregister();
+      await new DefaultBrowserService(new NotifyService()).UnregisterAsync();
       return true;
     }
 
@@ -87,6 +93,11 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
         Show help.
 
     BrowseRouter.exe
+        Automatic registration. 
+        Same as --register if not already registered, otherwise --unregister.
+        If the app has moved or been renamed, updates the existing registration.
+
+    BrowseRouter.exe [-r | --register]
         Register as a web browser, then open Settings. 
         The user must choose BrowseRouter as the default browser.
         No need to run as admin.

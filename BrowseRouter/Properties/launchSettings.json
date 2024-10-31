@@ -1,7 +1,8 @@
 {
   "profiles": {
     "register": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--register"
     },
     "unregister": {
       "commandName": "Project",
@@ -27,6 +28,9 @@
     "unregister short": {
       "commandName": "Project",
       "commandLineArgs": "-u"
+    },
+    "autoregister": {
+      "commandName": "Project"
     }
   }
 }

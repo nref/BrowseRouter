@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace BrowseRouter;
 
-public class RegistryService(INotifyService notifier)
+public class DefaultBrowserService(INotifyService notifier)
 {
   private const string AppName = "BrowseRouter";
   private const string AppID = "BrowseRouter";
@@ -15,9 +15,60 @@ public class RegistryService(INotifyService notifier)
   private string UrlKey => $"SOFTWARE\\Classes\\{AppID}URL";
   private string CapabilityKey => $"SOFTWARE\\{AppID}\\Capabilities";
 
-  private RegistryKey? _registerKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
+  private readonly RegistryKey? _registerKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
+  private RegistryKey? AppRegKey => Registry.CurrentUser.OpenSubKey(AppKey);
+  private RegistryKey? UrlRegKey => Registry.CurrentUser.OpenSubKey(UrlKey);
+
+  private string? ExistingOpenUrlCommand => UrlRegKey
+        ?.OpenSubKey("shell\\open\\command")
+        ?.GetValue("") as string;
+
+  private enum RegisterStatus
+  {
+    Registered,
+    Unregistered,
+    Updated
+  }
+
+  private RegisterStatus GetRegisterStatus() => AppRegKey switch
+  {
+    null => RegisterStatus.Unregistered,
+    _ => ExistingOpenUrlCommand == AppOpenUrlCommand
+        ? RegisterStatus.Registered
+        : RegisterStatus.Updated
+  };
+
+  public async Task RegisterOrUnregisterAsync()
+  {
+    var status = GetRegisterStatus();
+
+    if (status == RegisterStatus.Unregistered)
+    {
+      await RegisterAsync();
+      return;
+    }
+
+    if (status == RegisterStatus.Registered)
+    {
+      await UnregisterAsync();
+      return;
+    }
+
+    if (status == RegisterStatus.Updated)
+    {
+      Unregister(); // Unregister the old path
+      Register(); // Register with the new path
+      await notifier.NotifyAsync("Updated location.", $"{AppName} has been re-registered with a new path.");
+    }
+  }
 
   public async Task RegisterAsync()
+  {
+    Register();
+    await notifier.NotifyAsync("Registered as a browser.", $"Please set {AppName} as the default browser in Settings.");
+  }
+
+  private void Register()
   {
     Log.Write("Registering...");
     RegistryKey? appReg = Registry.CurrentUser.CreateSubKey(AppKey);
@@ -30,7 +81,6 @@ public class RegistryService(INotifyService notifier)
 
     OpenSettings();
     Log.Write($"Done. Please set {AppName} as the default browser in Settings.");
-    await notifier.NotifyAsync("Registered as a browser.", "Please set BrowseRouter as the default browser in Settings.");
   }
 
   private static void OpenSettings() => Process.Start(new ProcessStartInfo
@@ -65,7 +115,13 @@ public class RegistryService(INotifyService notifier)
     handlerReg.CreateSubKey("shell\\open\\command").SetValue("", AppOpenUrlCommand);
   }
 
-  public void Unregister()
+  public async Task UnregisterAsync()
+  {
+    Unregister();
+    await notifier.NotifyAsync("Unregistered as a browser.", $"{AppName} is no longer registered as a web browser.");
+  }
+
+  private void Unregister()
   {
     Log.Write("Unregistering...");
     Try(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
