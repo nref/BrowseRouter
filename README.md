@@ -26,7 +26,7 @@ In Windows, launch a different browser depending on the url.
         Unregister as a web browser. 
 
     BrowseRouter.exe https://example.org/ [...more URLs]
-        Launch one or more URLs"
+        Launch one or more URLs
 ```
 
 ## Setting Up
