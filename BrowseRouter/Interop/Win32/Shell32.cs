@@ -21,13 +21,3 @@ public static class Shell32
   [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
   public static extern bool Shell_NotifyIcon(uint dwMessage, [In] ref NotifyIconData pnid);
 }
-
-
-internal static class Comctl32
-{
-  /// <summary>
-  /// Requires an app manifest file on .NET Core
-  /// </summary>
-  [DllImport("Comctl32.dll", CharSet = CharSet.Unicode)]
-  public static extern IntPtr LoadIconWithScaleDown(IntPtr hinst, string pszName, int cx, int cy, out IntPtr phico);
-}

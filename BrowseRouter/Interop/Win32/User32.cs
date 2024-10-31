@@ -7,17 +7,17 @@ public static partial class User32
 {
   // DllImports used to get window title for source program.
   [DllImport("user32.dll")]
-  public static extern IntPtr GetForegroundWindow();
+  public static extern nint GetForegroundWindow();
 
   [DllImport("user32.dll")]
-  public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+  public static extern int GetWindowText(nint hWnd, StringBuilder text, int count);
 
   public static string GetActiveWindowTitle()
   {
     string result = "";
     const int nChars = 256;
     StringBuilder buff = new(nChars);
-    IntPtr handle = GetForegroundWindow();
+    nint handle = GetForegroundWindow();
 
     if (GetWindowText(handle, buff, nChars) > 0)
     {
@@ -27,11 +27,11 @@ public static partial class User32
   }
 
   [DllImport("user32.dll")]
-  public static extern IntPtr CreateWindowEx(uint dwExStyle, 
+  public static extern nint CreateWindowEx(uint dwExStyle, 
     string lpClassName, 
     string lpWindowName, 
-    uint dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+    uint dwStyle, int x, int y, int nWidth, int nHeight, nint hWndParent, nint hMenu, nint hInstance, nint lpParam);
 
   [DllImport("user32.dll")]
-  public static extern bool DestroyWindow(IntPtr hWnd);
+  public static extern bool DestroyWindow(nint hWnd);
 }
