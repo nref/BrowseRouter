@@ -15,7 +15,7 @@ public static class Program
     // Process each URL in the arguments list.
     foreach (string arg in args)
     {
-      await RunAsync(arg.Trim().ToLower());
+      await RunAsync(arg.Trim());
     }
   }
 
