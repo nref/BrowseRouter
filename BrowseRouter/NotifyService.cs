@@ -50,6 +50,11 @@ public class NotifyService : INotifyService
     if (isWindows11)
       return;
 
+    await RemoveTrayIconLater(nid);
+  }
+
+  private async Task RemoveTrayIconLater(NotifyIconData nid)
+  {
     // Windows 11 removes the tray icon when the app exits.
     // On Windows 10, we have to remove it manually.
     // But also on Windows 10, removing the icon immediately hides the pop-up message, so we have to delay.
