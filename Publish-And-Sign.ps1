@@ -4,7 +4,7 @@ param (
 )
 
 $certKey = $env:ENDURABYTE_WINDOWS_CODE_SIGN_KEY
-$signTool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
+$signTool = "signtool.exe"
 $rids = @("win-x64", "win-arm64")
 
 # dotnet does not support publishing multiple RIDs in parallel
