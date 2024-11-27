@@ -4,30 +4,30 @@ namespace BrowseRouter;
 
 public static class App
 {
-  private static string exePath;
+  private static string? _exePath;
 
   public static string ExePath
   {
     get
     {
-      if (!string.IsNullOrEmpty(exePath))
+      if (!string.IsNullOrEmpty(_exePath))
       {
-        return exePath;
+        return _exePath;
       }
 
       var assembly = Assembly.GetExecutingAssembly();
       // .NET Core returns BrowserSettings.dll but we need BrowserSettings.exe
-      exePath = Assembly.GetExecutingAssembly().Location
+      _exePath = assembly.Location
           .Replace(".dll", ".exe");
 
-      if (!string.IsNullOrEmpty(exePath))
+      if (!string.IsNullOrEmpty(_exePath))
       {
-        return exePath;
+        return _exePath;
       }
 
       var dir = AppDomain.CurrentDomain.BaseDirectory;
-      exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
-      return exePath;
+      _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
+      return _exePath;
     }
   }
 }

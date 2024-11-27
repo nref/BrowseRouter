@@ -36,7 +36,7 @@ public static class Log
         writer.WriteLine(message);
         return;
       }
-      catch (Exception e)
+      catch (Exception)
       {
       }
     }
