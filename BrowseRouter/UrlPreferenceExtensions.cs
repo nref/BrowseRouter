@@ -35,7 +35,7 @@ public static class UrlPreferenceExtensions
       string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
       // Escape the input for regex; the only special character we support is a *
-      var regex = Regex.Escape(pattern);
+      string regex = Regex.Escape(pattern);
 
       // Unescape * as a wildcard.
       pattern = $"^{regex.Replace("\\*", ".*")}$";
@@ -48,7 +48,7 @@ public static class UrlPreferenceExtensions
       string domain = uri.Authority;
 
       // Escape the input for regex; the only special character we support is a *
-      var regex = Regex.Escape(urlPattern);
+      string regex = Regex.Escape(urlPattern);
 
       // Unescape * as a wildcard.
       string pattern = $"^{regex.Replace("\\*", ".*")}$";
@@ -83,7 +83,7 @@ public static class UrlPreferenceExtensions
     {
       // We're only checking the window title.
       // Escape the input for regex; the only special character we support is a *
-      var regex = Regex.Escape(urlPattern);
+      string regex = Regex.Escape(urlPattern);
 
       // Unescape * as a wildcard.
       string pattern = $"^{regex.Replace("\\*", ".*")}$";

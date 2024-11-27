@@ -31,7 +31,7 @@ public class ConfigService : IConfigService
 
   private NotifyPreference GetNotifyPreferenceCore()
   {
-    var notifyConfig = GetConfig(ReadFile(), "notify")
+    Dictionary<string, string> notifyConfig = GetConfig(ReadFile(), "notify")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -53,7 +53,7 @@ public class ConfigService : IConfigService
 
   private LogPreference GetLogPreferenceCore()
   {
-    var logConfig = GetConfig(ReadFile(), "log")
+    Dictionary<string, string> logConfig = GetConfig(ReadFile(), "log")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -73,7 +73,7 @@ public class ConfigService : IConfigService
     IEnumerable<string> configLines = ReadFile();
 
     // Read the browsers section into a dictionary.
-    var browsers = GetConfig(configLines, "browsers")
+    Dictionary<string, Browser> browsers = GetConfig(configLines, "browsers")
       .Select(SplitConfig)
       .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
       .ToDictionary(b => b.Name);
@@ -85,7 +85,7 @@ public class ConfigService : IConfigService
     }
 
     // Read the url preferences
-    var urls = GetConfig(configLines, configType)
+    IEnumerable<UrlPreference> urls = GetConfig(configLines, configType)
       .Select(SplitConfig)
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
       .Where(up => up.Browser != null);
@@ -118,7 +118,7 @@ public class ConfigService : IConfigService
   /// </summary>
   private KeyValuePair<string, string> SplitConfig(string configLine)
   {
-    var parts = configLine.Split('=', 2);
+    string[] parts = configLine.Split('=', 2);
     return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim());
   }
 }

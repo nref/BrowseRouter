@@ -51,7 +51,7 @@ public class BrowserService(IConfigService config, INotifyService notifier)
   private static string GetAppName(string path)
   {
     // Get just the app name from the exe at path
-    var name = Path.GetFileNameWithoutExtension(path);
+    string name = Path.GetFileNameWithoutExtension(path);
     // make first letter uppercase
     name = name[0].ToString().ToUpper() + name[1..];
     return name;

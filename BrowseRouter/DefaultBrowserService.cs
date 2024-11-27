@@ -40,7 +40,7 @@ public class DefaultBrowserService(INotifyService notifier)
 
   public async Task RegisterOrUnregisterAsync()
   {
-    var status = GetRegisterStatus();
+    RegisterStatus status = GetRegisterStatus();
 
     if (status == RegisterStatus.Unregistered)
     {

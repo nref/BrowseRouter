@@ -19,7 +19,7 @@ public static class Log
 
   private static void EnsureLogDirExists()
   {
-    var parent = Path.GetDirectoryName(Preference.File);
+    string? parent = Path.GetDirectoryName(Preference.File);
     if (parent is not null)
     {
       Directory.CreateDirectory(parent);

@@ -25,7 +25,7 @@ public static class App
         return _exePath;
       }
 
-      var dir = AppDomain.CurrentDomain.BaseDirectory;
+      string dir = AppDomain.CurrentDomain.BaseDirectory;
       _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
       return _exePath;
     }

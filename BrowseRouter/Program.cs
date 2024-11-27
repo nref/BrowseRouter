@@ -64,12 +64,12 @@ public static class Program
   private static async Task LaunchUrlAsyc(string url)
   {
     // Get the window title for whichever application is opening the URL.
-    var windowTitle = User32.GetActiveWindowTitle();
+    string windowTitle = User32.GetActiveWindowTitle();
 
     var configService = new ConfigService();
     Log.Preference = configService.GetLogPreference();
 
-    var notifyPref = configService.GetNotifyPreference();
+    NotifyPreference notifyPref = configService.GetNotifyPreference();
     INotifyService notifier = notifyPref.IsEnabled switch
     {
       true => new NotifyService(),
