@@ -15,7 +15,7 @@ public class ConfigService : IConfigService
   public ConfigService()
   {
     // Fix for self-contained publishing
-    this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+    ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
   }
 
   public bool GetIsLogEnabled() => File.Exists(ConfigPath) 
@@ -78,7 +78,7 @@ public class ConfigService : IConfigService
       .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
       .ToDictionary(b => b.Name);
 
-    if (!browsers.Any())
+    if (browsers.Count == 0)
     {
       // There weren't any configured browsers
       return new List<UrlPreference>();
@@ -100,7 +100,7 @@ public class ConfigService : IConfigService
   {
     return File.ReadAllLines(ConfigPath)
       .Select(l => l.Trim())
-      .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(";") && !l.StartsWith("#"));
+      .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(';') && !l.StartsWith('#'));
   }
 
   private IEnumerable<string> GetConfig(IEnumerable<string> configLines, string configName)
@@ -118,7 +118,7 @@ public class ConfigService : IConfigService
   /// </summary>
   private KeyValuePair<string, string> SplitConfig(string configLine)
   {
-    var parts = configLine.Split(new[] { '=' }, 2);
+    var parts = configLine.Split('=', 2);
     return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim());
   }
 }

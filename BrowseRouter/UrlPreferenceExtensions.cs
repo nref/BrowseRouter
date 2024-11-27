@@ -19,7 +19,7 @@ public static class UrlPreferenceExtensions
   {
     string urlPattern = pref.UrlPattern;
 
-    if (urlPattern.StartsWith("/") && urlPattern.EndsWith("/"))
+    if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
     {
       // The domain from the INI file is a regex
       string domain = uri.Authority + uri.AbsolutePath;
@@ -28,7 +28,7 @@ public static class UrlPreferenceExtensions
       return (domain, pattern);
     }
 
-    if (urlPattern.StartsWith("?") && urlPattern.EndsWith("?"))
+    if (urlPattern.StartsWith('?') && urlPattern.EndsWith('?'))
     {
       // The domain from the INI file is a query filter
       string domain = uri.Authority + uri.PathAndQuery;
@@ -72,7 +72,7 @@ public static class UrlPreferenceExtensions
   {
     string urlPattern = pref.UrlPattern;
 
-    if (urlPattern.StartsWith("/") && urlPattern.EndsWith("/"))
+    if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
     {
       // The window title from the INI file is a regex
       string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
