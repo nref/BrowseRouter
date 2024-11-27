@@ -1,21 +1,23 @@
 {
   "profiles": {
+    "autoregister": {
+      "commandName": "Project"
+    },
     "register": {
       "commandName": "Project",
       "commandLineArgs": "--register"
+    },
+    "register short": {
+      "commandName": "Project",
+      "commandLineArgs": "-r"
     },
     "unregister": {
       "commandName": "Project",
       "commandLineArgs": "--unregister"
     },
-    "open URL": {
+    "unregister short": {
       "commandName": "Project",
-      "commandLineArgs": "example.org example.com"
-    },
-    "long arg": {
-      "commandName": "Project",
-      "commandLineArgs": "www.youtube.com/redirect?event=video_description&redir_token=QUFFLU&q=https%3A%2F%2Fwww.reddit.com%2Fdata%20mine",
-      "remoteDebugEnabled": false
+      "commandLineArgs": "-u"
     },
     "help": {
       "commandName": "Project",
@@ -25,12 +27,17 @@
       "commandName": "Project",
       "commandLineArgs": "-h"
     },
-    "unregister short": {
+    "open URL": {
       "commandName": "Project",
-      "commandLineArgs": "-u"
+      "commandLineArgs": "example.org"
     },
-    "autoregister": {
-      "commandName": "Project"
+    "open long URL": {
+      "commandName": "Project",
+      "commandLineArgs": "www.youtube.com/redirect?event=video_description&redir_token=QUFFLU&q=https%3A%2F%2Fwww.reddit.com%2Fdata%20mine"
+    },
+    "open multiple URLs": {
+      "commandName": "Project",
+      "commandLineArgs": "example.org example.com"
     }
   }
 }
