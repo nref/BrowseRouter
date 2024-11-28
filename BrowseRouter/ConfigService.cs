@@ -17,9 +17,12 @@ public class ConfigService : IConfigService
     // Fix for self-contained publishing
     ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
   }
+  
+  private IEnumerable<string>? _configLines = null;
+  private IEnumerable<string> ConfigLines => _configLines ??= ReadFile();
 
   public bool GetIsLogEnabled() => File.Exists(ConfigPath) 
-    && GetConfig(ReadFile(), "log")
+    && GetConfig("log")
         .Select(SplitConfig)
         .Any(kvp => kvp.Key == "enabled" && kvp.Value == "true");
 
@@ -31,7 +34,7 @@ public class ConfigService : IConfigService
 
   private NotifyPreference GetNotifyPreferenceCore()
   {
-    Dictionary<string, string> notifyConfig = GetConfig(ReadFile(), "notify")
+    Dictionary<string, string> notifyConfig = GetConfig("notify")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -53,7 +56,7 @@ public class ConfigService : IConfigService
 
   private LogPreference GetLogPreferenceCore()
   {
-    Dictionary<string, string> logConfig = GetConfig(ReadFile(), "log")
+    Dictionary<string, string> logConfig = GetConfig("log")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -69,11 +72,8 @@ public class ConfigService : IConfigService
     if (!File.Exists(ConfigPath))
       throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
 
-    // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
-    IEnumerable<string> configLines = ReadFile();
-
     // Read the browsers section into a dictionary.
-    Dictionary<string, Browser> browsers = GetConfig(configLines, "browsers")
+    Dictionary<string, Browser> browsers = GetConfig("browsers")
       .Select(SplitConfig)
       .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
       .ToDictionary(b => b.Name);
@@ -85,7 +85,7 @@ public class ConfigService : IConfigService
     }
 
     // Read the url preferences
-    IEnumerable<UrlPreference> urls = GetConfig(configLines, configType)
+    IEnumerable<UrlPreference> urls = GetConfig(configType)
       .Select(SplitConfig)
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
       .Where(up => up.Browser != null);
@@ -98,15 +98,19 @@ public class ConfigService : IConfigService
 
   private IEnumerable<string> ReadFile()
   {
+    if (!File.Exists(ConfigPath))
+      throw new InvalidOperationException($"The config file was not found at \"{ConfigPath}\"");
+
+    // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
     return File.ReadAllLines(ConfigPath)
       .Select(l => l.Trim())
       .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(';') && !l.StartsWith('#'));
   }
 
-  private IEnumerable<string> GetConfig(IEnumerable<string> configLines, string configName)
+  private IEnumerable<string> GetConfig(string configName)
   {
     // Read everything from [configName] up to the next [section].
-    return configLines
+    return ConfigLines
       .SkipWhile(l => !l.StartsWith($"[{configName}]", StringComparison.OrdinalIgnoreCase))
       .Skip(1)
       .TakeWhile(l => !l.StartsWith("[", StringComparison.OrdinalIgnoreCase))
