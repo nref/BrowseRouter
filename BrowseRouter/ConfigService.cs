@@ -15,7 +15,7 @@ public class ConfigService : IConfigService
   public ConfigService()
   {
     // Fix for self-contained publishing
-    this.ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
+    ConfigPath = Path.Combine(Path.GetDirectoryName(App.ExePath)!, "config.ini");
   }
   
   private IEnumerable<string>? _configLines = null;
@@ -34,7 +34,7 @@ public class ConfigService : IConfigService
 
   private NotifyPreference GetNotifyPreferenceCore()
   {
-    var notifyConfig = GetConfig("notify")
+    Dictionary<string, string> notifyConfig = GetConfig("notify")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -56,7 +56,7 @@ public class ConfigService : IConfigService
 
   private LogPreference GetLogPreferenceCore()
   {
-    var logConfig = GetConfig("log")
+    Dictionary<string, string> logConfig = GetConfig("log")
       .Select(SplitConfig)
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -73,19 +73,19 @@ public class ConfigService : IConfigService
       throw new InvalidOperationException($"The config file was not found: {ConfigPath}");
 
     // Read the browsers section into a dictionary.
-    var browsers = GetConfig("browsers")
+    Dictionary<string, Browser> browsers = GetConfig("browsers")
       .Select(SplitConfig)
       .Select(kvp => new Browser { Name = kvp.Key, Location = kvp.Value })
       .ToDictionary(b => b.Name);
 
-    if (!browsers.Any())
+    if (browsers.Count == 0)
     {
       // There weren't any configured browsers
       return new List<UrlPreference>();
     }
 
     // Read the url preferences
-    var urls = GetConfig(configType)
+    IEnumerable<UrlPreference> urls = GetConfig(configType)
       .Select(SplitConfig)
       .Select(kvp => new UrlPreference { UrlPattern = kvp.Key, Browser = browsers[kvp.Value] })
       .Where(up => up.Browser != null);
@@ -103,8 +103,8 @@ public class ConfigService : IConfigService
 
     // Poor mans INI file reading... Skip comment lines (TODO: support comments on other lines).
     return File.ReadAllLines(ConfigPath)
-          .Select(l => l.Trim())
-          .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(';') && !l.StartsWith('#'));
+      .Select(l => l.Trim())
+      .Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith(';') && !l.StartsWith('#'));
   }
 
   private IEnumerable<string> GetConfig(string configName)
@@ -122,7 +122,7 @@ public class ConfigService : IConfigService
   /// </summary>
   private KeyValuePair<string, string> SplitConfig(string configLine)
   {
-    var parts = configLine.Split(new[] { '=' }, 2);
+    string[] parts = configLine.Split('=', 2);
     return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim());
   }
 }

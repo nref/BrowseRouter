@@ -5,15 +5,15 @@ namespace BrowseRouter;
 
 public class DefaultBrowserService(INotifyService notifier)
 {
-  private const string AppName = "BrowseRouter";
-  private const string AppID = "BrowseRouter";
-  private const string AppDescription = "Opens a different brower based on the URL";
+  private const string _appName = "BrowseRouter";
+  private const string _appID = "BrowseRouter";
+  private const string _appDescription = "Opens a different brower based on the URL";
   private string AppIcon => App.ExePath + ",0";
   private string AppOpenUrlCommand => App.ExePath + " %1";
 
-  private string AppKey => $"SOFTWARE\\{AppID}";
-  private string UrlKey => $"SOFTWARE\\Classes\\{AppID}URL";
-  private string CapabilityKey => $"SOFTWARE\\{AppID}\\Capabilities";
+  private string AppKey => $"SOFTWARE\\{_appID}";
+  private string UrlKey => $"SOFTWARE\\Classes\\{_appID}URL";
+  private string CapabilityKey => $"SOFTWARE\\{_appID}\\Capabilities";
 
   private readonly RegistryKey? _registerKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\RegisteredApplications", true);
   private RegistryKey? AppRegKey => Registry.CurrentUser.OpenSubKey(AppKey);
@@ -40,7 +40,7 @@ public class DefaultBrowserService(INotifyService notifier)
 
   public async Task RegisterOrUnregisterAsync()
   {
-    var status = GetRegisterStatus();
+    RegisterStatus status = GetRegisterStatus();
 
     if (status == RegisterStatus.Unregistered)
     {
@@ -58,14 +58,14 @@ public class DefaultBrowserService(INotifyService notifier)
     {
       Unregister(); // Unregister the old path
       Register(); // Register with the new path
-      await notifier.NotifyAsync("Updated location.", $"{AppName} has been re-registered with a new path.");
+      await notifier.NotifyAsync("Updated location.", $"{_appName} has been re-registered with a new path.");
     }
   }
 
   public async Task RegisterAsync()
   {
     Register();
-    await notifier.NotifyAsync("Registered as a browser.", $"Please set {AppName} as the default browser in Settings.");
+    await notifier.NotifyAsync("Registered as a browser.", $"Please set {_appName} as the default browser in Settings.");
   }
 
   private void Register()
@@ -75,17 +75,17 @@ public class DefaultBrowserService(INotifyService notifier)
 
     RegisterCapabilities(appReg);
 
-    _registerKey?.SetValue(AppID, CapabilityKey);
+    _registerKey?.SetValue(_appID, CapabilityKey);
 
     HandleUrls();
 
     OpenSettings();
-    Log.Write($"Done. Please set {AppName} as the default browser in Settings.");
+    Log.Write($"Done. Please set {_appName} as the default browser in Settings.");
   }
 
   private static void OpenSettings() => Process.Start(new ProcessStartInfo
   {
-    FileName = $"ms-settings:defaultapps?registeredAppUser={AppName}",
+    FileName = $"ms-settings:defaultapps?registeredAppUser={_appName}",
     UseShellExecute = true
   });
 
@@ -93,15 +93,15 @@ public class DefaultBrowserService(INotifyService notifier)
   {
     // Register capabilities.
     RegistryKey? capabilityReg = appReg.CreateSubKey("Capabilities");
-    capabilityReg.SetValue("ApplicationName", AppName);
+    capabilityReg.SetValue("ApplicationName", _appName);
     capabilityReg.SetValue("ApplicationIcon", AppIcon);
-    capabilityReg.SetValue("ApplicationDescription", AppDescription);
+    capabilityReg.SetValue("ApplicationDescription", _appDescription);
 
     // Set up protocols we want to handle.
     RegistryKey? urlAssocReg = capabilityReg.CreateSubKey("URLAssociations");
-    urlAssocReg.SetValue("http", AppID + "URL");
-    urlAssocReg.SetValue("https", AppID + "URL");
-    urlAssocReg.SetValue("ftp", AppID + "URL");
+    urlAssocReg.SetValue("http", _appID + "URL");
+    urlAssocReg.SetValue("https", _appID + "URL");
+    urlAssocReg.SetValue("ftp", _appID + "URL");
   }
 
   /// <summary>
@@ -110,22 +110,22 @@ public class DefaultBrowserService(INotifyService notifier)
   private void HandleUrls()
   {
     RegistryKey? handlerReg = Registry.CurrentUser.CreateSubKey(UrlKey);
-    handlerReg.SetValue("", AppName);
-    handlerReg.SetValue("FriendlyTypeName", AppName);
+    handlerReg.SetValue("", _appName);
+    handlerReg.SetValue("FriendlyTypeName", _appName);
     handlerReg.CreateSubKey("shell\\open\\command").SetValue("", AppOpenUrlCommand);
   }
 
   public async Task UnregisterAsync()
   {
     Unregister();
-    await notifier.NotifyAsync("Unregistered as a browser.", $"{AppName} is no longer registered as a web browser.");
+    await notifier.NotifyAsync("Unregistered as a browser.", $"{_appName} is no longer registered as a web browser.");
   }
 
   private void Unregister()
   {
     Log.Write("Unregistering...");
     Try(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
-    Try(() => _registerKey?.DeleteValue(AppID));
+    Try(() => _registerKey?.DeleteValue(_appID));
     Try(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
     Log.Write("Done");
   }
