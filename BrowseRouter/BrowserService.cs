@@ -38,9 +38,9 @@ public class BrowserService(IConfigService config, INotifyService notifier)
       Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
 
       string name = GetAppName(path);
-      await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
-
       Process.Start(path, $"{args} \"{uri.OriginalString}\"");
+
+      await notifier.NotifyAsync($"Opened {name}", $"URL: {url}");
     }
     catch (Exception e)
     {
