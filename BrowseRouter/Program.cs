@@ -64,7 +64,8 @@ public static class Program
   private static async Task LaunchUrlAsyc(string url)
   {
     // Get the window title for whichever application is opening the URL.
-    string windowTitle = User32.GetActiveWindowTitle();
+    if (!ParentProcessUtilities.TryGetParentProcessTitle(out string windowTitle))
+      windowTitle = User32.GetActiveWindowTitle(); //if it didn't work we get the current foreground window name instead
 
     var configService = new ConfigService();
     Log.Preference = configService.GetLogPreference();
