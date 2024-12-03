@@ -6,3 +6,4 @@ publish
 Releases
 **/*.user
 **/*.crt
+.idea
