@@ -39,6 +39,8 @@ namespace BrowseRouter
 
         string name = GetAppName(path);
         await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
+        
+        path = Environment.ExpandEnvironmentVariables(path);
 
         Process.Start(path, $"{args} \"{uri.OriginalString}\"");
       }
