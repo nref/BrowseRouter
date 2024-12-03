@@ -25,7 +25,7 @@ namespace BrowseRouter
           return _exePath;
         }
 
-        string dir = AppDomain.CurrentDomain.BaseDirectory;
+        var dir = AppDomain.CurrentDomain.BaseDirectory;
         _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
         return _exePath;
       }

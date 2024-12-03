@@ -8,7 +8,7 @@ namespace BrowseRouter
     {
       pref = prefs.FirstOrDefault(pref =>
       {
-        (string domain, string pattern) = pref.GetDomainAndPattern(uri);
+        var (domain, pattern) = pref.GetDomainAndPattern(uri);
         return Regex.IsMatch(domain, pattern);
       })!;
 
@@ -17,13 +17,13 @@ namespace BrowseRouter
 
     public static (string, string) GetDomainAndPattern(this UrlPreference pref, Uri uri)
     {
-      string urlPattern = pref.UrlPattern;
+      var urlPattern = pref.UrlPattern;
 
       if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
       {
         // The domain from the INI file is a regex
-        string domain = uri.Authority + uri.AbsolutePath;
-        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+        var domain = uri.Authority + uri.AbsolutePath;
+        var pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
         return (domain, pattern);
       }
@@ -31,11 +31,11 @@ namespace BrowseRouter
       if (urlPattern.StartsWith('?') && urlPattern.EndsWith('?'))
       {
         // The domain from the INI file is a query filter
-        string domain = uri.Authority + uri.PathAndQuery;
-        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+        var domain = uri.Authority + uri.PathAndQuery;
+        var pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
         // Escape the input for regex; the only special character we support is a *
-        string regex = Regex.Escape(pattern);
+        var regex = Regex.Escape(pattern);
 
         // Unescape * as a wildcard.
         pattern = $"^{regex.Replace("\\*", ".*")}$";
@@ -45,13 +45,13 @@ namespace BrowseRouter
 
       {
         // We're only checking the domain.
-        string domain = uri.Authority;
+        var domain = uri.Authority;
 
         // Escape the input for regex; the only special character we support is a *
-        string regex = Regex.Escape(urlPattern);
+        var regex = Regex.Escape(urlPattern);
 
         // Unescape * as a wildcard.
-        string pattern = $"^{regex.Replace("\\*", ".*")}$";
+        var pattern = $"^{regex.Replace("\\*", ".*")}$";
 
         return (domain, pattern);
       }
@@ -61,7 +61,7 @@ namespace BrowseRouter
     {
       pref = prefs.FirstOrDefault(pref =>
       {
-        (string domain, string pattern) = pref.GetDomainAndPattern(windowTitle);
+        var (domain, pattern) = pref.GetDomainAndPattern(windowTitle);
         return Regex.IsMatch(domain, pattern);
       })!;
 
@@ -70,12 +70,12 @@ namespace BrowseRouter
 
     public static (string, string) GetDomainAndPattern(this UrlPreference pref, string windowTitle)
     {
-      string urlPattern = pref.UrlPattern;
+      var urlPattern = pref.UrlPattern;
 
       if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
       {
         // The window title from the INI file is a regex
-        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+        var pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
         return (windowTitle, pattern);
       }
@@ -83,10 +83,10 @@ namespace BrowseRouter
       {
         // We're only checking the window title.
         // Escape the input for regex; the only special character we support is a *
-        string regex = Regex.Escape(urlPattern);
+        var regex = Regex.Escape(urlPattern);
 
         // Unescape * as a wildcard.
-        string pattern = $"^{regex.Replace("\\*", ".*")}$";
+        var pattern = $"^{regex.Replace("\\*", ".*")}$";
 
         return (windowTitle, pattern);
       }

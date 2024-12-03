@@ -14,10 +14,10 @@ namespace BrowseRouter.Interop.Win32
 
     public static string GetActiveWindowTitle()
     {
-      string result = "";
+      var result = "";
       const int nChars = 256;
       StringBuilder buff = new(nChars);
-      nint handle = GetForegroundWindow();
+      var handle = GetForegroundWindow();
 
       if (GetWindowText(handle, buff, nChars) > 0)
       {

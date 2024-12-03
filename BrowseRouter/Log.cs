@@ -10,7 +10,7 @@ namespace BrowseRouter
     {
       if (!Preference.IsEnabled) { return; }
 
-      string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
+      var msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
       Console.WriteLine(msg);
 
       EnsureLogDirExists();
@@ -19,7 +19,7 @@ namespace BrowseRouter
 
     private static void EnsureLogDirExists()
     {
-      string? parent = Path.GetDirectoryName(Preference.File);
+      var parent = Path.GetDirectoryName(Preference.File);
       if (parent is not null)
       {
         Directory.CreateDirectory(parent);
@@ -28,7 +28,7 @@ namespace BrowseRouter
 
     private static void TryWrite(string message)
     {
-      foreach (int i in Enumerable.Range(0, 10))
+      foreach (var i in Enumerable.Range(0, 10))
       {
         try
         {

@@ -13,7 +13,7 @@ namespace BrowseRouter
       }
 
       // Process each URL in the arguments list.
-      foreach (string arg in args)
+      foreach (var arg in args)
       {
         await RunAsync(arg.Trim());
       }
@@ -21,9 +21,9 @@ namespace BrowseRouter
 
     private static async Task RunAsync(string arg)
     {
-      Func<bool> getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
+      var getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
 
-      bool isOption = getIsOption();
+      var isOption = getIsOption();
       while (getIsOption())
       {
         arg = arg[1..];
@@ -64,12 +64,12 @@ namespace BrowseRouter
     private static async Task LaunchUrlAsyc(string url)
     {
       // Get the window title for whichever application is opening the URL.
-      string windowTitle = User32.GetActiveWindowTitle();
+      var windowTitle = User32.GetActiveWindowTitle();
 
       var configService = new ConfigService();
       Log.Preference = configService.GetLogPreference();
 
-      NotifyPreference notifyPref = configService.GetNotifyPreference();
+      var notifyPref = configService.GetNotifyPreference();
       INotifyService notifier = notifyPref.IsEnabled switch
       {
         true => new NotifyService(),

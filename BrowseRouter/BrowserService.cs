@@ -10,18 +10,18 @@ namespace BrowseRouter
       {
         Log.Write($"Attempting to launch \"{url}\" for \"{windowTitle}\"");
 
-        IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences("urls");
-        IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences("sources");
-        Uri uri = UriFactory.Get(url);
+        var urlPreferences = config.GetUrlPreferences("urls");
+        var sourcePreferences = config.GetUrlPreferences("sources");
+        var uri = UriFactory.Get(url);
 
         UrlPreference? pref = null;
-        if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))
+        if (sourcePreferences.TryGetPreference(windowTitle, out var sourcePref))
         {
           Log.Write($"Found source preference {sourcePref}");
           pref = sourcePref;
         }
 
-        else if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
+        else if (urlPreferences.TryGetPreference(uri, out var urlPref))
         {
           Log.Write($"Found URL preference {urlPref}");
           pref = urlPref;
@@ -33,11 +33,11 @@ namespace BrowseRouter
           return;
         }
 
-        (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
+        var (path, args) = Executable.GetPathAndArgs(pref.Browser.Location);
 
         Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
 
-        string name = GetAppName(path);
+        var name = GetAppName(path);
         await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
         
         path = Environment.ExpandEnvironmentVariables(path);
@@ -53,7 +53,7 @@ namespace BrowseRouter
     private static string GetAppName(string path)
     {
       // Get just the app name from the exe at path
-      string name = Path.GetFileNameWithoutExtension(path);
+      var name = Path.GetFileNameWithoutExtension(path);
       // make first letter uppercase
       name = name[0].ToString().ToUpper() + name[1..];
       return name;

@@ -31,9 +31,9 @@ namespace BrowseRouter
     public async Task NotifyAsync(string title, string message)
     {
       // Create a dummy window handle
-      nint hWnd = CreateDummyWindow();
+      var hWnd = CreateDummyWindow();
 
-      NotifyIconData nid = GetNid(hWnd, title, message);
+      var nid = GetNid(hWnd, title, message);
 
       // Add the icon. This also adds it to the system tray.
       Shell32.Shell_NotifyIcon(Shell32.NIM_ADD, ref nid);
@@ -45,7 +45,7 @@ namespace BrowseRouter
       // If we exit too early, the title has a GUID rather than the app name, and no icon.
       await Task.Delay(500);
 
-      bool isWindows11 = Environment.OSVersion.Version.Build > 22000;
+      var isWindows11 = Environment.OSVersion.Version.Build > 22000;
 
       if (isWindows11)
         return;

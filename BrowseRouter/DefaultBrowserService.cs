@@ -40,7 +40,7 @@ namespace BrowseRouter
 
     public async Task RegisterOrUnregisterAsync()
     {
-      RegisterStatus status = GetRegisterStatus();
+      var status = GetRegisterStatus();
 
       if (status == RegisterStatus.Unregistered)
       {
@@ -71,7 +71,7 @@ namespace BrowseRouter
     private void Register()
     {
       Log.Write("Registering...");
-      RegistryKey? appReg = Registry.CurrentUser.CreateSubKey(AppKey);
+      var appReg = Registry.CurrentUser.CreateSubKey(AppKey);
 
       RegisterCapabilities(appReg);
 
@@ -92,13 +92,13 @@ namespace BrowseRouter
     private void RegisterCapabilities(RegistryKey appReg)
     {
       // Register capabilities.
-      RegistryKey? capabilityReg = appReg.CreateSubKey("Capabilities");
+      var capabilityReg = appReg.CreateSubKey("Capabilities");
       capabilityReg.SetValue("ApplicationName", _appName);
       capabilityReg.SetValue("ApplicationIcon", AppIcon);
       capabilityReg.SetValue("ApplicationDescription", _appDescription);
 
       // Set up protocols we want to handle.
-      RegistryKey? urlAssocReg = capabilityReg.CreateSubKey("URLAssociations");
+      var urlAssocReg = capabilityReg.CreateSubKey("URLAssociations");
       urlAssocReg.SetValue("http", _appID + "URL");
       urlAssocReg.SetValue("https", _appID + "URL");
       urlAssocReg.SetValue("ftp", _appID + "URL");
@@ -109,7 +109,7 @@ namespace BrowseRouter
     /// </summary>
     private void HandleUrls()
     {
-      RegistryKey? handlerReg = Registry.CurrentUser.CreateSubKey(UrlKey);
+      var handlerReg = Registry.CurrentUser.CreateSubKey(UrlKey);
       handlerReg.SetValue("", _appName);
       handlerReg.SetValue("FriendlyTypeName", _appName);
       handlerReg.CreateSubKey("shell\\open\\command").SetValue("", AppOpenUrlCommand);

@@ -10,30 +10,17 @@
     {
       var parts = s.Split("|");
       s = parts[0];
-      int q1 = s.IndexOf('"', 0);
-      int q2 = s.IndexOf('"', q1 + 1);
+      var q1 = s.IndexOf('"', 0);
+      var q2 = s.IndexOf('"', q1 + 1);
 
       // If browser path is quoted
-      if (q1 >= 0 && q2 > 0)
-      {
-        // The quoted text is the executable, the rest command-line args.
-        string path = s[(q1 + 1)..q2];
-        string args = s[(q2 + 1)..].Trim();
-        if (parts.Length > 1)
-        {
-          return (path, parts[1] + " " + args);
-        }
-
-        return (path, args);
-      }
+      if (q1 < 0 || q2 <= 0) return parts.Length > 1 ? (s, parts[1]) : (s, string.Empty);
+      // The quoted text is the executable, the rest command-line args.
+      var path = s[(q1 + 1)..q2];
+      var args = s[(q2 + 1)..].Trim();
+      return parts.Length > 1 ? (path, parts[1] + " " + args) : (path, args);
 
       // The single executable without any other arguments.
-      if (parts.Length > 1)
-      {
-        return (s, parts[1]);
-      }
-
-      return (s, string.Empty);
     }
   }
 }

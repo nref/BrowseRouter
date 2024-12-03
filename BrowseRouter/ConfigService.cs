@@ -40,10 +40,10 @@
 
       return new NotifyPreference
       {
-        IsEnabled = notifyConfig.TryGetValue("enabled", out string? enabled) switch
+        IsEnabled = notifyConfig.TryGetValue("enabled", out var enabled) switch
         {
           false => true,
-          true => bool.TryParse(enabled, out bool isEnabled) && isEnabled,
+          true => bool.TryParse(enabled, out var isEnabled) && isEnabled,
         }
       };
     }
@@ -62,8 +62,8 @@
 
       return new LogPreference
       {
-        IsEnabled = logConfig.TryGetValue("enabled", out string? enabled) && bool.TryParse(enabled, out bool isEnabled) && isEnabled,
-        File = logConfig.TryGetValue("file", out string? path) ? path.Replace("\"", "") : LogPreference.DefaultLogFile,
+        IsEnabled = logConfig.TryGetValue("enabled", out var enabled) && bool.TryParse(enabled, out var isEnabled) && isEnabled,
+        File = logConfig.TryGetValue("file", out var path) ? path.Replace("\"", "") : LogPreference.DefaultLogFile,
       };
     }
 
