@@ -38,6 +38,8 @@ public class BrowserService(IConfigService config, INotifyService notifier)
       Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
 
       string name = GetAppName(path);
+      
+      path = Environment.ExpandEnvironmentVariables(path);
 
       if (!Actions.TryRun(() => Process.Start(path, $"{args} \"{uri.OriginalString}\"")))
       {
