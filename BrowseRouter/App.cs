@@ -1,33 +1,34 @@
 ﻿using System.Reflection;
 
-namespace BrowseRouter;
-
-public static class App
+namespace BrowseRouter
 {
-  private static string? _exePath;
-
-  public static string ExePath
+  public static class App
   {
-    get
-    {
-      if (!string.IsNullOrEmpty(_exePath))
-      {
-        return _exePath;
-      }
+    private static string? _exePath;
 
-      var assembly = Assembly.GetExecutingAssembly();
-      // .NET Core returns BrowserSettings.dll but we need BrowserSettings.exe
-      _exePath = assembly.Location
+    public static string ExePath
+    {
+      get
+      {
+        if (!string.IsNullOrEmpty(_exePath))
+        {
+          return _exePath;
+        }
+
+        var assembly = Assembly.GetExecutingAssembly();
+        // .NET Core returns BrowserSettings.dll but we need BrowserSettings.exe
+        _exePath = assembly.Location
           .Replace(".dll", ".exe");
 
-      if (!string.IsNullOrEmpty(_exePath))
-      {
+        if (!string.IsNullOrEmpty(_exePath))
+        {
+          return _exePath;
+        }
+
+        string dir = AppDomain.CurrentDomain.BaseDirectory;
+        _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
         return _exePath;
       }
-
-      string dir = AppDomain.CurrentDomain.BaseDirectory;
-      _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
-      return _exePath;
     }
   }
 }

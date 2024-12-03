@@ -1,94 +1,95 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace BrowseRouter;
-
-public static class UrlPreferenceExtensions
+namespace BrowseRouter
 {
-  public static bool TryGetPreference(this IEnumerable<UrlPreference> prefs, Uri uri, out UrlPreference pref)
+  public static class UrlPreferenceExtensions
   {
-    pref = prefs.FirstOrDefault(pref =>
+    public static bool TryGetPreference(this IEnumerable<UrlPreference> prefs, Uri uri, out UrlPreference pref)
     {
-      (string domain, string pattern) = pref.GetDomainAndPattern(uri);
-      return Regex.IsMatch(domain, pattern);
-    })!;
+      pref = prefs.FirstOrDefault(pref =>
+      {
+        (string domain, string pattern) = pref.GetDomainAndPattern(uri);
+        return Regex.IsMatch(domain, pattern);
+      })!;
 
-    return pref != null;
-  }
-
-  public static (string, string) GetDomainAndPattern(this UrlPreference pref, Uri uri)
-  {
-    string urlPattern = pref.UrlPattern;
-
-    if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
-    {
-      // The domain from the INI file is a regex
-      string domain = uri.Authority + uri.AbsolutePath;
-      string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
-
-      return (domain, pattern);
+      return pref != null;
     }
 
-    if (urlPattern.StartsWith('?') && urlPattern.EndsWith('?'))
+    public static (string, string) GetDomainAndPattern(this UrlPreference pref, Uri uri)
     {
-      // The domain from the INI file is a query filter
-      string domain = uri.Authority + uri.PathAndQuery;
-      string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+      string urlPattern = pref.UrlPattern;
 
-      // Escape the input for regex; the only special character we support is a *
-      string regex = Regex.Escape(pattern);
+      if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
+      {
+        // The domain from the INI file is a regex
+        string domain = uri.Authority + uri.AbsolutePath;
+        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
-      // Unescape * as a wildcard.
-      pattern = $"^{regex.Replace("\\*", ".*")}$";
+        return (domain, pattern);
+      }
 
-      return (domain, pattern);
+      if (urlPattern.StartsWith('?') && urlPattern.EndsWith('?'))
+      {
+        // The domain from the INI file is a query filter
+        string domain = uri.Authority + uri.PathAndQuery;
+        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
+
+        // Escape the input for regex; the only special character we support is a *
+        string regex = Regex.Escape(pattern);
+
+        // Unescape * as a wildcard.
+        pattern = $"^{regex.Replace("\\*", ".*")}$";
+
+        return (domain, pattern);
+      }
+
+      {
+        // We're only checking the domain.
+        string domain = uri.Authority;
+
+        // Escape the input for regex; the only special character we support is a *
+        string regex = Regex.Escape(urlPattern);
+
+        // Unescape * as a wildcard.
+        string pattern = $"^{regex.Replace("\\*", ".*")}$";
+
+        return (domain, pattern);
+      }
     }
 
+    public static bool TryGetPreference(this IEnumerable<UrlPreference> prefs, string windowTitle, out UrlPreference pref)
     {
-      // We're only checking the domain.
-      string domain = uri.Authority;
+      pref = prefs.FirstOrDefault(pref =>
+      {
+        (string domain, string pattern) = pref.GetDomainAndPattern(windowTitle);
+        return Regex.IsMatch(domain, pattern);
+      })!;
 
-      // Escape the input for regex; the only special character we support is a *
-      string regex = Regex.Escape(urlPattern);
-
-      // Unescape * as a wildcard.
-      string pattern = $"^{regex.Replace("\\*", ".*")}$";
-
-      return (domain, pattern);
-    }
-  }
-
-  public static bool TryGetPreference(this IEnumerable<UrlPreference> prefs, string windowTitle, out UrlPreference pref)
-  {
-    pref = prefs.FirstOrDefault(pref =>
-    {
-      (string domain, string pattern) = pref.GetDomainAndPattern(windowTitle);
-      return Regex.IsMatch(domain, pattern);
-    })!;
-
-    return pref != null;
-  }
-
-  public static (string, string) GetDomainAndPattern(this UrlPreference pref, string windowTitle)
-  {
-    string urlPattern = pref.UrlPattern;
-
-    if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
-    {
-      // The window title from the INI file is a regex
-      string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
-
-      return (windowTitle, pattern);
+      return pref != null;
     }
 
+    public static (string, string) GetDomainAndPattern(this UrlPreference pref, string windowTitle)
     {
-      // We're only checking the window title.
-      // Escape the input for regex; the only special character we support is a *
-      string regex = Regex.Escape(urlPattern);
+      string urlPattern = pref.UrlPattern;
 
-      // Unescape * as a wildcard.
-      string pattern = $"^{regex.Replace("\\*", ".*")}$";
+      if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
+      {
+        // The window title from the INI file is a regex
+        string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
-      return (windowTitle, pattern);
+        return (windowTitle, pattern);
+      }
+
+      {
+        // We're only checking the window title.
+        // Escape the input for regex; the only special character we support is a *
+        string regex = Regex.Escape(urlPattern);
+
+        // Unescape * as a wildcard.
+        string pattern = $"^{regex.Replace("\\*", ".*")}$";
+
+        return (windowTitle, pattern);
+      }
     }
   }
 }

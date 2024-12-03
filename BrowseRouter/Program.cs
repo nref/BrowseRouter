@@ -1,89 +1,89 @@
 ﻿using BrowseRouter.Interop.Win32;
 
-namespace BrowseRouter;
-
-public static class Program
+namespace BrowseRouter
 {
-  private static async Task Main(string[] args)
+  public static class Program
   {
-    if (args.Length == 0)
+    private static async Task Main(string[] args)
     {
-      await new DefaultBrowserService(new NotifyService()).RegisterOrUnregisterAsync();
-      return;
+      if (args.Length == 0)
+      {
+        await new DefaultBrowserService(new NotifyService()).RegisterOrUnregisterAsync();
+        return;
+      }
+
+      // Process each URL in the arguments list.
+      foreach (string arg in args)
+      {
+        await RunAsync(arg.Trim());
+      }
     }
 
-    // Process each URL in the arguments list.
-    foreach (string arg in args)
+    private static async Task RunAsync(string arg)
     {
-      await RunAsync(arg.Trim());
-    }
-  }
+      Func<bool> getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
 
-  private static async Task RunAsync(string arg)
-  {
-    Func<bool> getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
+      bool isOption = getIsOption();
+      while (getIsOption())
+      {
+        arg = arg[1..];
+      }
 
-    bool isOption = getIsOption();
-    while (getIsOption())
-    {
-      arg = arg[1..];
-    }
+      if (isOption)
+      {
+        await RunOption(arg);
+        return;
+      }
 
-    if (isOption)
-    {
-      await RunOption(arg);
-      return;
+      await LaunchUrlAsyc(arg);
     }
 
-    await LaunchUrlAsyc(arg);
-  }
-
-  private static async Task<bool> RunOption(string arg)
-  {
-    if (string.Equals(arg, "h") || string.Equals(arg, "help"))
+    private static async Task<bool> RunOption(string arg)
     {
-      ShowHelp();
-      return true;
+      if (string.Equals(arg, "h") || string.Equals(arg, "help"))
+      {
+        ShowHelp();
+        return true;
+      }
+
+      if (string.Equals(arg, "r") || string.Equals(arg, "register"))
+      {
+        await new DefaultBrowserService(new NotifyService()).RegisterAsync();
+        return true;
+      }
+
+      if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
+      {
+        await new DefaultBrowserService(new NotifyService()).UnregisterAsync();
+        return true;
+      }
+
+      return false;
     }
 
-    if (string.Equals(arg, "r") || string.Equals(arg, "register"))
+    private static async Task LaunchUrlAsyc(string url)
     {
-      await new DefaultBrowserService(new NotifyService()).RegisterAsync();
-      return true;
+      // Get the window title for whichever application is opening the URL.
+      string windowTitle = User32.GetActiveWindowTitle();
+
+      var configService = new ConfigService();
+      Log.Preference = configService.GetLogPreference();
+
+      NotifyPreference notifyPref = configService.GetNotifyPreference();
+      INotifyService notifier = notifyPref.IsEnabled switch
+      {
+        true => new NotifyService(),
+        false => new EmptyNotifyService()
+      };
+
+      await new BrowserService(configService, notifier).LaunchAsync(url, windowTitle);
     }
 
-    if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
+    private static void ShowHelp()
     {
-      await new DefaultBrowserService(new NotifyService()).UnregisterAsync();
-      return true;
-    }
-
-    return false;
-  }
-
-  private static async Task LaunchUrlAsyc(string url)
-  {
-    // Get the window title for whichever application is opening the URL.
-    string windowTitle = User32.GetActiveWindowTitle();
-
-    var configService = new ConfigService();
-    Log.Preference = configService.GetLogPreference();
-
-    NotifyPreference notifyPref = configService.GetNotifyPreference();
-    INotifyService notifier = notifyPref.IsEnabled switch
-    {
-      true => new NotifyService(),
-      false => new EmptyNotifyService()
-    };
-
-    await new BrowserService(configService, notifier).LaunchAsync(url, windowTitle);
-  }
-
-  private static void ShowHelp()
-  {
-    Log.Write
-    (
-$@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the URL.
+      Log.Write
+      (
+        $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the URL.
 
    https://github.com/nref/BrowseRouter
 
@@ -107,6 +107,7 @@ $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on t
 
     BrowseRouter.exe https://example.org/ [...more URLs]
         Launch one or more URLs"
-    );
+      );
+    }
   }
 }

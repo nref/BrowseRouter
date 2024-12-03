@@ -1,6 +1,7 @@
-﻿namespace BrowseRouter;
-
-public class NotifyPreference
+﻿namespace BrowseRouter
 {
-  public bool IsEnabled { get; set; }
+  public class NotifyPreference
+  {
+    public bool IsEnabled { get; set; }
+  }
 }

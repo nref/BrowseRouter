@@ -1,59 +1,60 @@
 ﻿using System.Diagnostics;
 
-namespace BrowseRouter;
-
-public class BrowserService(IConfigService config, INotifyService notifier)
+namespace BrowseRouter
 {
-  public async Task LaunchAsync(string url, string windowTitle)
+  public class BrowserService(IConfigService config, INotifyService notifier)
   {
-    try
+    public async Task LaunchAsync(string url, string windowTitle)
     {
-      Log.Write($"Attempting to launch \"{url}\" for \"{windowTitle}\"");
-
-      IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences("urls");
-      IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences("sources");
-      Uri uri = UriFactory.Get(url);
-
-      UrlPreference? pref = null;
-      if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))
+      try
       {
-        Log.Write($"Found source preference {sourcePref}");
-        pref = sourcePref;
-      }
+        Log.Write($"Attempting to launch \"{url}\" for \"{windowTitle}\"");
 
-      else if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
+        IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences("urls");
+        IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences("sources");
+        Uri uri = UriFactory.Get(url);
+
+        UrlPreference? pref = null;
+        if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))
+        {
+          Log.Write($"Found source preference {sourcePref}");
+          pref = sourcePref;
+        }
+
+        else if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
+        {
+          Log.Write($"Found URL preference {urlPref}");
+          pref = urlPref;
+        }
+
+        if (pref == null)
+        {
+          Log.Write($"Unable to find a browser matching \"{url}\".");
+          return;
+        }
+
+        (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
+
+        Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
+
+        string name = GetAppName(path);
+        await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
+
+        Process.Start(path, $"{args} \"{uri.OriginalString}\"");
+      }
+      catch (Exception e)
       {
-        Log.Write($"Found URL preference {urlPref}");
-        pref = urlPref;
+        Log.Write($"{e}");
       }
-
-      if (pref == null)
-      {
-        Log.Write($"Unable to find a browser matching \"{url}\".");
-        return;
-      }
-
-      (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
-
-      Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
-
-      string name = GetAppName(path);
-      await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
-
-      Process.Start(path, $"{args} \"{uri.OriginalString}\"");
     }
-    catch (Exception e)
+
+    private static string GetAppName(string path)
     {
-      Log.Write($"{e}");
+      // Get just the app name from the exe at path
+      string name = Path.GetFileNameWithoutExtension(path);
+      // make first letter uppercase
+      name = name[0].ToString().ToUpper() + name[1..];
+      return name;
     }
-  }
-
-  private static string GetAppName(string path)
-  {
-    // Get just the app name from the exe at path
-    string name = Path.GetFileNameWithoutExtension(path);
-    // make first letter uppercase
-    name = name[0].ToString().ToUpper() + name[1..];
-    return name;
   }
 }

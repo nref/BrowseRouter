@@ -1,43 +1,44 @@
 ﻿using System.Diagnostics;
 
-namespace BrowseRouter;
-
-public static class Log
+namespace BrowseRouter
 {
-  public static LogPreference Preference { get; set; } = new LogPreference();
-
-  public static void Write(string message)
+  public static class Log
   {
-    if (!Preference.IsEnabled) { return; }
+    public static LogPreference Preference { get; set; } = new LogPreference();
 
-    string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
-    Console.WriteLine(msg);
-
-    EnsureLogDirExists();
-    TryWrite(msg);
-  }
-
-  private static void EnsureLogDirExists()
-  {
-    string? parent = Path.GetDirectoryName(Preference.File);
-    if (parent is not null)
+    public static void Write(string message)
     {
-      Directory.CreateDirectory(parent);
+      if (!Preference.IsEnabled) { return; }
+
+      string msg = $"{DateTime.Now} {nameof(BrowseRouter)}: {message}";
+      Console.WriteLine(msg);
+
+      EnsureLogDirExists();
+      TryWrite(msg);
     }
-  }
 
-  private static void TryWrite(string message)
-  {
-    foreach (int i in Enumerable.Range(0, 10))
+    private static void EnsureLogDirExists()
     {
-      try
+      string? parent = Path.GetDirectoryName(Preference.File);
+      if (parent is not null)
       {
-        using var writer = new StreamWriter(Preference.File, append: true);
-        writer.WriteLine(message);
-        return;
+        Directory.CreateDirectory(parent);
       }
-      catch (Exception)
+    }
+
+    private static void TryWrite(string message)
+    {
+      foreach (int i in Enumerable.Range(0, 10))
       {
+        try
+        {
+          using var writer = new StreamWriter(Preference.File, append: true);
+          writer.WriteLine(message);
+          return;
+        }
+        catch (Exception)
+        {
+        }
       }
     }
   }

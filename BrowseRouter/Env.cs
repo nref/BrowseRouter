@@ -1,6 +1,7 @@
-﻿namespace BrowseRouter;
-
-public static class Env
+﻿namespace BrowseRouter
 {
-  public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+  public static class Env
+  {
+    public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+  }
 }

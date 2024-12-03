@@ -1,17 +1,18 @@
-﻿namespace BrowseRouter;
-
-public static class UriFactory
+﻿namespace BrowseRouter
 {
-  public static Uri Get(string url)
+  public static class UriFactory
   {
-    try
+    public static Uri Get(string url)
     {
-      return new Uri(url);
-    }
-    catch (UriFormatException)
-    {
-      // Try to prepend https when given an incomplete URI e.g. "google.com"
-      return new Uri($"https://{url}");
+      try
+      {
+        return new Uri(url);
+      }
+      catch (UriFormatException)
+      {
+        // Try to prepend https when given an incomplete URI e.g. "google.com"
+        return new Uri($"https://{url}");
+      }
     }
   }
 }
