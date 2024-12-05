@@ -124,20 +124,9 @@ public class DefaultBrowserService(INotifyService notifier)
   private void Unregister()
   {
     Log.Write("Unregistering...");
-    Try(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
-    Try(() => _registerKey?.DeleteValue(_appID));
-    Try(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
+    Actions.TryRun(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
+    Actions.TryRun(() => _registerKey?.DeleteValue(_appID));
+    Actions.TryRun(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
     Log.Write("Done");
-  }
-
-  private static void Try(Action a)
-  {
-    try
-    {
-      a();
-    }
-    catch
-    {
-    }
   }
 }

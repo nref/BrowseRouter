@@ -38,9 +38,14 @@ public class BrowserService(IConfigService config, INotifyService notifier)
       Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
 
       string name = GetAppName(path);
-      await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
 
-      Process.Start(path, $"{args} \"{uri.OriginalString}\"");
+      if (!Actions.TryRun(() => Process.Start(path, $"{args} \"{uri.OriginalString}\"")))
+      {
+        await notifier.NotifyAsync($"Error", $"Could not open {name}. Please check the log for more details.");
+        return;
+      }
+
+      await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
     }
     catch (Exception e)
     {
