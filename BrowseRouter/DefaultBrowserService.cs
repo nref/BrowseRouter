@@ -9,7 +9,7 @@ public class DefaultBrowserService(INotifyService notifier)
   private const string _appID = "BrowseRouter";
   private const string _appDescription = "Opens a different brower based on the URL";
   private string AppIcon => App.ExePath + ",0";
-  private string AppOpenUrlCommand => $"{App.ExePath} %1".Quote();
+  private string AppOpenUrlCommand => $"{App.ExePath.Quote()} %1";
 
   private string AppKey => $"SOFTWARE\\{_appID}";
   private string UrlKey => $"SOFTWARE\\Classes\\{_appID}URL";
