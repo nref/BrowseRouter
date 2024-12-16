@@ -8,7 +8,7 @@ public static class Program
   {
     if (args.Length == 0)
     {
-      await new DefaultBrowserService(new NotifyService()).RegisterOrUnregisterAsync();
+      await new DefaultBrowserService(new NotifyService(false)).RegisterOrUnregisterAsync();
       return;
     }
 
@@ -48,13 +48,13 @@ public static class Program
 
     if (string.Equals(arg, "r") || string.Equals(arg, "register"))
     {
-      await new DefaultBrowserService(new NotifyService()).RegisterAsync();
+      await new DefaultBrowserService(new NotifyService(false)).RegisterAsync();
       return true;
     }
 
     if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
     {
-      await new DefaultBrowserService(new NotifyService()).UnregisterAsync();
+      await new DefaultBrowserService(new NotifyService(false)).UnregisterAsync();
       return true;
     }
 
@@ -72,7 +72,7 @@ public static class Program
     NotifyPreference notifyPref = configService.GetNotifyPreference();
     INotifyService notifier = notifyPref.IsEnabled switch
     {
-      true => new NotifyService(),
+      true => new NotifyService(notifyPref.IsSilent),
       false => new EmptyNotifyService()
     };
 
