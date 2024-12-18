@@ -9,7 +9,7 @@ public class DefaultBrowserService(INotifyService notifier)
   private const string _appID = "BrowseRouter";
   private const string _appDescription = "Opens a different brower based on the URL";
   private string AppIcon => App.ExePath + ",0";
-  private string AppOpenUrlCommand => App.ExePath + " %1";
+  private string AppOpenUrlCommand => $"{App.ExePath.Quote()} %1";
 
   private string AppKey => $"SOFTWARE\\{_appID}";
   private string UrlKey => $"SOFTWARE\\Classes\\{_appID}URL";
@@ -124,20 +124,9 @@ public class DefaultBrowserService(INotifyService notifier)
   private void Unregister()
   {
     Log.Write("Unregistering...");
-    Try(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
-    Try(() => _registerKey?.DeleteValue(_appID));
-    Try(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
+    Actions.TryRun(() => Registry.CurrentUser.DeleteSubKeyTree(AppKey, false));
+    Actions.TryRun(() => _registerKey?.DeleteValue(_appID));
+    Actions.TryRun(() => Registry.CurrentUser.DeleteSubKeyTree(UrlKey));
     Log.Write("Done");
-  }
-
-  private static void Try(Action a)
-  {
-    try
-    {
-      a();
-    }
-    catch
-    {
-    }
   }
 }

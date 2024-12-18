@@ -1,7 +1,7 @@
 # BrowseRouter 
 
 <p align="center">
-    <img src="https://github.com/nref/BrowseRouter/blob/master/BrowseRouter/logo.png" width="256">
+    <img src="https://github.com/nref/BrowseRouter/blob/main/BrowseRouter/logo.png" width="256">
 </p>
 
 In Windows, launch a different browser depending on the url.

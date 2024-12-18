@@ -40,11 +40,16 @@ public class ConfigService : IConfigService
 
     return new NotifyPreference
     {
-      IsEnabled = notifyConfig.TryGetValue("enabled", out string? enabled) switch
-      {
-        false => true,
-        true => bool.TryParse(enabled, out bool isEnabled) && isEnabled,
-      }
+      IsEnabled = notifyConfig.TryGetValue("enabled", out string? enabled) ?
+                    bool.TryParse(enabled, out bool isEnabled) ?
+                      isEnabled :
+                      NotifyPreference.IsEnabledDefaultValue :
+                    NotifyPreference.IsEnabledDefaultValue,
+      IsSilent = notifyConfig.TryGetValue("silent", out string? silent) ?
+                    bool.TryParse(silent, out bool isSilent) ?
+                      isSilent :
+                      NotifyPreference.IsSilentDefaultValue :
+                    NotifyPreference.IsSilentDefaultValue
     };
   }
 
