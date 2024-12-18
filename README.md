@@ -156,9 +156,9 @@ Slack | Test* = chrome
 
     Then clicking a link in Notepad (end of the windows title ending with " - Notepad" with the process named "notepad") will open the link in Firefox, regardless of the URL.
     
-- Wildcards and full regular expressions may be used to match source window titles and process name the same way urls are. [See Urls section][Urls].
+- Wildcards and full regular expressions may be used to match source window titles and process name the same way urls are. [See Urls section](#Urls).
 
-- Sources preferences takes precedence over all URls preferences, so in the case of a conflict between a source preference and a URL preference, the source preference wins.
+- Sources preferences takes precedence over all URLs preferences, so in the case of a conflict between a source preference and a URL preference, the source preference wins.
 
 ### Urls
 
