@@ -146,7 +146,10 @@ These tag will be replaced by their corresponding value in the URL :
 - `{path}` the path of the URL, might be only `/` if the link targets the root of the domain
 - `{query}` the query of the URL with the leading `?`, might be blank if not present in the URL
 - `{fragment}` the fragment of the URL with the leading `#`, might be blank if not present in the URL
-For example if you want a browser which strip the query from the opened links, you can add this line: `noQueryFF = "firefox.exe" "{authority}{path}{fragment}"`
+
+For example if you want a browser which strip the query from the opened links, you can add this line: 
+`noQueryFF = "firefox.exe" "{authority}{path}{fragment}"`
+
 [More details and example about URI composition is available here!](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs)
 
 ### Sources
