@@ -17,7 +17,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Runs on Windows                     | ✅                                    | ✅                                  |
 | Runs on macOS                       | ❌                                    | ✅                                  |
 | Runs on Linux                       | ❌                                    | ✅                                  |
-| Detect installed browsers           | ❌                                    | ✅                                  |
+| Detects installed browsers          | ❌                                    | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
 | Configuration                       | via `config.ini`                      | via GUI                              |
 
