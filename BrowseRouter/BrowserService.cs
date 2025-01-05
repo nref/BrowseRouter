@@ -34,9 +34,9 @@ public class BrowserService(IConfigService config, INotifyService notifier)
         return;
       }
 
-      (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
+      (string path, string args) = Args.SplitPathAndArgs(pref.Browser.Location);
 
-      args = Executable.FormatArguments(args, uri);
+      args = Args.Format(args, uri);
 
       Log.Write($"Launching {path} with args \"{args}\"");
 

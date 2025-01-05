@@ -1,2 +1,3 @@
 global using BrowseRouter;
-global using NUnit.Framework;
+global using Xunit;
+global using FluentAssertions;
