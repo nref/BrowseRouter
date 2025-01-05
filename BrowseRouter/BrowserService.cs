@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 
 namespace BrowseRouter;
 
@@ -35,13 +36,15 @@ public class BrowserService(IConfigService config, INotifyService notifier)
 
       (string path, string args) = Executable.GetPathAndArgs(pref.Browser.Location);
 
-      Log.Write($"Launching {path} with args \"{args} {uri.OriginalString}\"");
+      args = Executable.FormatArguments(args, uri);
+
+      Log.Write($"Launching {path} with args \"{args}\"");
 
       string name = GetAppName(path);
       
       path = Environment.ExpandEnvironmentVariables(path);
 
-      if (!Actions.TryRun(() => Process.Start(path, $"{args} \"{uri.OriginalString}\"")))
+      if (!Actions.TryRun(() => Process.Start(path, args)))
       {
         await notifier.NotifyAsync($"Error", $"Could not open {name}. Please check the log for more details.");
         return;

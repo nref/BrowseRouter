@@ -158,6 +158,23 @@ Slack | Test = chrome
 - Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
 - If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
+By default the URL to open is added as the last argument after the call to the executable.
+But if you want it to be called differently, or only partially, you can use specific tags in the arguments you provide.
+These tag will be replaced by their corresponding value in the URL :
+- `{url}` the full, untruncated URL
+- `{userinfo}` the userinfo part of the URL, might be blank if not present in the URL
+- `{host}` the host of the URL, most often this will be a domain name (subdomain included)
+- `{port}` the specific port of the URL, might be blank if not present in the URL
+- `{authority}` the combination of userinfo, host and port separated by their respective delimiters if needed
+- `{path}` the path of the URL, might be only `/` if the link targets the root of the domain
+- `{query}` the query of the URL with the leading `?`, might be blank if not present in the URL
+- `{fragment}` the fragment of the URL with the leading `#`, might be blank if not present in the URL
+
+For example if you want a browser which strip the query from the opened links, you can add this line: 
+`noQueryFF = "firefox.exe" "{authority}{path}{fragment}"`
+
+[More details and example about URI composition is available here!](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs)
+
 ### Sources
 
 - You can optionally specify a "source preference" which matches the window title of the application used to open the link.
