@@ -2,13 +2,13 @@
 
 namespace BrowseRouter;
 
-public static class Executable
+public static class Args
 {
   /// <summary>
-  /// Return the quoted executable path and subsquent args i.e. <c>"chrome.exe --new-window"</c> → <c>("chrome.exe", "--new-window")</c>
+  /// Return the quoted executable path and subsquent args i.e. <c>"chrome.exe" --new-window</c> → <c>("chrome.exe", "--new-window")</c>
   /// or the unquoted executable path and no args i.e. <c>"chrome.exe</c> → <c>("chrome.exe", "")</c>
   /// </summary>
-  public static (string, string) GetPathAndArgs(string s)
+  public static (string, string) SplitPathAndArgs(string s)
   {
     int q1 = s.IndexOf('"', 0);
     int q2 = s.IndexOf('"', q1 + 1);
@@ -33,7 +33,7 @@ public static class Executable
   /// <param name="originalArgs">The unformatted arguments</param>
   /// <param name="uri">The URI to format the arguments with</param>
   /// <returns>The formatted arguments</returns>
-  public static string FormatArguments(string originalArgs, Uri uri)
+  public static string Format(string originalArgs, Uri uri)
   {
     int tagReplacedCount = 0;
     StringBuilder args = new();
