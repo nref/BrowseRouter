@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace BrowseRouter;
+﻿namespace BrowseRouter;
 
 public static class Log
 {

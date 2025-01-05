@@ -1,11 +1,15 @@
-﻿using BrowseRouter.Interop.Win32;
+﻿using System.Runtime.InteropServices;
+using BrowseRouter.Interop.Win32;
 
 namespace BrowseRouter;
 
 public static class Program
 {
+
   private static async Task Main(string[] args)
   {
+    Kernel32.AttachToParentConsole();
+
     if (args.Length == 0)
     {
       await new DefaultBrowserService(new NotifyService(false)).RegisterOrUnregisterAsync();
@@ -81,7 +85,7 @@ public static class Program
 
   private static void ShowHelp()
   {
-    Log.Write
+    Console.WriteLine
     (
 $@"{nameof(BrowseRouter)}: In Windows, launch a different browser depending on the URL.
 
