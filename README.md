@@ -113,6 +113,8 @@ Config is a poor man's INI file:
 [notify]
 # Show a desktop notification when opening a link. Defaults to true
 enabled = true
+# Should the windows notification sound be silenced when displaying it. Defaults to true
+#silent = false
 
 [log]
 # Write log entries to a file. Defaults to false
@@ -121,13 +123,27 @@ enabled = true
 #file = "C:\Users\<user>\Desktop\BrowseRouter.log"
 
 # Default browser is first in list
-# Use `{url}` to specify UWP app browser details
+# Use `{url}` to specify UWP app browser details (not currently working, see following issue: https://github.com/nref/BrowseRouter/issues/10)
+# Environment variables (like %ProgramFiles% for example) can be used 
 [browsers]
-ff = C:\Program Files\Mozilla Firefox\firefox.exe
+ff = %ProgramFiles%\Mozilla Firefox\firefox.exe
 # Open in a new window
 #chrome = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --new-window
 chrome = C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+edge = %ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe
+opera = %UserProfile%\AppData\Local\Programs\Opera\opera.exe
+
+# Source preferences.
+# - Only * is treated as a special character (wildcard).
+# - Will take precedence over any URL preferences.
+# - Matches on window title and specific process of the application used to open the link, like so "WindowTitle -> ProcessName".
+[sources]
+* - Notepad -> notepad = ff
+Slack | Test* = chrome
+# Source with no window (background processes)
+ -> AutoHotkey64 = ff 
+# Default case. Added automatically
+# * = whatever
 
 # Url preferences.
 # - Only * is treated as a special character (wildcard).
@@ -140,21 +156,14 @@ edge = C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
 *.youtube.com = chrome
 *.visualstudio.com = edge
 *.mozilla.org = ff
-
-# Source preferences.
-# Only * is treated as a special character (wildcard).
-# Matches on window title of application used to open link.
-# Applied regardless of any url preference match.
-[sources]
-* - Notepad = ff
-Slack | Test = chrome
-# Default case. Added automatically
-# * = whatever
 ```
 
 ### Browsers
 
-- Browsers must either be in your path or be fully-qualified paths to the executable e.g. `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`.
+- Browsers must either be :
+  - fully-qualified paths to the executable e.g. `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`.
+  - full path to the executable with environment variable e.g. `%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe`.
+  - in your PATH environment variable (you will just have to set the name of the .exe then) e.g. `chrome.exe` with `%ProgramFiles(x86)%\Google\Chrome\Application` added to the PATH variable.
 - Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
 - If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
@@ -177,17 +186,19 @@ For example if you want a browser which strip the query from the opened links, y
 
 ### Sources
 
-- You can optionally specify a "source preference" which matches the window title of the application used to open the link.
+- You can specify a "source preference" which matches the window title and the process name of the application used to open the link.
   - For example, with this in the previous example `config.ini`:
 
     ```ini
     [sources]
-    *Microsoft Teams* = ff
+    * - Notepad -> notepad = ff
     ```
 
-    Then clicking a link in Microsoft Teams will open the link in Firefox, regardless of the URL.
+    Then clicking a link in Notepad (end of the windows title ending with " - Notepad" with the process named "notepad") will open the link in Firefox, regardless of the URL.
+    
+- Wildcards and full regular expressions may be used to match source window titles and process name the same way urls are. [See Urls section](#Urls).
 
-- In the case of a conflict between a source preference and a URL preference, the source preference wins.
+- Sources preferences takes precedence over all URLs preferences, so in the case of a conflict between a source preference and a URL preference, the source preference wins.
 
 ### Urls
 
@@ -210,10 +221,6 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 - Full regular expressions are specified by wrapping it in /'s.
 - The domain _and_ path are used in the Url comparison.
 - The regular expression syntax is based on the Microsoft .NET implementation.
-
-### Sources
-
-Wildcards and full regular expressions may also be used to match source window titles.
 
 ## Logs
 
