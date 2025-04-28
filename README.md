@@ -13,11 +13,13 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 |-------------------------------------|---------------------------------------|-------------------------------------|
 | Registers as default browser        | ✅                                    | ✅                                  |
 | Matches URLs to browsers            | ✅                                    | ✅                                  |
+| Match source apps to browsers       | ✅                                    | ✅                                  |
 | Works in your terminal              | ✅                                    | ✅                                  |
 | Runs on Windows                     | ✅                                    | ✅                                  |
 | Runs on macOS                       | ❌                                    | ✅                                  |
 | Runs on Linux                       | ❌                                    | ✅                                  |
 | Detects installed browsers          | ❌                                    | ✅                                  |
+| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ❌         | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
 | Configuration                       | via `config.ini`                      | via GUI                              |
 
