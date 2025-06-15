@@ -1,0 +1,20 @@
+﻿[
+  {
+    "name": "Remove urchin tracking",
+    "find": "(.*)[&?]utm_source=[^&]+.*",
+    "replace": "$1",
+    "priority": 1
+  },
+  {
+    "name": "Bypass Teams Safelinks",
+    "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
+    "replace": "$1",
+    "priority": 2
+  },
+  {
+    "name": "Bypass Outlook URL Protection",
+    "find": ".*safelinks.protection.outlook.com.*url=([^&]+).*",
+    "replace": "$1",
+    "priority": 3
+  }
+]

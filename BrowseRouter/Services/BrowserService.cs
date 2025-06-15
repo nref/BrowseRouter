@@ -1,18 +1,27 @@
 ﻿using System.Diagnostics;
-using System.Text;
+using BrowseRouter.Config;
+using BrowseRouter.Infrastructure;
+using BrowseRouter.Model;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Services;
 
 public class BrowserService(IConfigService config, INotifyService notifier)
 {
-  public async Task LaunchAsync(string url, string windowTitle)
+  public async Task LaunchAsync(string rawUrl, string windowTitle)
   {
     try
     {
-      Log.Write($"Attempting to launch \"{url}\" for \"{windowTitle}\"");
+      Log.Write($"Attempting to launch \"{rawUrl}\" for \"{windowTitle}\"");
 
-      IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences("urls");
-      IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences("sources");
+      List<FilterPreference> filters = await config.GetFiltersAsync();
+
+      bool didFilter = FilterPreference.TryApply(filters, rawUrl, out string url);
+      
+      if (didFilter)
+        Log.Write($"Filtered URL: {rawUrl} -> {url}");
+
+      IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences(ConfigType.Urls);
+      IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences(ConfigType.Sources);
       Uri uri = UriFactory.Get(url);
 
       UrlPreference? pref = null;
@@ -50,7 +59,7 @@ public class BrowserService(IConfigService config, INotifyService notifier)
         return;
       }
 
-      await notifier.NotifyAsync($"Opening {name}", $"URL: {url}");
+      await notifier.NotifyAsync($"Opening {name}", $"{(didFilter ? "Filtered ":"")}URL: {url}");
     }
     catch (Exception e)
     {

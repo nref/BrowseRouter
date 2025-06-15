@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using BrowseRouter.Infrastructure;
+using BrowseRouter.Model;
 using Microsoft.Win32;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Services;
 
 public class DefaultBrowserService(INotifyService notifier)
 {

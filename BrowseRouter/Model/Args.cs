@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Model;
 
 public static class Args
 {

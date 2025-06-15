@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Infrastructure;
 
 public static class App
 {

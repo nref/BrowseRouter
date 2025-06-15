@@ -2,13 +2,13 @@
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
     <!-- TODO enable when all warnings are resolved -->
-    <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Version>0.14.0</Version>
+    <Version>0.15.0</Version>
     <Product>BrowseRouter</Product>
-    <Copyright>EnduraByte LLC 2024</Copyright>
+    <Copyright>EnduraByte LLC 2025</Copyright>
     <!-- Reduces flagging as malware -->
 	  <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>

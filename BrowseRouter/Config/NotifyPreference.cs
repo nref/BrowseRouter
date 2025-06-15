@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter;
+﻿namespace BrowseRouter.Config;
 
 public class NotifyPreference
 {

@@ -1,4 +1,6 @@
-﻿namespace BrowseRouter;
+﻿using BrowseRouter.Model;
+
+namespace BrowseRouter.Config;
 
 public class UrlPreference
 {

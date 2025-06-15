@@ -1,4 +1,6 @@
-﻿namespace BrowseRouter;
+﻿using BrowseRouter.Config;
+
+namespace BrowseRouter.Infrastructure;
 
 public static class Log
 {
