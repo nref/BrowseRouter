@@ -15,11 +15,11 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Matches URLs to browsers            | ✅                                    | ✅                                  |
 | Match source apps to browsers       | ✅                                    | ✅                                  |
 | Works in your terminal              | ✅                                    | ✅                                  |
+| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅         | ✅                                  |
 | Runs on Windows                     | ✅                                    | ✅                                  |
 | Runs on macOS                       | ❌                                    | ✅                                  |
 | Runs on Linux                       | ❌                                    | ✅                                  |
 | Detects installed browsers          | ❌                                    | ✅                                  |
-| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅         | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
 | Configuration                       | via `config.json` and `filters.json`   | via GUI                              |
 
@@ -121,7 +121,9 @@ Example `config.json`:
     "enabled": true
   },
   "log": {
-    "enabled": true
+    "enabled": true,
+    "comment": "Defaults to C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log"
+    "#file": "C:\Users\<user>\Desktop\BrowseRouter.log"
   },
   "browsers": {
     "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
@@ -278,6 +280,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
 - Filters are defined in `filters.json`. Filters consist of a Find regex pattern and Replace template pattern:
 
 ```json
+{
   {
     "name": "change org to com",
     "find": "(.*)org(.*)",
@@ -285,17 +288,20 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
     "replace": "$1com$2",
     "priority": 4
   }
+}
 ```
 
 - There is a special macro `unescape(...)` to un-urlescape obfuscated URLs before sending them to the browser. This is useful e.g. for Teams SafeLinks or Outlook URL Protection. It's not strictly necessary, since the browser unescapes the URL anyway, but it cleans up the notification.
 
 ```json
+{
   {
     "name": "Bypass Teams Safelinks",
     "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
     "replace": "unescape($1)",
     "priority": 2
-  },
+  }
+}
 ```
 
 See `filters.json` for more examples.
