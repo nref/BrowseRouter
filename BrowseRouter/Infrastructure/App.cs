@@ -15,16 +15,6 @@ public static class App
         return _exePath;
       }
 
-      var assembly = Assembly.GetExecutingAssembly();
-      // .NET Core returns BrowserSettings.dll but we need BrowserSettings.exe
-      _exePath = assembly.Location
-          .Replace(".dll", ".exe");
-
-      if (!string.IsNullOrEmpty(_exePath))
-      {
-        return _exePath;
-      }
-
       string dir = AppDomain.CurrentDomain.BaseDirectory;
       _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
       return _exePath;
