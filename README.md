@@ -122,8 +122,8 @@ Example `config.json`:
   },
   "log": {
     "enabled": true,
-    "comment": "Defaults to C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log"
-    "#file": "C:\Users\<user>\Desktop\BrowseRouter.log"
+    "comment": "Default file is C:\\Users\<user>\\AppData\\Local\\BrowseRouter\\yyyy-MM-dd.log"
+    "#file": "C:\\Users\\<user>\\Desktop\\BrowseRouter.log"
   },
   "browsers": {
     "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
@@ -158,7 +158,7 @@ enabled = true
 [log]
 # Write log entries to a file. Defaults to false
 enabled = true
-# Defaults to C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log
+# Default file is C:\Users\<user>\AppData\Local\BrowseRouter\yyyy-MM-dd.log
 #file = "C:\Users\<user>\Desktop\BrowseRouter.log"
 
 # Default browser is first in list
