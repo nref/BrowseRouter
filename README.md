@@ -19,7 +19,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Runs on macOS                       | ❌                                    | ✅                                  |
 | Runs on Linux                       | ❌                                    | ✅                                  |
 | Detects installed browsers          | ❌                                    | ✅                                  |
-| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ❌         | ✅                                  |
+| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅         | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
 | Configuration                       | via `config.json` and `filters.json`   | via GUI                              |
 
@@ -139,7 +139,8 @@ Example `config.json`:
     "*.youtube.com": "chrome",
     "*.visualstudio.com": "edge",
     "*.mozilla.org": "ff"
-  }
+  },
+  "filtersFile": "filters.json"
 }
 ```
 
@@ -192,6 +193,9 @@ Slack | Test* = chrome
 *.youtube.com = chrome
 *.visualstudio.com = edge
 *.mozilla.org = ff
+
+[filters]
+file = filters.json
 ```
 
 ### Browsers
