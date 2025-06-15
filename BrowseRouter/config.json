@@ -1,0 +1,26 @@
+{
+  "notify": {
+    "enabled": true,
+    "silent": false
+  },
+  "log": {
+    "enabled": true,
+    "file": "logs/app.log"
+  },
+  "urls": {
+    "*.google.com": "chrome",
+    "*.visualstudio.com": "edge",
+    "*.mozilla.org": "ff"
+  },
+  "browsers": {
+    "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
+    "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe",
+    "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
+    "chrome": "%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe"
+  },
+  "sources": {
+    "*Microsoft Teams*": "edge",
+    "*Outlook*": "ff"
+  },
+  "filtersFile": "filters.json"
+}

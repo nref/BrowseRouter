@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter;
+﻿namespace BrowseRouter.Infrastructure;
 
 public static class Env
 {

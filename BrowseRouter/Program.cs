@@ -1,5 +1,8 @@
 ﻿using System.Runtime.InteropServices;
+using BrowseRouter.Config;
+using BrowseRouter.Infrastructure;
 using BrowseRouter.Interop.Win32;
+using BrowseRouter.Services;
 
 namespace BrowseRouter;
 
@@ -72,7 +75,7 @@ public static class Program
     if (!processService.TryGetParentProcessTitle(out string windowTitle))
       windowTitle = User32.GetActiveWindowTitle(); //if it didn't work we get the current foreground window name instead
 
-    ConfigService configService = new();
+    IConfigService configService = await ConfigServiceFactory.CreateAsync();
     Log.Preference = configService.GetLogPreference();
 
     NotifyPreference notifyPref = configService.GetNotifyPreference();

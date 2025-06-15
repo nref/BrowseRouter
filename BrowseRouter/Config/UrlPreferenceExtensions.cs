@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Config;
 
 public static class UrlPreferenceExtensions
 {

@@ -1,3 +1,6 @@
+﻿using BrowseRouter.Config;
+using BrowseRouter.Model;
+
 namespace BrowserRouter.Tests;
 
 public class UrlPreferenceExtensionsTests

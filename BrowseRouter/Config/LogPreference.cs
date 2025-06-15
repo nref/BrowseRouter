@@ -1,4 +1,6 @@
-﻿namespace BrowseRouter;
+﻿using BrowseRouter.Infrastructure;
+
+namespace BrowseRouter.Config;
 
 public class LogPreference
 {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Infrastructure;
 
 public static class App
 {
@@ -10,16 +10,6 @@ public static class App
   {
     get
     {
-      if (!string.IsNullOrEmpty(_exePath))
-      {
-        return _exePath;
-      }
-
-      var assembly = Assembly.GetExecutingAssembly();
-      // .NET Core returns BrowserSettings.dll but we need BrowserSettings.exe
-      _exePath = assembly.Location
-          .Replace(".dll", ".exe");
-
       if (!string.IsNullOrEmpty(_exePath))
       {
         return _exePath;

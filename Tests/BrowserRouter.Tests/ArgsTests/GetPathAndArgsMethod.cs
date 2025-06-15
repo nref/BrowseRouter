@@ -1,4 +1,6 @@
-﻿namespace BrowserRouter.Tests.ArgsTests;
+﻿using BrowseRouter.Model;
+
+namespace BrowserRouter.Tests.ArgsTests;
 
 public class GetPathAndArgsMethod
 {

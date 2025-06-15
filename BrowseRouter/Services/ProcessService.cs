@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BrowseRouter.Interop.Win32;
 
-namespace BrowseRouter
+namespace BrowseRouter.Services
 {
 
   public interface IProcessService
@@ -13,7 +13,7 @@ namespace BrowseRouter
     /// </summary>
     /// <param name="parentProcessTitle">The name of the parent process main window title (may be empty) and the specific process name.</param>
     /// <returns>True if the name was succesfully found, False otherwise.</returns>
-    public bool TryGetParentProcessTitle(out string parentProcessTitle);
+    bool TryGetParentProcessTitle(out string parentProcessTitle);
   }
 
   public class ProcessService : IProcessService
@@ -21,7 +21,7 @@ namespace BrowseRouter
     public bool TryGetParentProcessTitle(out string parentProcessTitle)
     {
       Process? parentProcess = GetParentProcess();
-      if (parentProcess is null || (parentProcess.MainWindowTitle == string.Empty && parentProcess.ProcessName == string.Empty))
+      if (parentProcess is null || parentProcess.MainWindowTitle == string.Empty && parentProcess.ProcessName == string.Empty)
       {
         parentProcessTitle = string.Empty;
         return false;

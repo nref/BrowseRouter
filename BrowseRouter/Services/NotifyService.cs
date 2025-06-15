@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using BrowseRouter.Infrastructure;
 using BrowseRouter.Interop.Win32;
 
-namespace BrowseRouter;
+namespace BrowseRouter.Services;
 
 public interface INotifyService
 {
-  public Task NotifyAsync(string title, string message);
+  Task NotifyAsync(string title, string message);
 }
 
 public class EmptyNotifyService : INotifyService
