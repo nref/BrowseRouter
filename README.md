@@ -21,7 +21,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Detects installed browsers          | ❌                                    | ✅                                  |
 | Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ❌         | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
-| Configuration                       | via `config.ini`                      | via GUI                              |
+| Configuration                       | via `config.json` and `filters.json`   | via GUI                              |
 
 # BrowseRouter 
 
@@ -57,7 +57,7 @@ In Windows, launch a different browser depending on the url.
 ## Setting Up
 
 1. Download the latest release.
-2. Open `config.ini` and customize as desired.
+2. Open `config.json` and customize as desired.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
    To unregister, run it again.
@@ -103,13 +103,47 @@ Your system administrator could know which pages you are visiting by auditing pr
 
 ## Notifications
 
-By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.ini`.
+By default, `BrowseRouter` will show a desktop notification when it opens a link. You can disable this in `config.json`.
 
 <img width="400" alt="Notification" src="https://github.com/user-attachments/assets/da647dc6-407e-4eda-81b9-bf258e82214b">
 
 ## Config
 
-Config is a poor man's INI file:
+**Important: `config.ini` is deprecated. Use `config.json`**
+
+For now, the app falls back to `config.ini` if `config.json` does not exist. This will be removed in a future version.
+
+Example `config.json`:
+
+```json
+{
+  "notify": {
+    "enabled": true
+  },
+  "log": {
+    "enabled": true
+  },
+  "browsers": {
+    "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
+    "chrome": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
+    "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe"
+  },
+  "sources": {
+    "* - Notepad -> notepad": "ff",
+    "Slack | Test*": "chrome",
+    " -> AutoHotkey64": "ff"
+  },
+  "urls": {
+    "*.google.com": "chrome",
+    "*.youtube.com": "chrome",
+    "*.visualstudio.com": "edge",
+    "*.mozilla.org": "ff"
+  }
+}
+```
+
+Example `config.ini` file (old, deprecated):
 
 ```ini
 [notify]
@@ -189,11 +223,14 @@ For example if you want a browser which strip the query from the opened links, y
 ### Sources
 
 - You can specify a "source preference" which matches the window title and the process name of the application used to open the link.
-  - For example, with this in the previous example `config.ini`:
+  - For example, with this in the previous example `config.json`:
 
-    ```ini
-    [sources]
-    * - Notepad -> notepad = ff
+    ```json
+    "sources": {
+      "* - Notepad -> notepad": "ff",
+      "Slack | Test*": "chrome",
+      " -> AutoHotkey64": "ff"
+    }
     ```
 
     Then clicking a link in Notepad (end of the windows title ending with " - Notepad" with the process named "notepad") will open the link in Firefox, regardless of the URL.
@@ -208,8 +245,8 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 
 **Simple wildcards:**
 
-    microsoft.com = ie
-    *.microsoft.com = ie
+    "microsoft.com": "ie"
+    "*.microsoft.com": "ie"
 
 - Only `*` is treated as a special character in URL patterns, and matches any characters (equivalent to the `.*` regex syntax).
 - Only the domain part (or IP address) of a URL is checked.
@@ -218,19 +255,54 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 **Full regular expressions:**
 
 ```regex
-  /sites\.google\.com/a/myproject.live\.com/ = chrome
+  "/sites\.google\.com/a/myproject.live\.com/": "chrome"
 ```
 - Full regular expressions are specified by wrapping it in /'s.
 - The domain _and_ path are used in the Url comparison.
 - The regular expression syntax is based on the Microsoft .NET implementation.
 
+## Filters
+
+BrowseRouter can filter URLs before sending them to the browser. This is useful e.g. to remove tracking or deobfuscate URLs.
+
+- If a URL is filtered, it says so in the notification and log.
+
+  ![image](https://github.com/user-attachments/assets/f234089e-4b7c-4e60-a6f6-2813675614d5)
+
+  ```2025-06-14 22:18:07 BrowseRouter: Filtered URL: example.org -> example.com```
+
+- Filters are defined in `filters.json`. Filters consist of a Find regex pattern and Replace template pattern:
+
+```json
+  {
+    "name": "change org to com",
+    "find": "(.*)org(.*)",
+    "_comment": "Below, the replacement is the first capture group + com + second capture group
+    "replace": "$1com$2",
+    "priority": 4
+  }
+```
+
+- There is a special macro `unescape(...)` to un-urlescape obfuscated URLs before sending them to the browser. This is useful e.g. for Teams SafeLinks or Outlook URL Protection. It's not strictly necessary, since the browser unescapes the URL anyway, but it cleans up the notification.
+
+```json
+  {
+    "name": "Bypass Teams Safelinks",
+    "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
+    "replace": "unescape($1)",
+    "priority": 2
+  },
+```
+
+See `filters.json` for more examples.
+
 ## Logs
 
 Logs are stored by default in `%localappdata%/BrowseRouter/`. For example, if you user name is `joe`, then the logs will be in `C:\Users\joe\AppData\Local\BrowseRouter\`.
 
-You can change the directory in the `[log]` section of `config.ini`.
+You can change the directory in the `log` section of `config.json`.
 
-You can enable disable or log files by setting `enabled = true` or `false` in the `[log]` section of `config.ini`.
+You can enable disable or log files by setting `"enabled": "true"` or `false` in the `log` section of `config.json`.
 If `enabled` is missing or doesn't equal `true`, logs will not be written.
 
 Log entries are also written to the console and can be seen if e.g. if launched from Command Prompt, PowerShell, or Windows Terminal.
