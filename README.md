@@ -122,7 +122,7 @@ Example `config.json`:
   },
   "log": {
     "enabled": true,
-    "comment": "Default file is C:\\Users\<user>\\AppData\\Local\\BrowseRouter\\yyyy-MM-dd.log"
+    "comment": "Default file is C:\\Users\\<user>\\AppData\\Local\\BrowseRouter\\yyyy-MM-dd.log"
     "#file": "C:\\Users\\<user>\\Desktop\\BrowseRouter.log"
   },
   "browsers": {
