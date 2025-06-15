@@ -57,7 +57,7 @@ In Windows, launch a different browser depending on the url.
 ## Setting Up
 
 1. Download the latest release.
-2. Open `config.json` and customize as desired.
+2. Open `config.json` and `filters.json` and customize as desired.
 3. Run `BrowseRouter.exe` without arguments. No need to run as admin.
    It will register with Windows as a web browser and open the Settings app.
    To unregister, run it again.
