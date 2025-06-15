@@ -4,8 +4,7 @@
     "silent": false
   },
   "log": {
-    "enabled": true,
-    "file": "logs/app.log"
+    "enabled": true
   },
   "urls": {
     "*.google.com": "chrome",

@@ -22,7 +22,7 @@ public static class Log
     string? parent = Path.GetDirectoryName(Preference.File);
     if (parent is not null)
     {
-      Directory.CreateDirectory(parent);
+      Actions.TryRun(() => Directory.CreateDirectory(parent), logOnlyToConsole: true);
     }
   }
 
@@ -36,9 +36,11 @@ public static class Log
         writer.WriteLine(message);
         return;
       }
-      catch (Exception)
+      catch (Exception e)
       {
+        Console.WriteLine($"Failed to write log file {Preference.File} on attempt {i + 1}: {e}");
       }
+      Thread.Sleep(100);
     }
   }
 }
