@@ -2,7 +2,7 @@
 
 public static class Actions
 {
-  public static bool TryRun(Action a)
+  public static bool TryRun(Action a, bool logOnlyToConsole = false)
   {
     try
     {
@@ -11,7 +11,15 @@ public static class Actions
     }
     catch (Exception e)
     {
-      Log.Write($"{e}");
+      if (logOnlyToConsole)
+      {
+        Console.WriteLine(e);
+      }
+      else
+      {
+        Log.Write($"{e}");
+      }
+
       return false;
     }
   }

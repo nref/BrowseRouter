@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using BrowseRouter.Infrastructure;
 using BrowseRouter.Model;
 
 namespace BrowseRouter.Config;
@@ -14,9 +15,15 @@ internal class ConfigService(Config config) : IConfigService
   public LogPreference GetLogPreference() => new()
   {
     IsEnabled = config.Log.Enabled,
-    File = string.IsNullOrWhiteSpace(config.Log.File)
-                      ? LogPreference.DefaultLogFile
-                      : config.Log.File!
+    File = string.IsNullOrWhiteSpace(config.Log.File) switch
+    {
+      true => LogPreference.DefaultLogFile,
+      false => Path.IsPathFullyQualified(config.Log.File) switch
+      {
+        true => config.Log.File,
+        false => Path.Combine(App.ExePath, config.Log.File)
+      }
+    }
   };
 
   public IEnumerable<UrlPreference> GetUrlPreferences(ConfigType configType)
@@ -53,7 +60,14 @@ internal class ConfigService(Config config) : IConfigService
     if (string.IsNullOrWhiteSpace(config.FiltersFile))
       return [];
 
-    var json = await File.ReadAllTextAsync(config.FiltersFile);
+    var dir = Path.GetDirectoryName(App.ExePath)!;
+    string path = Path.IsPathFullyQualified(config.FiltersFile) switch
+    {
+      true => config.FiltersFile,
+      false => Path.Combine(dir, config.FiltersFile)
+    };
+
+    var json = await File.ReadAllTextAsync(path);
     return JsonSerializer.Deserialize(json, SourceGenerationContext.Default.FilterPreferenceList) ?? [];
   }
 }
