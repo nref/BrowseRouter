@@ -45,7 +45,8 @@ foreach ($rid in $rids) {
   $outDir = "./Releases/$version/$rid"
   md $outDir -ea 0
   cp ./BrowseRouter/publish/$rid/BrowseRouter.exe  $outDir
-  cp ./BrowseRouter/publish/$rid/config.ini  $outDir
+  cp ./BrowseRouter/publish/$rid/config.json  $outDir
+  cp ./BrowseRouter/publish/$rid/filters.json  $outDir
 
   $zipPath = "$outDir/BrowseRouter-$rid.zip"
   Compress-Archive -Path "$outDir/*" -DestinationPath $zipPath -Force
