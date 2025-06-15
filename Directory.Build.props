@@ -1,12 +1,11 @@
 <Project>
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
-    <!-- TODO enable when all warnings are resolved -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Version>0.15.0</Version>
+    <Version>0.15.1</Version>
     <Product>BrowseRouter</Product>
     <Copyright>EnduraByte LLC 2025</Copyright>
     <!-- Reduces flagging as malware -->
