@@ -13,9 +13,9 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 |-------------------------------------|---------------------------------------|-------------------------------------|
 | Registers as default browser        | ✅                                    | ✅                                  |
 | Matches URLs to browsers            | ✅                                    | ✅                                  |
-| Match source apps to browsers       | ✅                                    | ✅                                  |
+| Matches source apps to browsers     | ✅                                    | ✅                                  |
+| Filters URLs (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅        | ✅                                  |
 | Works in your terminal              | ✅                                    | ✅                                  |
-| Has filters (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅         | ✅                                  |
 | Runs on Windows                     | ✅                                    | ✅                                  |
 | Runs on macOS                       | ❌                                    | ✅                                  |
 | Runs on Linux                       | ❌                                    | ✅                                  |
