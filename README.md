@@ -284,7 +284,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
   {
     "name": "change org to com",
     "find": "(.*)org(.*)",
-    "_comment": "Below, the replacement is the first capture group + com + second capture group
+    "_comment": "Below, the replacement is the first capture group + com + second capture group"
     "replace": "$1com$2",
     "priority": 4
   }
