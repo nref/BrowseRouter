@@ -280,7 +280,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
 - Filters are defined in `filters.json`. Filters consist of a Find regex pattern and Replace template pattern:
 
 ```json
-{
+[
   {
     "name": "change org to com",
     "find": "(.*)org(.*)",
@@ -288,20 +288,20 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
     "replace": "$1com$2",
     "priority": 4
   }
-}
+]
 ```
 
 - There is a special macro `unescape(...)` to un-urlescape obfuscated URLs before sending them to the browser. This is useful e.g. for Teams SafeLinks or Outlook URL Protection. It's not strictly necessary, since the browser unescapes the URL anyway, but it cleans up the notification.
 
 ```json
-{
+[
   {
     "name": "Bypass Teams Safelinks",
     "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
     "replace": "unescape($1)",
     "priority": 2
   }
-}
+]
 ```
 
 See `filters.json` for more examples.
