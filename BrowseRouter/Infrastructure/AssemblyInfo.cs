@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("BrowserRouter.Tests")]
+[assembly: InternalsVisibleTo("BrowseRouter.Tests")]
