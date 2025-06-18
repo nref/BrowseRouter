@@ -1,4 +1,6 @@
-﻿namespace BrowseRouter.Model;
+﻿using System.Net;
+
+namespace BrowseRouter.Model;
 
 public static class UriFactory
 {
@@ -6,7 +8,7 @@ public static class UriFactory
   {
     try
     {
-      return new Uri(url);
+      return new Uri(WebUtility.UrlDecode(url));
     }
     catch (UriFormatException)
     {
