@@ -13,7 +13,7 @@ concurrency:
 jobs:
   Build:
     name: Build on self-hosted
-    runs-on: m2mini-win11
+    runs-on: M4700
     permissions:
       contents: write
     defaults:

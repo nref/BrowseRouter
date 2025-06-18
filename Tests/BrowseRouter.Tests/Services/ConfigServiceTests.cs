@@ -1,13 +1,14 @@
 ﻿using BrowseRouter.Config;
+using BrowseRouter.Services;
 
-namespace BrowserRouter.Tests;
+namespace BrowseRouter.Tests.Services;
 
 public class ConfigServiceTests
 {
   [Fact]
   public void GetUrlPreferences_NoBrowsers_ReturnsEmpty()
   {
-    var config = Config.Empty with
+    var config = BrowseRouter.Config.Config.Empty with
     {
       Browsers = []
     };
@@ -20,7 +21,7 @@ public class ConfigServiceTests
   [Fact]
   public void GetUrlPreferences_LoadsUrls()
   {
-    var config = Config.Empty with
+    var config = BrowseRouter.Config.Config.Empty with
     {
       Browsers = new Dictionary<string, string>
       {
@@ -54,7 +55,7 @@ public class ConfigServiceTests
   [Fact]
   public void GetUrlPreferences_ConfigTypeUrls_AppendsCatchAll()
   {
-    var config = Config.Empty with
+    var config = BrowseRouter.Config.Config.Empty with
     {
       Browsers = new Dictionary<string, string>
       {

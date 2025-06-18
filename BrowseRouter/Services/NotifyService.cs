@@ -23,13 +23,14 @@ public class NotifyService : INotifyService
 
   private static nint _hIcon;
   private static nint _hInstance = Kernel32.GetModuleHandle(App.ExePath);
-  private readonly bool _isSilent;
+  private readonly bool _noSound;
 
-  public NotifyService(bool isSilent) 
+  public NotifyService(bool noSound = false) 
   {
-    _isSilent = isSilent;
+    _noSound = noSound;
     LoadIcon();
   }
+
   private static bool LoadIcon(int size = 512) =>
     Comctl32.LoadIconWithScaleDown(_hInstance, Icon.Application, size, size, out _hIcon) != 0;
 
@@ -38,7 +39,7 @@ public class NotifyService : INotifyService
     // Create a dummy window handle
     nint hWnd = CreateDummyWindow();
 
-    NotifyIconData nid = GetNid(hWnd, title, message, _isSilent);
+    NotifyIconData nid = GetNid(hWnd, title, message, _noSound);
 
     // Add the icon. This also adds it to the system tray.
     Shell32.Shell_NotifyIcon(Shell32.NIM_ADD, ref nid);
@@ -76,7 +77,7 @@ public class NotifyService : INotifyService
     Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref nid);
   }
 
-  private static NotifyIconData GetNid(nint hWnd, string title, string message, bool isSilent) => new NotifyIconData
+  private static NotifyIconData GetNid(nint hWnd, string title, string message, bool noSound) => new NotifyIconData
   {
     cbSize = Marshal.SizeOf(typeof(NotifyIconData)),
     hWnd = hWnd,
@@ -88,7 +89,7 @@ public class NotifyService : INotifyService
     szTip = "BrowseRouter",
     szInfo = message,
     szInfoTitle = title,
-    dwInfoFlags = Shell32.NIIF_USER | Shell32.NIIF_LARGE_ICON | (isSilent ? Shell32.NIIF_NOSOUND : 0x00000000),
+    dwInfoFlags = Shell32.NIIF_USER | Shell32.NIIF_LARGE_ICON | (noSound ? Shell32.NIIF_NOSOUND : 0x00000000),
     dwState  = 0, // For the popup to be shown, the system tray icon must not be hidden, but we can hide it immediately after
     dwStateMask = Shell32.NIS_HIDDEN,
     uVersion = Shell32.NOTIFYICON_VERSION_4

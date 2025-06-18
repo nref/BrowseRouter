@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using BrowseRouter.Config;
+﻿using BrowseRouter.Config;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Interop.Win32;
 using BrowseRouter.Services;
@@ -8,14 +7,14 @@ namespace BrowseRouter;
 
 public static class Program
 {
-
   private static async Task Main(string[] args)
   {
+    // This enables e.g. showing --help in Terminal / cmd text even though this is a WinExe app.
     Kernel32.AttachToParentConsole();
 
     if (args.Length == 0)
     {
-      await new DefaultBrowserService(new NotifyService(false)).RegisterOrUnregisterAsync();
+      await new DefaultBrowserService(new NotifyService()).RegisterOrUnregisterAsync();
       return;
     }
 
@@ -28,24 +27,25 @@ public static class Program
 
   private static async Task RunAsync(string arg)
   {
-    Func<bool> getIsOption = () => arg.StartsWith('-') || arg.StartsWith('/');
-
-    bool isOption = getIsOption();
-    while (getIsOption())
+    bool isOption = GetIsOption(arg);
+    while (GetIsOption(arg))
     {
       arg = arg[1..];
     }
 
     if (isOption)
     {
-      await RunOption(arg);
+      await RunOptionAsync(arg);
       return;
     }
 
     await LaunchUrlAsyc(arg);
+
   }
 
-  private static async Task<bool> RunOption(string arg)
+  private static bool GetIsOption(string arg) => arg.StartsWith('-') || arg.StartsWith('/');
+
+  private static async Task<bool> RunOptionAsync(string arg)
   {
     if (string.Equals(arg, "h") || string.Equals(arg, "help"))
     {
@@ -55,13 +55,13 @@ public static class Program
 
     if (string.Equals(arg, "r") || string.Equals(arg, "register"))
     {
-      await new DefaultBrowserService(new NotifyService(false)).RegisterAsync();
+      await new DefaultBrowserService(new NotifyService()).RegisterAsync();
       return true;
     }
 
     if (string.Equals(arg, "u") || string.Equals(arg, "unregister"))
     {
-      await new DefaultBrowserService(new NotifyService(false)).UnregisterAsync();
+      await new DefaultBrowserService(new NotifyService()).UnregisterAsync();
       return true;
     }
 
@@ -70,22 +70,20 @@ public static class Program
 
   private static async Task LaunchUrlAsyc(string url)
   {
-    // Get the window title for whichever application is opening the URL.
-    ProcessService processService = new();
-    if (!processService.TryGetParentProcessTitle(out string windowTitle))
-      windowTitle = User32.GetActiveWindowTitle(); //if it didn't work we get the current foreground window name instead
+    IConfigService config = await ConfigServiceFactory.CreateAsync();
+    Log.Preference = config.GetLogPreference();
 
-    IConfigService configService = await ConfigServiceFactory.CreateAsync();
-    Log.Preference = configService.GetLogPreference();
-
-    NotifyPreference notifyPref = configService.GetNotifyPreference();
+    NotifyPreference notifyPref = config.GetNotifyPreference();
     INotifyService notifier = notifyPref.IsEnabled switch
     {
       true => new NotifyService(notifyPref.IsSilent),
       false => new EmptyNotifyService()
     };
 
-    await new BrowserService(configService, notifier).LaunchAsync(url, windowTitle);
+    IBrowserService browsers = new BrowserService(config, notifier, new ProcessService());
+    ILaunchService launchService = new LaunchService(browsers, new ProcessService(), new WindowTitleService());
+
+    await launchService.LaunchUrlAsyc(url);
   }
 
   private static void ShowHelp()

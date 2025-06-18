@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace BrowseRouter.Config;
+namespace BrowseRouter.Config.Loaders;
 
 internal class JsonConfigLoader(string path) : IConfigLoader
 {

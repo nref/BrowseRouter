@@ -1,4 +1,5 @@
 ﻿[
+  // Comments are supported with // syntax
   {
     "name": "Remove urchin tracking",
     "find": "(.*)[&?]utm_source=[^&]+.*",
@@ -8,7 +9,7 @@
   {
     "name": "Bypass Teams Safelinks",
     "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
-    "replace": "$1",
+    "replace": "unescape($1)",  // urldecode the URL. Cleans up the notification
     "priority": 2
   },
   {

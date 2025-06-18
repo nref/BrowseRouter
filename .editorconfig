@@ -60,6 +60,10 @@ dotnet_naming_rule.interface_names_must_begin_with_I.symbols   = interfaces
 dotnet_naming_rule.interface_names_must_begin_with_I.style = pascal_begin_with_I_style
 dotnet_naming_rule.interface_names_must_begin_with_I.severity = warning
 
+dotnet_naming_rule.private_const_fields_none.symbols  = private_const_fields
+dotnet_naming_rule.private_const_fields_none.style    = camel_begin_with_underscore_style
+dotnet_naming_rule.private_const_fields_none.severity = none
+
 dotnet_naming_rule.private_and_protected_fields_must_begin_with_underscore.symbols   = private_fields
 dotnet_naming_rule.private_and_protected_fields_must_begin_with_underscore.style = camel_begin_with_underscore_style
 dotnet_naming_rule.private_and_protected_fields_must_begin_with_underscore.severity = warning
@@ -78,6 +82,10 @@ dotnet_naming_symbols.interfaces.applicable_accessibilities = *
 
 dotnet_naming_symbols.private_fields.applicable_kinds           = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private,protected,protected_internal
+
+dotnet_naming_symbols.private_const_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_const_fields.applicable_accessibilities = private, protected, protected_internal
+dotnet_naming_symbols.private_const_fields.required_modifiers         = const
 
 dotnet_naming_symbols.public_and_internal_members.applicable_kinds           = class,struct,enum,property,method,event,delegate,field
 dotnet_naming_symbols.public_and_internal_members.applicable_accessibilities = public,internal
