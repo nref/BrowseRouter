@@ -1,11 +1,15 @@
-﻿using System.Diagnostics;
-using BrowseRouter.Config;
+﻿using BrowseRouter.Config;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Model;
 
 namespace BrowseRouter.Services;
 
-public class BrowserService(IConfigService config, INotifyService notifier)
+public interface IBrowserService
+{
+  Task LaunchAsync(string rawUrl, string windowTitle);
+}
+
+public class BrowserService(IConfigService config, INotifyService notifier, IProcessService process) : IBrowserService
 {
   public async Task LaunchAsync(string rawUrl, string windowTitle)
   {
@@ -16,7 +20,7 @@ public class BrowserService(IConfigService config, INotifyService notifier)
       List<FilterPreference> filters = await config.GetFiltersAsync();
 
       bool didFilter = FilterPreference.TryApply(filters, rawUrl, out string url);
-      
+
       if (didFilter)
         Log.Write($"Filtered URL: {rawUrl} -> {url}");
 
@@ -50,16 +54,16 @@ public class BrowserService(IConfigService config, INotifyService notifier)
       Log.Write($"Launching {path} with args \"{args}\"");
 
       string name = GetAppName(path);
-      
+
       path = Environment.ExpandEnvironmentVariables(path);
 
-      if (!Actions.TryRun(() => Process.Start(path, args)))
+      if (!Actions.TryRun(() => process.Start(path, args)))
       {
         await notifier.NotifyAsync($"Error", $"Could not open {name}. Please check the log for more details.");
         return;
       }
 
-      await notifier.NotifyAsync($"Opening {name}", $"{(didFilter ? "Filtered ":"")}URL: {url}");
+      await notifier.NotifyAsync($"Opening {name}", $"{(didFilter ? "Filtered " : "")}URL: {url}");
     }
     catch (Exception e)
     {

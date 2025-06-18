@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Config;
+﻿namespace BrowseRouter.Config.Loaders;
 
 internal class IniConfigLoader(string path) : IConfigLoader
 {

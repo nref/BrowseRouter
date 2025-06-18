@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
+using BrowseRouter.Config;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Model;
 
-namespace BrowseRouter.Config;
+namespace BrowseRouter.Services;
 
-internal class ConfigService(Config config) : IConfigService
+internal class ConfigService(Config.Config config) : IConfigService
 {
   public NotifyPreference GetNotifyPreference() => new()
   {

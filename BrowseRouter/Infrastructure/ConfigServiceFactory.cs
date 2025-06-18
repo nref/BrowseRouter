@@ -1,6 +1,8 @@
-﻿using BrowseRouter.Infrastructure;
+﻿using BrowseRouter.Config;
+using BrowseRouter.Config.Loaders;
+using BrowseRouter.Services;
 
-namespace BrowseRouter.Config;
+namespace BrowseRouter.Infrastructure;
 
 public static class ConfigServiceFactory
 {

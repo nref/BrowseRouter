@@ -1,7 +1,7 @@
 ﻿using BrowseRouter.Config;
 using BrowseRouter.Model;
 
-namespace BrowserRouter.Tests;
+namespace BrowseRouter.Tests.Config;
 
 public class UrlPreferenceExtensionsTests
 {

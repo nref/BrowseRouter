@@ -1,7 +1,8 @@
 {
+  // Comments are supported with // syntax
   "notify": {
     "enabled": true,
-    "silent": false
+    "silent": false // Suppress sound
   },
   "log": {
     "enabled": true
