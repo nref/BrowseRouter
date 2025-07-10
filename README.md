@@ -277,7 +277,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
 
   ```2025-06-14 22:18:07 BrowseRouter: Filtered URL: example.org -> example.com```
 
-- Filters are defined in `filters.json`. Filters consist of a Find regex pattern and Replace template pattern:
+- Filters are defined in `filters.json`. Filters consist of a Find regex pattern and Replace template pattern. In the case of multiple matches, `priority` determines which pattern is used. Note that `priority` is inverted, e.g. `1` is takes precedences over `2`.
 
 ```json
 [
