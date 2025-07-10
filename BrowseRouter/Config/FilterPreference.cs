@@ -7,7 +7,9 @@ public record FilterPreference(string Name, string Find, string Replace, int Pri
   {
     string temp = string.Empty;
 
-    bool ok = filters.Any(filter => filter.TryApply(input, out temp));
+    bool ok = filters
+      .OrderBy(f => f.Priority)
+      .Any(f => f.TryApply(input, out temp));
     
     output = ok ? temp : input;
     return ok;
