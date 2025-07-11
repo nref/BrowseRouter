@@ -7,7 +7,7 @@ Linklever is like BrowseRouter, but it's cross-platform and has a user interface
 
 It's made by the same author, [@nref](https://github.com/nref/), so you can expect the same quality and support. 
 
-**[Try Linklever today](https://linklever.net)!**
+**[Try Linklever today](https://linklever.net)** and save 25% with the code `BROWSEROUTER2025`
 
 | Feature                             | BrowseRouter                          | Linklever                            |
 |-------------------------------------|---------------------------------------|--------------------------------------|
