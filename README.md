@@ -137,10 +137,9 @@ Example `config.json`:
     " -> AutoHotkey64": "ff"
   },
   "urls": {
-    "*.google.com": "chrome",
-    "*.youtube.com": "chrome",
-    "*.visualstudio.com": "edge",
-    "*.mozilla.org": "ff"
+    "https://*google.com": "chrome",
+    "https://*microsoft.com": "edge",
+    "https://*mozilla.org": "ff"
   },
   "filtersFile": "filters.json"
 }
@@ -187,14 +186,13 @@ Slack | Test* = chrome
 # Url preferences.
 # - Only * is treated as a special character (wildcard).
 # - Only domains are matched. Don't include protocols e.g. "https://" or paths e.g. "/some/path?query=value"
-# - Beware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
+# - Be aware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
 #   For that reason, you'll often want a leading "*." e.g. "*.youtube.com". 
-#   Note: Don't use "*youtube.com" as that would also match e.g. "notyoutube.com".
+#   Note that "*youtube.com" would also match e.g. "notyoutube.com".
 [urls]
-*.google.com = chrome
-*.youtube.com = chrome
-*.visualstudio.com = edge
-*.mozilla.org = ff
+*google.com = chrome
+*microsoft.com = edge
+*mozilla.org = ff
 
 [filters]
 file = filters.json
