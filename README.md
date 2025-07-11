@@ -139,9 +139,9 @@ Example `config.json`:
     " -> AutoHotkey64": "ff"
   },
   "urls": {
-    "https://*google.com": "chrome",
-    "https://*microsoft.com": "edge",
-    "https://*mozilla.org": "ff"
+    "*google.com": "chrome",
+    "*microsoft.com": "edge",
+    "*mozilla.org": "ff"
   },
   "filtersFile": "filters.json"
 }
