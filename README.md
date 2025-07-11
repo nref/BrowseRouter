@@ -9,8 +9,8 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 
 **[Try Linklever today](https://linklever.net)!**
 
-| Feature                             | BrowseRouter                          | Linklever                           |
-|-------------------------------------|---------------------------------------|-------------------------------------|
+| Feature                             | BrowseRouter                          | Linklever                            |
+|-------------------------------------|---------------------------------------|--------------------------------------|
 | Registers as default browser        | ✅                                    | ✅                                  |
 | Matches URLs to browsers            | ✅                                    | ✅                                  |
 | Matches source apps to browsers     | ✅                                    | ✅                                  |
@@ -21,7 +21,8 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Runs on Linux                       | ❌                                    | ✅                                  |
 | Detects installed browsers          | ❌                                    | ✅                                  |
 | Has a GUI                           | ❌                                    | ✅                                  |
-| Configuration                       | via `config.json` and `filters.json`   | via GUI                              |
+| Has browser extensions              | ❌                                    | ✅                                  |
+| Configuration                       | via `config.json` and `filters.json`   | via GUI                             |
 
 # BrowseRouter 
 
@@ -128,12 +129,13 @@ Example `config.json`:
   "browsers": {
     "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
     "chrome": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "chromenw": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe --new-window",
     "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
     "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe"
   },
   "sources": {
-    "* - Notepad -> notepad": "ff",
-    "Slack | Test*": "chrome",
+    "* - Notepad -> notepad": "chrome",
+    "Slack | Test*": "chromenw",
     " -> AutoHotkey64": "ff"
   },
   "urls": {
@@ -166,8 +168,8 @@ enabled = true
 [browsers]
 ff = %ProgramFiles%\Mozilla Firefox\firefox.exe
 # Open in a new window
-#chrome = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --new-window
 chrome = C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+chromenw = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --new-window
 edge = %ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe
 opera = %UserProfile%\AppData\Local\Programs\Opera\opera.exe
 
@@ -176,12 +178,12 @@ opera = %UserProfile%\AppData\Local\Programs\Opera\opera.exe
 # - Will take precedence over any URL preferences.
 # - Matches on window title and specific process of the application used to open the link, like so "WindowTitle -> ProcessName".
 [sources]
-* - Notepad -> notepad = ff
-Slack | Test* = chrome
+* - Notepad -> notepad = chrome
+Slack | Test* = chromenw
 # Source with no window (background processes)
  -> AutoHotkey64 = ff 
 # Default case. Added automatically
-# * = whatever
+# * = ff
 
 # Url preferences.
 # - Only * is treated as a special character (wildcard).
