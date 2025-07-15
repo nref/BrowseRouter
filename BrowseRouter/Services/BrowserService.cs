@@ -26,7 +26,14 @@ public class BrowserService(IConfigService config, INotifyService notifier, IPro
 
       IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences(ConfigType.Urls);
       IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences(ConfigType.Sources);
-      Uri uri = UriFactory.Get(url);
+      Uri? uri = UriFactory.Get(url);
+
+      if (uri is null)
+      {
+        Log.Write($"Invalid URL: {url}");
+        await notifier.NotifyAsync("Error", $"Invalid URL: {url}");
+        return;
+      }
 
       UrlPreference? pref = null;
       if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))

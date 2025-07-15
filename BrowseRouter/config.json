@@ -8,9 +8,9 @@
     "enabled": true
   },
   "urls": {
-    "*.google.com": "chrome",
-    "*.visualstudio.com": "edge",
-    "*.mozilla.org": "ff"
+    "*google.com": "chrome",
+    "*microsoft.com": "edge",
+    "*mozilla.org": "ff"
   },
   "browsers": {
     "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
