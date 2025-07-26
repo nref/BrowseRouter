@@ -12,17 +12,16 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Feature                             | BrowseRouter                          | Linklever                            |
 |-------------------------------------|---------------------------------------|--------------------------------------|
 | Registers as default browser        | ✅                                    | ✅                                  |
-| Matches URLs to browsers            | ✅                                    | ✅                                  |
-| Matches source apps to browsers     | ✅                                    | ✅                                  |
-| Filters URLs (e.g. bypass Teams Safelinks, strip `utm_source`)  | ✅        | ✅                                  |
-| Works in your terminal              | ✅                                    | ✅                                  |
-| Runs on Windows                     | ✅                                    | ✅                                  |
-| Runs on macOS                       | ❌                                    | ✅                                  |
-| Runs on Linux                       | ❌                                    | ✅                                  |
+| Rules                               | ✅                                    | ✅                                  |
+| Source Apps                         | ✅                                    | ✅                                  |
+| Filters                             | ✅                                    | ✅                                  |
+| Windows                             | ✅                                    | ✅                                  |
+| macOS                               | ❌                                    | ✅                                  |
+| Linux                               | ❌                                    | ✅                                  |
 | Detects installed browsers          | ❌                                    | ✅                                  |
-| Has a GUI                           | ❌                                    | ✅                                  |
-| Has browser extensions              | ❌                                    | ✅                                  |
-| Configuration                       | via `config.json` and `filters.json`   | via GUI                             |
+| GUI                                 | ❌                                    | ✅                                  |
+| Browser extension                   | ❌                                    | ✅                                  |
+| Configuration                       | via `config.json` and `filters.json`  | via GUI                            |
 
 # BrowseRouter 
 
