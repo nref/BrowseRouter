@@ -21,7 +21,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 | Detects installed browsers          | ❌                                    | ✅                                  |
 | GUI                                 | ❌                                    | ✅                                  |
 | Browser extension                   | ❌                                    | ✅                                  |
-| Configuration                       | via `config.json` and `filters.json`  | via GUI                            |
+| Configuration                       | config files                          | via GUI                            |
 
 # BrowseRouter 
 
