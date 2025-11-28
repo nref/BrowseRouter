@@ -85,7 +85,7 @@ In Windows, launch a different browser depending on the url.
 `BrowseRouter` is clean software. I, [@nref](https://github.com/nref/), rest my reputation on it.
 
 - The code is open-source and publicly reviewable. 
-- I provide pre-built binaries whichs are cryptographically signed with an Extended Validation code-signing certificate. What that means is I regularly navigate a lot of bureaucracy which keeps me legally accountable, and I pay DigiCert a lot of money to verify my identity and purpose. Moreover, you can know that the binaries are from me and not modified by some middleman.
+- I provide pre-built binaries whichs are cryptographically signed with an Extended Validation code-signing certificate. What that means is I regularly navigate a lot of bureaucracy which keeps me legally accountable. Moreover, you can know that the binaries are from me and not modified by some middleman.
 - If you don't trust the the binaries, you can build them from source. 
 - Windows Defender currently reports no problems, as of version 0.8.0.0
 - A small number of malware scanners are reporting false positives as of version 0.8.0.0. I cannot do much about these as the scanners do not provide specific complaints.
