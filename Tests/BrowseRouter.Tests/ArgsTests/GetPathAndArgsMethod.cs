@@ -82,4 +82,34 @@ public class GetPathAndArgsMethod
     // Assert
     result.Should().Be(("firefox.exe", "--new-window --url {url}"));
   }
+
+  [Fact]
+  public void DoesNotSplitUnquotedPath_WhenPathContainsSpaces()
+  {
+    // Arrange - Issue #94 follow-up: Paths with spaces should not be split
+    // e.g., "C:\Program Files\Mozilla Firefox\firefox.exe arg" should NOT split on first space
+    // because that would break the path into "C:\Program" and "Files\Mozilla..."
+    string input = @"C:\Program Files\Mozilla Firefox\firefox.exe ext+container:name=Work&url={url}";
+
+    // Act
+    var result = Args.SplitPathAndArgs(input);
+
+    // Assert - Should NOT split because the path contains spaces
+    // Users with paths containing spaces must quote the path
+    result.Should().Be((input, ""));
+  }
+
+  [Fact]
+  public void SplitsQuotedPathWithSpaces_AndArgs()
+  {
+    // Arrange - Correct way to specify paths with spaces: use quotes
+    string input = @"""C:\Program Files\Mozilla Firefox\firefox.exe"" ext+container:name=Work&url={url}";
+
+    // Act
+    var result = Args.SplitPathAndArgs(input);
+
+    // Assert
+    result.Should().Be((@"C:\Program Files\Mozilla Firefox\firefox.exe", "ext+container:name=Work&url={url}"));
+  }
+
 }
