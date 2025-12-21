@@ -22,6 +22,15 @@ public static class Args
       return (path, args);
     }
 
+    // If not quoted, split on first space to separate path from args
+    int spaceIndex = s.IndexOf(' ');
+    if (spaceIndex > 0)
+    {
+      string path = s[..spaceIndex];
+      string args = s[(spaceIndex + 1)..];
+      return (path, args);
+    }
+
     // The single executable without any other arguments.
     return (s, "");
   }

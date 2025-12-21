@@ -34,4 +34,47 @@ public class BrowserServiceTests : IAsyncLifetime
 
     spy.LastPath.Should().Be("fake-browser.exe");
   }
+
+  [Fact]
+  public async Task SubstitutesUrlTagInUnquotedBrowserArgs()
+  {
+    // Issue #94: User configures browser with args containing {url} tag
+    // e.g., for Firefox containers: "firefox.exe ext+container:name=Work&url={url}"
+    var config = BrowseRouter.Config.Config.Empty with
+    {
+      Browsers = new Dictionary<string, string>
+      {
+        ["ff-work"] = "firefox.exe ext+container:name=Work&url={url}",
+      },
+    };
+    CatchAllConfig.AddTo(config);
+
+    var spy = new SpyProcessService();
+    await new BrowserService(new ConfigService(config), new EmptyNotifyService(), spy)
+      .LaunchAsync("https://example.com/path", "Fake Window");
+
+    spy.LastPath.Should().Be("firefox.exe");
+    spy.LastArgs.Should().Be("ext+container:name=Work&url=https://example.com/path");
+  }
+
+  [Fact]
+  public async Task SubstitutesUrlTagInQuotedBrowserArgs()
+  {
+    // When browser path is quoted, args with {url} should still work
+    var config = BrowseRouter.Config.Config.Empty with
+    {
+      Browsers = new Dictionary<string, string>
+      {
+        ["ff-work"] = "\"firefox.exe\" ext+container:name=Work&url={url}",
+      },
+    };
+    CatchAllConfig.AddTo(config);
+
+    var spy = new SpyProcessService();
+    await new BrowserService(new ConfigService(config), new EmptyNotifyService(), spy)
+      .LaunchAsync("https://example.com/path", "Fake Window");
+
+    spy.LastPath.Should().Be("firefox.exe");
+    spy.LastArgs.Should().Be("ext+container:name=Work&url=https://example.com/path");
+  }
 }
