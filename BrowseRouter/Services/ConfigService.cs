@@ -56,7 +56,7 @@ internal class ConfigService(Config.Config config) : IConfigService
     _ => [],
   };
 
-  public virtual async Task<List<FilterPreference>> GetFiltersAsync()
+  public async Task<List<FilterPreference>> GetFiltersAsync()
   {
     if (string.IsNullOrWhiteSpace(config.FiltersFile))
       return [];

@@ -46,7 +46,7 @@ public class BrowserServiceTests : IAsyncLifetime
       },
       Browsers = new Dictionary<string, string>
       {
-        ["ff-work"] = "\"%ProgramFiles%\\Mozilla Firefox\\firefox.exe\" ext+container:name=Work&url={url}",
+        ["ff-work"] = "\"Mozilla Firefox\\firefox.exe\" ext+container:name=Work&url={url}",
       },
     };
     CatchAllConfig.AddTo(config);
@@ -55,7 +55,7 @@ public class BrowserServiceTests : IAsyncLifetime
     await new BrowserService(new ConfigService(config), new EmptyNotifyService(), spy)
       .LaunchAsync("https://www.work.test/foobar", "Fake Window");
 
-    spy.LastPath.Should().Be("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+    spy.LastPath.Should().Be("Mozilla Firefox\\firefox.exe");
     spy.LastArgs.Should().Be("ext+container:name=Work&url=https://www.work.test/foobar");
   }
 }
