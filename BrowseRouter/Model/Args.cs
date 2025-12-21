@@ -22,21 +22,6 @@ public static class Args
       return (path, args);
     }
 
-    // If not quoted, try to split on first space to separate path from args.
-    // But only if the remainder doesn't contain a backslash, which would indicate
-    // the first space is within the path itself (e.g., "C:\Program Files\...").
-    // Users with paths containing spaces must quote the path.
-    int spaceIndex = s.IndexOf(' ');
-    if (spaceIndex > 0)
-    {
-      string afterSpace = s[(spaceIndex + 1)..];
-      if (!afterSpace.Contains('\\'))
-      {
-        string path = s[..spaceIndex];
-        return (path, afterSpace);
-      }
-    }
-
     // The single executable without any other arguments.
     return (s, "");
   }

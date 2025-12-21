@@ -38,6 +38,10 @@
     "open multiple URLs": {
       "commandName": "Project",
       "commandLineArgs": "example.org example.com"
+    },
+    "firefox container": {
+      "commandName": "Project",
+      "commandLineArgs": "https://www.work.test/foobar"
     }
   }
 }

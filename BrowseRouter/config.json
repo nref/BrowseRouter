@@ -10,12 +10,14 @@
   "urls": {
     "*google.com": "chrome",
     "*microsoft.com": "edge",
-    "*mozilla.org": "ff"
+    "*mozilla.org": "ff",
+    "*work.test*" : "ff-work"
   },
   "browsers": {
     "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
     "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe",
     "ff": "%ProgramFiles%\\Mozilla Firefox\\firefox.exe",
+    "ff-work": "\"%ProgramFiles%\\Mozilla Firefox\\firefox.exe\" ext+container:name=Work&url={url}",
     "chrome": "%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe"
   },
   "sources": {

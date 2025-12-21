@@ -36,45 +36,26 @@ public class BrowserServiceTests : IAsyncLifetime
   }
 
   [Fact]
-  public async Task SubstitutesUrlTagInUnquotedBrowserArgs()
-  {
-    // Issue #94: User configures browser with args containing {url} tag
-    // e.g., for Firefox containers: "firefox.exe ext+container:name=Work&url={url}"
+  public async Task RedirectsToFirefoxContainer()
+  { 
     var config = BrowseRouter.Config.Config.Empty with
     {
+      Urls = new Dictionary<string, string>
+      {
+        ["*work.test*"] = "ff-work",
+      },
       Browsers = new Dictionary<string, string>
       {
-        ["ff-work"] = "firefox.exe ext+container:name=Work&url={url}",
+        ["ff-work"] = "\"%ProgramFiles%\\Mozilla Firefox\\firefox.exe\" ext+container:name=Work&url={url}",
       },
     };
     CatchAllConfig.AddTo(config);
 
     var spy = new SpyProcessService();
     await new BrowserService(new ConfigService(config), new EmptyNotifyService(), spy)
-      .LaunchAsync("https://example.com/path", "Fake Window");
+      .LaunchAsync("https://www.work.test/foobar", "Fake Window");
 
-    spy.LastPath.Should().Be("firefox.exe");
-    spy.LastArgs.Should().Be("ext+container:name=Work&url=https://example.com/path");
-  }
-
-  [Fact]
-  public async Task SubstitutesUrlTagInQuotedBrowserArgs()
-  {
-    // When browser path is quoted, args with {url} should still work
-    var config = BrowseRouter.Config.Config.Empty with
-    {
-      Browsers = new Dictionary<string, string>
-      {
-        ["ff-work"] = "\"firefox.exe\" ext+container:name=Work&url={url}",
-      },
-    };
-    CatchAllConfig.AddTo(config);
-
-    var spy = new SpyProcessService();
-    await new BrowserService(new ConfigService(config), new EmptyNotifyService(), spy)
-      .LaunchAsync("https://example.com/path", "Fake Window");
-
-    spy.LastPath.Should().Be("firefox.exe");
-    spy.LastArgs.Should().Be("ext+container:name=Work&url=https://example.com/path");
+    spy.LastPath.Should().Be("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+    spy.LastArgs.Should().Be("ext+container:name=Work&url=https://www.work.test/foobar");
   }
 }

@@ -21,7 +21,7 @@ public static class UrlPreferenceExtensions
 
     if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
     {
-      // The domain from the INI file is a regex
+      // The domain from config is a regex
       string domain = uri.Authority + uri.AbsolutePath;
       string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
@@ -30,7 +30,7 @@ public static class UrlPreferenceExtensions
 
     if (urlPattern.StartsWith('?') && urlPattern.EndsWith('?'))
     {
-      // The domain from the INI file is a query filter
+      // The domain from config is a query filter
       string domain = uri.Authority + uri.PathAndQuery;
       string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
@@ -74,7 +74,7 @@ public static class UrlPreferenceExtensions
 
     if (urlPattern.StartsWith('/') && urlPattern.EndsWith('/'))
     {
-      // The window title from the INI file is a regex
+      // The window title from config is a regex
       string pattern = urlPattern.Substring(1, urlPattern.Length - 2);
 
       return (windowTitle, pattern);
