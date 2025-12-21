@@ -57,29 +57,15 @@ public class GetPathAndArgsMethod
   }
 
   [Fact]
-  public void SplitsUnquotedPathWithArgs_OnFirstSpace()
-  {
-    // Arrange - Issue #94: User wants to pass args with {url} tag to browser
-    // e.g., "firefox.exe ext+container:name=Work&url={url}"
-    string input = "firefox.exe ext+container:name=Work&url={url}";
-
-    // Act
-    var result = Args.SplitPathAndArgs(input);
-
-    // Assert - Should split on first space, treating rest as args
-    result.Should().Be(("firefox.exe", "ext+container:name=Work&url={url}"));
-  }
-
-  [Fact]
-  public void SplitsUnquotedPathWithArgs_PreservesMultipleArgs()
+  public void SplitsQuotedPathWithSpaces_AndArgs()
   {
     // Arrange
-    string input = "firefox.exe --new-window --url {url}";
+    string input = @"""C:\Program Files\Mozilla Firefox\firefox.exe"" ext+container:name=Work&url={url}";
 
     // Act
     var result = Args.SplitPathAndArgs(input);
 
     // Assert
-    result.Should().Be(("firefox.exe", "--new-window --url {url}"));
+    result.Should().Be((@"C:\Program Files\Mozilla Firefox\firefox.exe", "ext+container:name=Work&url={url}"));
   }
 }

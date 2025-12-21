@@ -206,7 +206,6 @@ file = filters.json
   - full path to the executable with environment variable e.g. `%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe`.
   - in your PATH environment variable (you will just have to set the name of the .exe then) e.g. `chrome.exe` with `%ProgramFiles(x86)%\Google\Chrome\Application` added to the PATH variable.
 - Arguments are optional. However, if you provide arguments the path _must_ be enclosed in quotes. For example, `"chrome.exe" --new-window`
-- If there are no arguments, then the paths do not need to be quoted. For example, `chrome.exe` will work.
 
 By default the URL to open is added as the last argument after the call to the executable.
 But if you want it to be called differently, or only partially, you can use specific tags in the arguments you provide.
