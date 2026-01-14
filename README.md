@@ -29,7 +29,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
     <img src="https://github.com/nref/BrowseRouter/blob/main/BrowseRouter/logo.png" width="256">
 </p>
 
-In Windows, launch a different browser depending on the url.
+On Windows, launch a different browser depending on the url.
 
 ## Usage
 
@@ -326,4 +326,5 @@ If you like BrowseRouter, let me know in [a discussion](https://github.com/nref/
 <a href="https://www.buymeacoffee.com/slater1" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 You can help determine what happens next with BrowseRouter by filling out [this survey](https://forms.gle/Bh5z472CZUN6qdon9).
+
 
