@@ -1,0 +1,124 @@
+name: Build for Windows
+on:
+  workflow_dispatch:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize', 'ready_for_review']
+    paths:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Build:
+    name: Build on self-hosted
+    runs-on: win11
+    steps:
+      # INCOMPATIBILITY: actions/checkout@v4 not available in Forgejo
+      # Using manual git clone instead
+      - name: Checkout
+        shell: pwsh
+        env:
+          GIT_TERMINAL_PROMPT: 0
+        run: |
+          if (Test-Path $env:GITHUB_WORKSPACE\*) { Remove-Item -Recurse -Force $env:GITHUB_WORKSPACE\* }
+          git clone --depth 1 --branch ${{ github.head_ref || github.ref_name }} https://oauth2:${{ secrets.GITHUB_TOKEN }}@code.slater.dev/${{ github.repository }}.git .
+
+      # INCOMPATIBILITY: actions/setup-dotnet@v4 not available in Forgejo
+      # Assumes dotnet 8.0.x is pre-installed on win11 runner
+      # If needed, install manually or add to runner image
+
+      - name: Get version
+        shell: pwsh
+        run: |
+          $version = ./Get-ProjectVersion.ps1 -ProjectPath BrowseRouter
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+
+      # INCOMPATIBILITY: gh CLI does not work with Forgejo
+      # Using Forgejo API instead
+      - name: Get PR Title and Description
+        if: github.event_name == 'pull_request'
+        shell: pwsh
+        run: |
+          $headers = @{ "Authorization" = "token $env:FORGEJO_TOKEN" }
+          $prNumber = "${{ github.event.pull_request.number }}"
+          $apiUrl = "https://code.slater.dev/api/v1/repos/${{ github.repository }}/pulls/$prNumber"
+          $pr = Invoke-RestMethod -Uri $apiUrl -Headers $headers
+          $pr.body | Out-File -FilePath pr_description.md -Encoding utf8
+          echo "PR_TITLE=$($pr.title)" >> $env:GITHUB_ENV
+          echo "PR_DESCRIPTION_FILE=pr_description.md" >> $env:GITHUB_ENV
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and sign
+        shell: pwsh
+        run: pwsh ./make.ps1
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      # INCOMPATIBILITY: ncipollo/release-action@v1 not available in Forgejo
+      # Using Forgejo API to create release instead
+      - name: Create Draft Release
+        if: github.event_name == 'pull_request'
+        shell: pwsh
+        run: |
+          $headers = @{
+            "Authorization" = "token $env:FORGEJO_TOKEN"
+            "Content-Type" = "application/json"
+          }
+          $apiUrl = "https://code.slater.dev/api/v1/repos/${{ github.repository }}/releases"
+
+          $prDescription = ""
+          if (Test-Path $env:PR_DESCRIPTION_FILE) {
+            $prDescription = Get-Content $env:PR_DESCRIPTION_FILE -Raw
+          }
+
+          $body = @{
+            tag_name = $env:VERSION
+            name = "$($env:VERSION) - $($env:PR_TITLE)"
+            body = $prDescription
+            draft = $true
+          } | ConvertTo-Json
+
+          try {
+            $release = Invoke-RestMethod -Uri $apiUrl -Method Post -Headers $headers -Body $body
+            echo "RELEASE_ID=$($release.id)" >> $env:GITHUB_ENV
+            echo "Created draft release: $($release.name)"
+          } catch {
+            # Release may already exist, try to find and update it
+            $releases = Invoke-RestMethod -Uri $apiUrl -Headers $headers
+            $existing = $releases | Where-Object { $_.tag_name -eq $env:VERSION }
+            if ($existing) {
+              $updateUrl = "$apiUrl/$($existing.id)"
+              $release = Invoke-RestMethod -Uri $updateUrl -Method Patch -Headers $headers -Body $body
+              echo "RELEASE_ID=$($release.id)" >> $env:GITHUB_ENV
+              echo "Updated existing release: $($release.name)"
+            } else {
+              throw $_
+            }
+          }
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Artifacts
+        if: github.event_name == 'pull_request'
+        shell: pwsh
+        run: |
+          $headers = @{
+            "Authorization" = "token $env:FORGEJO_TOKEN"
+          }
+          $releaseId = $env:RELEASE_ID
+          $uploadUrl = "https://code.slater.dev/api/v1/repos/${{ github.repository }}/releases/$releaseId/assets"
+
+          Get-ChildItem -Path "./Releases" -Filter "*.zip" -Recurse | ForEach-Object {
+            $filePath = $_.FullName
+            $fileName = $_.Name
+            echo "Uploading $fileName..."
+            $uri = "$uploadUrl`?name=$fileName"
+            Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -InFile $filePath -ContentType "application/octet-stream"
+          }
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
