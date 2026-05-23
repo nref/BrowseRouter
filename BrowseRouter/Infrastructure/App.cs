@@ -13,8 +13,7 @@ public static class App
         return _exePath;
       }
 
-      string dir = AppDomain.CurrentDomain.BaseDirectory;
-      _exePath = Path.Combine(dir, AppDomain.CurrentDomain.FriendlyName + ".exe");
+      _exePath = Environment.ProcessPath ?? string.Empty;
       return _exePath;
     }
   }

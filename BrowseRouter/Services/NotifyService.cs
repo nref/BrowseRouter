@@ -22,7 +22,7 @@ public class NotifyService : INotifyService
     | Shell32.NIF_STATE; // Enables hiding system tray icon
 
   private static nint _hIcon;
-  private static nint _hInstance = Kernel32.GetModuleHandle(App.ExePath);
+  private static nint _hInstance = Kernel32.GetModuleHandle(null);
   private readonly bool _noSound;
 
   public NotifyService(bool noSound = false) 
@@ -79,7 +79,7 @@ public class NotifyService : INotifyService
 
   private static NotifyIconData GetNid(nint hWnd, string title, string message, bool noSound) => new NotifyIconData
   {
-    cbSize = Marshal.SizeOf(typeof(NotifyIconData)),
+    cbSize = Marshal.SizeOf<NotifyIconData>(),
     hWnd = hWnd,
     uID = 1,
     uFlags = _flags,

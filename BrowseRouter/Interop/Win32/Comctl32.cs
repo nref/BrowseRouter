@@ -2,11 +2,11 @@
 
 namespace BrowseRouter.Interop.Win32;
 
-internal static class Comctl32
+internal static partial class Comctl32
 {
   /// <summary>
   /// Requires an app manifest file on .NET Core
   /// </summary>
-  [DllImport("Comctl32.dll", CharSet = CharSet.Unicode)]
-  public static extern nint LoadIconWithScaleDown(nint hinst, string pszName, int cx, int cy, out nint phico);
+  [LibraryImport("Comctl32.dll", StringMarshalling = StringMarshalling.Utf16)]
+  public static partial nint LoadIconWithScaleDown(nint hinst, string pszName, int cx, int cy, out nint phico);
 }

@@ -8,7 +8,7 @@ namespace BrowseRouter.Interop.Win32
   /// A utility class to determine a process parent. Originally copied from https://stackoverflow.com/a/3346055
   /// </summary>
   [StructLayout(LayoutKind.Sequential)]
-  public struct BasicProcessInfo
+  public partial struct BasicProcessInfo
   {
     // These members must match PROCESS_BASIC_INFORMATION
     internal IntPtr Reserved1;
@@ -18,8 +18,8 @@ namespace BrowseRouter.Interop.Win32
     internal IntPtr UniqueProcessId;
     internal IntPtr InheritedFromUniqueProcessId;
 
-    [DllImport("ntdll.dll")]
-    private static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref BasicProcessInfo processInformation, int processInformationLength, out int returnLength);
+    [LibraryImport("ntdll.dll")]
+    private static partial int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref BasicProcessInfo processInformation, int processInformationLength, out int returnLength);
 
 
     /// <summary>

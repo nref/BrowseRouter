@@ -6,32 +6,34 @@ namespace BrowseRouter.Interop.Win32;
 public static partial class User32
 {
   // DllImports used to get window title for source program.
-  [DllImport("user32.dll")]
-  public static extern nint GetForegroundWindow();
+  [LibraryImport("user32.dll")]
+  public static partial nint GetForegroundWindow();
 
-  [DllImport("user32.dll")]
-  public static extern int GetWindowText(nint hWnd, StringBuilder text, int count);
+  [LibraryImport("user32.dll", EntryPoint = "GetWindowTextW", StringMarshalling = StringMarshalling.Utf16)]
+  public static partial int GetWindowText(nint hWnd, [Out] char[] lpString, int nMaxCount);
 
   public static string GetActiveWindowTitle()
   {
     string result = "";
     const int nChars = 256;
-    StringBuilder buff = new(nChars);
+    char[] buff = new char[nChars];
     nint handle = GetForegroundWindow();
 
-    if (GetWindowText(handle, buff, nChars) > 0)
+    int length = GetWindowText(handle, buff, nChars);
+    if (length > 0)
     {
-      result = buff.ToString();
+      result = new string(buff, 0, length);
     }
     return result;
   }
 
-  [DllImport("user32.dll")]
-  public static extern nint CreateWindowEx(uint dwExStyle, 
+  [LibraryImport("user32.dll", EntryPoint = "CreateWindowExW", StringMarshalling = StringMarshalling.Utf16)]
+  public static partial nint CreateWindowEx(uint dwExStyle, 
     string lpClassName, 
     string lpWindowName, 
     uint dwStyle, int x, int y, int nWidth, int nHeight, nint hWndParent, nint hMenu, nint hInstance, nint lpParam);
 
-  [DllImport("user32.dll")]
-  public static extern bool DestroyWindow(nint hWnd);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  public static partial bool DestroyWindow(nint hWnd);
 }
