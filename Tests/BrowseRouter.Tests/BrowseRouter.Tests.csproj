@@ -22,4 +22,11 @@
     <ProjectReference Include="..\..\BrowseRouter\BrowseRouter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Test against the shipped filters, so a stale pattern fails the build. -->
+    <None Include="..\..\BrowseRouter\filters.json" Link="filters.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

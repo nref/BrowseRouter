@@ -8,7 +8,7 @@
   },
   {
     "name": "Bypass Teams Safelinks",
-    "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
+    "find": ".*teams\\.public\\.onecdn\\.static\\.microsoft.*safelinks.*[?&]url=([^&]+).*",
     "replace": "unescape($1)",  // urldecode the URL. Cleans up the notification
     "priority": 2
   },

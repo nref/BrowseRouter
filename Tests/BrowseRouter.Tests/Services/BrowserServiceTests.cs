@@ -25,7 +25,7 @@ public class BrowserServiceTests : IAsyncLifetime
 
   [Theory]
   [InlineData("https://example.com")]
-  [InlineData("https://statics.teams.cdn.office.net/evergreen-assets/safelinks/1/atp-safelinks.html?url=https%3A%2F%2Fwww.example.org%2Fpath%2F")]
+  [InlineData("https://teams.public.onecdn.static.microsoft/evergreen-assets/safelinks/1/atp-safelinks.html?url=https%3A%2F%2Fwww.example.org%2Fpath%2F")]
   public async Task HandlesUrl(string url)
   {
     var spy = new SpyProcessService();

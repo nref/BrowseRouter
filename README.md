@@ -295,7 +295,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
 [
   {
     "name": "Bypass Teams Safelinks",
-    "find": ".*teams\\.cdn\\.office\\.net.*url=([^&]+).*",
+    "find": ".*teams\\.public\\.onecdn\\.static\\.microsoft.*safelinks.*[?&]url=([^&]+).*",
     "replace": "unescape($1)",
     "priority": 2
   }

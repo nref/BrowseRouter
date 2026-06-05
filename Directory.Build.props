@@ -5,9 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Version>0.18.0</Version>
+    <Version>0.18.1</Version>
     <Product>BrowseRouter</Product>
-    <Copyright>EnduraByte LLC 2022-2025</Copyright>
+    <Copyright>EnduraByte LLC 2022-2026</Copyright>
     <!-- Reduces flagging as malware -->
 	  <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
