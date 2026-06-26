@@ -17,5 +17,11 @@
     "find": ".*safelinks.protection.outlook.com.*url=([^&]+).*",
     "replace": "$1",
     "priority": 3
+  },
+  {
+    "name": "Bypass LinkedIn Safety Redirect",
+    "find": ".*linkedin\\.com/safety/go/\\?url=([^&]+).*",
+    "replace": "unescape($1)",  // urldecode the URL. Cleans up the notification
+    "priority": 4
   }
 ]

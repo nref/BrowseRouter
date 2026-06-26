@@ -21,6 +21,21 @@ public class FilterPreferenceTests
     output.Should().Be("https://www.example.org/path/");
   }
 
+  // The shipped filter must unwrap the embedded URL from a LinkedIn safety redirect.
+  [Fact]
+  public void ShippedFilters_UnwrapLinkedInSafetyRedirect()
+  {
+    List<FilterPreference> filters = LoadShippedFilters();
+
+    string safetyLink =
+      "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fexample.com%2F&urlhash=qtTU&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_feed";
+
+    bool didFilter = FilterPreference.TryApply(filters, safetyLink, out string output);
+
+    didFilter.Should().BeTrue();
+    output.Should().Be("https://example.com/");
+  }
+
   private static List<FilterPreference> LoadShippedFilters()
   {
     string path = Path.Combine(AppContext.BaseDirectory, "filters.json");

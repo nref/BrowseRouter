@@ -289,7 +289,7 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
 ]
 ```
 
-- There is a special macro `unescape(...)` to un-urlescape obfuscated URLs before sending them to the browser. This is useful e.g. for Teams SafeLinks or Outlook URL Protection. It's not strictly necessary, since the browser unescapes the URL anyway, but it cleans up the notification.
+- There is a special macro `unescape(...)` to un-urlescape obfuscated URLs before sending them to the browser. This is useful e.g. for Teams SafeLinks, Outlook URL Protection, or LinkedIn safety redirects. It's not strictly necessary, since the browser unescapes the URL anyway, but it cleans up the notification.
 
 ```json
 [
@@ -298,6 +298,13 @@ BrowseRouter can filter URLs before sending them to the browser. This is useful 
     "find": ".*teams\\.public\\.onecdn\\.static\\.microsoft.*safelinks.*[?&]url=([^&]+).*",
     "replace": "unescape($1)",
     "priority": 2
+  },
+  {
+    "name": "Bypass LinkedIn Safety Redirect",
+    "find": ".*linkedin\\.com/safety/go/\\?url=([^&]+).*",
+    "replace": "unescape($1)",
+    "_comment": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fexample.com%2F&urlhash=qtTU opens https://example.com/",
+    "priority": 4
   }
 ]
 ```
