@@ -26,7 +26,7 @@ It's made by the same author, [@nref](https://github.com/nref/), so you can expe
 # BrowseRouter 
 
 <p align="center">
-    <img src="https://github.com/nref/BrowseRouter/blob/main/BrowseRouter/logo.png" width="256">
+    <img src="BrowseRouter/logo.png" width="256">
 </p>
 
 On Windows, launch a different browser depending on the url.
