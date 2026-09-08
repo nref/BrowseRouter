@@ -1,9 +1,9 @@
-﻿namespace BrowseRouter.Config;
+namespace BrowseRouter.Config;
 
 public interface IConfigService
 {
   NotifyPreference GetNotifyPreference();
   LogPreference GetLogPreference();
-  IEnumerable<UrlPreference> GetUrlPreferences(ConfigType configType);
+  IReadOnlyList<Rule> GetRules();
   Task<List<FilterPreference>> GetFiltersAsync();
 }

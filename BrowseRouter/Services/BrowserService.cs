@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Config;
+using BrowseRouter.Config;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Model;
 
@@ -24,8 +24,6 @@ public class BrowserService(IConfigService config, INotifyService notifier, IPro
       if (didFilter)
         Log.Write($"Filtered URL: {rawUrl} -> {url}");
 
-      IEnumerable<UrlPreference> urlPreferences = config.GetUrlPreferences(ConfigType.Urls);
-      IEnumerable<UrlPreference> sourcePreferences = config.GetUrlPreferences(ConfigType.Sources);
       Uri? uri = UriFactory.Get(url);
 
       if (uri is null)
@@ -35,26 +33,18 @@ public class BrowserService(IConfigService config, INotifyService notifier, IPro
         return;
       }
 
-      UrlPreference? pref = null;
-      if (sourcePreferences.TryGetPreference(windowTitle, out UrlPreference sourcePref))
-      {
-        Log.Write($"Found source preference {sourcePref}");
-        pref = sourcePref;
-      }
+      LaunchRequest request = new(uri, windowTitle);
+      Rule? rule = config.GetRules().FirstOrDefault(r => r.Condition.Matches(request));
 
-      else if (urlPreferences.TryGetPreference(uri, out UrlPreference urlPref))
-      {
-        Log.Write($"Found URL preference {urlPref}");
-        pref = urlPref;
-      }
-
-      if (pref == null)
+      if (rule is null)
       {
         Log.Write($"Unable to find a browser matching \"{url}\".");
         return;
       }
 
-      (string path, string args) = Args.SplitPathAndArgs(pref.Browser.Location);
+      Log.Write($"Found rule {rule}");
+
+      (string path, string args) = Args.SplitPathAndArgs(rule.Browser.Location);
 
       args = Args.Format(args, uri);
 

@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Config;
+using BrowseRouter.Config;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Interop.Win32;
 using BrowseRouter.Services;
@@ -71,7 +71,6 @@ public static class Program
   private static async Task LaunchUrlAsyc(string url)
   {
     IConfigService config = await ConfigServiceFactory.CreateAsync();
-    Log.Preference = config.GetLogPreference();
 
     NotifyPreference notifyPref = config.GetNotifyPreference();
     INotifyService notifier = notifyPref.IsEnabled switch

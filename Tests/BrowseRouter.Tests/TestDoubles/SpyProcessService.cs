@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Services;
+using BrowseRouter.Services;
 
 namespace BrowseRouter.Tests.TestDoubles;
 

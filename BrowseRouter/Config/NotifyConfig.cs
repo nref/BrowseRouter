@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Config;
+namespace BrowseRouter.Config;
 
 internal record NotifyConfig(
     bool Enabled = NotifyPreference.IsEnabledDefaultValue,

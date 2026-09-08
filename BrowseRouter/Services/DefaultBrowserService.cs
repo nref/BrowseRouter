@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Model;
 using Microsoft.Win32;

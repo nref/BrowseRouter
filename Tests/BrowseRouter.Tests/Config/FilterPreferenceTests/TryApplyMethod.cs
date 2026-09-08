@@ -1,9 +1,9 @@
 using System.Text.Json;
 using BrowseRouter.Config;
 
-namespace BrowseRouter.Tests.Config;
+namespace BrowseRouter.Tests.Config.FilterPreferenceTests;
 
-public class FilterPreferenceTests
+public class TryApplyMethod
 {
   // Regression guard for issue #100: MS Teams moved SafeLinks to a new domain.
   // The shipped filter must still unwrap the embedded URL.

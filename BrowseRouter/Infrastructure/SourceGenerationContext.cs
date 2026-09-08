@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using BrowseRouter.Config;
 
@@ -12,7 +12,7 @@ namespace BrowseRouter;
 )]
 [JsonSerializable(typeof(FilterPreference))]
 [JsonSerializable(typeof(List<FilterPreference>), TypeInfoPropertyName = "FilterPreferenceList")]
-[JsonSerializable(typeof(Config.Config))]
+[JsonSerializable(typeof(Config.Loaders.ConfigFile))]
 [JsonSerializable(typeof(NotifyConfig))]
 [JsonSerializable(typeof(LogConfig))]
 internal partial class SourceGenerationContext : JsonSerializerContext

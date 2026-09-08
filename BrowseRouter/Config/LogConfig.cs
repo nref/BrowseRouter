@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Config;
+namespace BrowseRouter.Config;
 
 internal record LogConfig(
     bool Enabled,

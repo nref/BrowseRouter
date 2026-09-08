@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Infrastructure;
+using BrowseRouter.Infrastructure;
 
 namespace BrowseRouter.Config;
 

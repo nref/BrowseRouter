@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Model;
+namespace BrowseRouter.Model;
 
 public static class StringExtensions
 {

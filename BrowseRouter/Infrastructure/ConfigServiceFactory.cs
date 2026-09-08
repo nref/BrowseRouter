@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Config;
+using BrowseRouter.Config;
 using BrowseRouter.Config.Loaders;
 using BrowseRouter.Services;
 
@@ -15,10 +15,14 @@ public static class ConfigServiceFactory
         ? new JsonConfigLoader(jsonPath)
         : new IniConfigLoader(Path.Combine(dir, "config.ini"));
 
-    var config = await loader.LoadAsync();
+    (Config.Config config, IReadOnlyList<string> warnings) = ConfigTranslator.ToConfig(await loader.LoadAsync());
 
-    CatchAllConfig.AddTo(config);
+    ConfigService service = new(config);
+    Log.Preference = service.GetLogPreference();
 
-    return new ConfigService(config);
+    foreach (string warning in warnings)
+      Log.Write(warning);
+
+    return service;
   }
 }

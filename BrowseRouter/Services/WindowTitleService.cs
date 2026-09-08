@@ -1,4 +1,4 @@
-﻿using BrowseRouter.Interop.Win32;
+using BrowseRouter.Interop.Win32;
 
 namespace BrowseRouter.Services;
 

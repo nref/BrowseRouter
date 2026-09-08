@@ -132,16 +132,14 @@ Example `config.json`:
     "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
     "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe"
   },
-  "sources": {
-    "* - Notepad -> notepad": "chrome",
-    "Slack | Test*": "chromenw",
-    " -> AutoHotkey64": "ff"
-  },
-  "urls": {
-    "*google.com": "chrome",
-    "*microsoft.com": "edge",
-    "*mozilla.org": "ff"
-  },
+  "rules": [
+    { "source": "* - Notepad -> notepad", "browser": "chrome" },
+    { "source": "Slack | Test*", "browser": "chromenw" },
+    { "source": " -> AutoHotkey64", "browser": "ff" },
+    { "url": "*google.com", "browser": "chrome" },
+    { "url": "*microsoft.com", "browser": "edge" },
+    { "url": "*mozilla.org", "browser": "ff" }
+  ],
   "filtersFile": "filters.json"
 }
 ```
@@ -174,7 +172,6 @@ opera = %UserProfile%\AppData\Local\Programs\Opera\opera.exe
 
 # Source preferences.
 # - Only * is treated as a special character (wildcard).
-# - Will take precedence over any URL preferences.
 # - Matches on window title and specific process of the application used to open the link, like so "WindowTitle -> ProcessName".
 [sources]
 * - Notepad -> notepad = chrome
@@ -183,17 +180,6 @@ Slack | Test* = chromenw
  -> AutoHotkey64 = ff 
 # Default case. Added automatically
 # * = ff
-
-# Url preferences.
-# - Only * is treated as a special character (wildcard).
-# - Only domains are matched. Don't include protocols e.g. "https://" or paths e.g. "/some/path?query=value"
-# - Be aware that subdomains don't match automatically, e.g. "youtube.com = chrome" would not launch Chrome for "www.youtube.com"
-#   For that reason, you'll often want a leading "*." e.g. "*.youtube.com". 
-#   Note that "*youtube.com" would also match e.g. "notyoutube.com".
-[urls]
-*google.com = chrome
-*microsoft.com = edge
-*mozilla.org = ff
 
 [filters]
 file = filters.json
@@ -224,28 +210,43 @@ For example if you want a browser which strip the query from the opened links, y
 
 [More details and example about URI composition is available here!](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs)
 
-### Sources
+### Rules
 
-- You can specify a "source preference" which matches the window title and the process name of the application used to open the link.
-  - For example, with this in the previous example `config.json`:
+A rule says where to send a link. It matches on either the URL or the source
+application, and names the browser to use.
 
-    ```json
-    "sources": {
-      "* - Notepad -> notepad": "ff",
-      "Slack | Test*": "chrome",
-      " -> AutoHotkey64": "ff"
-    }
-    ```
+```json
+"rules": [
+  { "url": "*.youtube.com", "browser": "chrome" },
+  { "source": "* - Notepad -> notepad", "browser": "ff" },
+  { "url": "*", "browser": "chrome" }
+]
+```
 
-    Then clicking a link in Notepad (end of the windows title ending with " - Notepad" with the process named "notepad") will open the link in Firefox, regardless of the URL.
-    
-- Wildcards and full regular expressions may be used to match source window titles and process name the same way urls are. [See Urls section](#Urls).
+The first rule that matches wins, so the order of the list is the precedence.
+Putting a `url` rule above a `source` rule sends matching links to that browser
+even when they come from that source. Reversing the two reverses which one wins.
 
-- Sources preferences takes precedence over all URLs preferences, so in the case of a conflict between a source preference and a URL preference, the source preference wins.
+A rule sets either `url` or `source`, never both.
 
-### Urls
+If no rule matches every URL, one is added at the end using the first browser in
+`browsers`.
 
-There are two ways to specify an Url. You can use simple wildcards or full regular expressions.
+#### Source rules
+
+`source` matches the window title and the process name of the application that
+opened the link, joined as `"WindowTitle -> ProcessName"`. Clicking a link in
+Notepad, whose window title ends in " - Notepad" and whose process is named
+"notepad", matches `"* - Notepad -> notepad"`. An application with no window
+matches on its process alone, as in `" -> AutoHotkey64"`.
+
+Source patterns support wildcards and full regular expressions, described below.
+They do not support the query syntax, which has nothing to match against in a
+window title.
+
+#### URL rules
+
+There are three ways to write a `url` pattern.
 
 **Simple wildcards:**
 
@@ -264,6 +265,22 @@ There are two ways to specify an Url. You can use simple wildcards or full regul
 - Full regular expressions are specified by wrapping it in /'s.
 - The domain _and_ path are used in the Url comparison.
 - The regular expression syntax is based on the Microsoft .NET implementation.
+
+**Query filters:**
+
+    "?www.youtube.com/redirect?*reddit.com*?": "ff"
+
+- Query filters are specified by wrapping the pattern in ?'s.
+- The domain, path _and_ query are used in the comparison.
+- Only `*` is special, as with simple wildcards.
+
+#### Older configuration files
+
+Configuration files that use `urls` and `sources` instead of `rules` keep
+working, and keep their existing behavior: every `sources` entry is tried before
+every `urls` entry. To choose the order yourself, move them into one `rules`
+list.
+
 
 ## Filters
 

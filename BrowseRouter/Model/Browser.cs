@@ -1,9 +1,6 @@
-﻿namespace BrowseRouter.Model;
+namespace BrowseRouter.Model;
 
-public class Browser
+public record Browser(string Name, string Location)
 {
-  public required string Name { get; set; }
-  public required string Location { get; set; }
-
   public override string ToString() => $"\"{Name}\" (\"{Location}\")";
 }

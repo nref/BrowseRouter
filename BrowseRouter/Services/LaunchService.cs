@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Services;
+namespace BrowseRouter.Services;
 
 public interface ILaunchService
 {

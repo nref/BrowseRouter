@@ -7,12 +7,6 @@
   "log": {
     "enabled": true
   },
-  "urls": {
-    "*google.com": "chrome",
-    "*microsoft.com": "edge",
-    "*mozilla.org": "ff",
-    "*work.test*" : "ff-work"
-  },
   "browsers": {
     "edge": "%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe",
     "opera": "%UserProfile%\\AppData\\Local\\Programs\\Opera\\opera.exe",
@@ -20,9 +14,14 @@
     "ff-work": "\"%ProgramFiles%\\Mozilla Firefox\\firefox.exe\" ext+container:name=Work&url={url}",
     "chrome": "%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe"
   },
-  "sources": {
-    "*Microsoft Teams*": "edge",
-    "*Outlook*": "ff"
-  },
+  // The first rule that matches wins, so order is precedence.
+  "rules": [
+    { "url": "*work.test*", "browser": "ff-work" },
+    { "source": "*Microsoft Teams*", "browser": "edge" },
+    { "source": "*Outlook*", "browser": "ff" },
+    { "url": "*google.com", "browser": "chrome" },
+    { "url": "*microsoft.com", "browser": "edge" },
+    { "url": "*mozilla.org", "browser": "ff" }
+  ],
   "filtersFile": "filters.json"
 }

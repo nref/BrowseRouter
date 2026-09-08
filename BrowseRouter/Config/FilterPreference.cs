@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Config;
+namespace BrowseRouter.Config;
 
 public record FilterPreference(string Name, string Find, string Replace, int Priority)
 {

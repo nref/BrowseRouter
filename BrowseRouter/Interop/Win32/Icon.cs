@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Interop.Win32;
+namespace BrowseRouter.Interop.Win32;
 
 public static class Icon
 {

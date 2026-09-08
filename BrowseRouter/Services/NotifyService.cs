@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using BrowseRouter.Infrastructure;
 using BrowseRouter.Interop.Win32;
 

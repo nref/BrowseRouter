@@ -1,4 +1,4 @@
-﻿namespace BrowseRouter.Infrastructure;
+namespace BrowseRouter.Infrastructure;
 
 public static class App
 {

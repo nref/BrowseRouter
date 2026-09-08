@@ -1,55 +1,60 @@
-﻿namespace BrowseRouter.Config.Loaders;
+namespace BrowseRouter.Config.Loaders;
 
 internal class IniConfigLoader(string path) : IConfigLoader
 {
-  public async Task<Config> LoadAsync()
+  public async Task<ConfigFile> LoadAsync()
   {
-    var lines = (await File.ReadAllLinesAsync(path))
+    List<string> lines = (await File.ReadAllLinesAsync(path))
       .Select(l => l.Trim())
       .Where(l => !string.IsNullOrWhiteSpace(l) && !";#".Contains(l[0]))
       .ToList();
 
-    var config = Config.Empty;
-
-    // helper to grab k=v under [section]
     IEnumerable<KeyValuePair<string, string>> Section(string name)
         => lines
            .SkipWhile(l => !l.StartsWith($"[{name}]", StringComparison.OrdinalIgnoreCase))
            .Skip(1)
-           .TakeWhile(l => !l.StartsWith("["))
+           .TakeWhile(l => !l.StartsWith('['))
            .Where(l => l.Contains('='))
            .Select(l =>
            {
-             var p = l.Split('=', 2);
+             string[] p = l.Split('=', 2);
              return KeyValuePair.Create(p[0].Trim(), p[1].Trim());
            });
 
-    // populate
-    foreach (var kv in Section("notify"))
-    {
-      if (kv.Key.Equals("enabled", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out var e))
-        config = config with { Notify = config.Notify with { Enabled = e } };
+    NotifyConfig notify = NotifyConfig.Empty;
 
-      if (kv.Key.Equals("silent", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out var s))
-        config = config with { Notify = config.Notify with { Silent = s } };
+    foreach (KeyValuePair<string, string> kv in Section("notify"))
+    {
+      if (kv.Key.Equals("enabled", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out bool enabled))
+        notify = notify with { Enabled = enabled };
+
+      if (kv.Key.Equals("silent", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out bool silent))
+        notify = notify with { Silent = silent };
     }
 
-    foreach (var kv in Section("log"))
+    LogConfig log = LogConfig.Empty;
+
+    foreach (KeyValuePair<string, string> kv in Section("log"))
     {
-      if (kv.Key.Equals("enabled", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out var e)) 
-        config = config with { Log = config.Log with { Enabled = e } };
+      if (kv.Key.Equals("enabled", StringComparison.OrdinalIgnoreCase) && bool.TryParse(kv.Value, out bool enabled))
+        log = log with { Enabled = enabled };
+
       if (kv.Key.Equals("file", StringComparison.OrdinalIgnoreCase))
-        config = config with { Log = config.Log with { File = kv.Value.Replace("\"", "") } };
+        log = log with { File = kv.Value.Replace("\"", "") };
     }
 
-    foreach (var kv in Section("browsers"))
-      config.Browsers[kv.Key] = kv.Value;
+    Dictionary<string, string> browsers = [];
 
-    foreach (var kv in Section("sources"))
-      config.Sources[kv.Key] = kv.Value;
+    foreach (KeyValuePair<string, string> kv in Section("browsers"))
+      browsers[kv.Key] = kv.Value;
 
-    config = config with { FiltersFile = Section("filters").FirstOrDefault().Value };
-
-    return config;
+    return new ConfigFile(
+      notify,
+      log,
+      browsers,
+      null,
+      Section("sources").Select(kv => new PatternBrowser(kv.Key, kv.Value)).ToList(),
+      null,
+      Section("filters").FirstOrDefault().Value);
   }
 }
